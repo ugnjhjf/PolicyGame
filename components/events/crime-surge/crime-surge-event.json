@@ -1,0 +1,106 @@
+{
+  "id": "crime-surge-emergency",
+  "title": "犯罪率激增紧急事件",
+  "description": "近期城市犯罪率急剧上升，多个区域报告严重犯罪案件。现有警力严重不足，无法有效应对当前的犯罪浪潮。社区安全受到严重威胁，需要立即采取行动。",
+  "imageUrl": "/city_overview.png",
+  "type": "emergency",
+  "priority": "critical",
+  "details": {
+    "crimeIncrease": "20%",
+    "affectedAreas": ["中央区", "工业区", "住宅区"],
+    "reportedCases": 127,
+    "arrests": 23,
+    "policeShortage": "60%",
+    "responseTime": "平均45分钟"
+  },
+  "consequences": {
+    "immediate": [
+      "社区恐慌情绪蔓延",
+      "居民夜间不敢外出",
+      "商业活动受到严重影响"
+    ],
+    "longTerm": [
+      "城市形象受损",
+      "投资环境恶化",
+      "人才流失加剧"
+    ]
+  },
+  "options": [
+    {
+      "id": "emergency-deployment",
+      "title": "紧急调派警力",
+      "description": "立即从其他区域调派警力支援，加强巡逻密度",
+      "cost": 5000,
+      "actionPoints": 3,
+      "effects": {
+        "crimeRate": -10,
+        "communityTrust": 5,
+        "money": -5000,
+        "actionPoints": -3
+      },
+      "requirements": {
+        "actionPoints": 3,
+        "money": 5000
+      }
+    },
+    {
+      "id": "community-mobilization",
+      "title": "社区动员",
+      "description": "组织社区志愿者，建立邻里守望制度",
+      "cost": 2000,
+      "actionPoints": 2,
+      "effects": {
+        "crimeRate": -5,
+        "communityTrust": 10,
+        "money": -2000,
+        "actionPoints": -2
+      },
+      "requirements": {
+        "actionPoints": 2,
+        "money": 2000
+      }
+    },
+    {
+      "id": "technology-upgrade",
+      "title": "技术升级",
+      "description": "部署更多监控设备，使用AI预测犯罪热点",
+      "cost": 15000,
+      "actionPoints": 5,
+      "effects": {
+        "crimeRate": -15,
+        "communityTrust": -5,
+        "money": -15000,
+        "actionPoints": -5
+      },
+      "requirements": {
+        "actionPoints": 5,
+        "money": 15000
+      }
+    },
+    {
+      "id": "do-nothing",
+      "title": "暂时观望",
+      "description": "等待更多信息，暂时不采取行动",
+      "cost": 0,
+      "actionPoints": 0,
+      "effects": {
+        "crimeRate": 5,
+        "communityTrust": -10,
+        "money": 0,
+        "actionPoints": 0
+      },
+      "requirements": {
+        "actionPoints": 0,
+        "money": 0
+      }
+    }
+  ],
+  "statistics": {
+    "currentCrimeRate": 12.5,
+    "previousCrimeRate": 8.6,
+    "policeCapacity": 40,
+    "requiredCapacity": 100,
+    "responseTime": 45,
+    "targetResponseTime": 15
+  }
+}

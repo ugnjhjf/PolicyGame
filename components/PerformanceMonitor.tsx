@@ -11,10 +11,8 @@ export default function PerformanceMonitor() {
     const observer = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
         if (entry.entryType === 'navigation') {
-          console.log('Page Load Time:', entry.loadEventEnd - entry.loadEventStart, 'ms')
         }
         if (entry.entryType === 'paint') {
-          console.log(`${entry.name}:`, entry.startTime, 'ms')
         }
       }
     })
@@ -25,7 +23,6 @@ export default function PerformanceMonitor() {
     const longTaskObserver = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
         if (entry.duration > 50) {
-          console.warn('Long Task detected:', entry.duration, 'ms')
         }
       }
     })

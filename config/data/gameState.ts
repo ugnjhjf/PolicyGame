@@ -76,15 +76,23 @@ export const GameStateManager = {
 
   // 增加案件数量
   addCases: (count: number): void => {
+    const newCases = currentGameState.caseCount + count
+    const newArrests = Math.min(currentGameState.arrests, newCases)
+    
     GameStateManager.updateState({ 
-      caseCount: currentGameState.caseCount + count 
+      caseCount: newCases,
+      arrests: newArrests
     })
   },
 
   // 增加逮捕数量
   addArrests: (count: number): void => {
+    const newArrests = currentGameState.arrests + count
+    const newCases = Math.max(currentGameState.caseCount, newArrests)
+    
     GameStateManager.updateState({ 
-      arrests: currentGameState.arrests + count 
+      caseCount: newCases,
+      arrests: newArrests
     })
   },
 
@@ -123,9 +131,6 @@ export const GameStateManager = {
       warnings.push('资金不足')
     }
     
-    if (currentGameState.crimeRate > 20) {
-      warnings.push('犯罪率过高')
-    }
     
     if (currentGameState.communityTrust < 30) {
       warnings.push('社区信任度过低')
@@ -135,6 +140,27 @@ export const GameStateManager = {
       isHealthy: warnings.length === 0,
       warnings
     }
+  },
+
+  // 游戏控制状态管理
+  // 开始游戏
+  startGame: (): void => {
+    GameStateManager.updateState({ isPlaying: true })
+  },
+
+  // 暂停游戏
+  pauseGame: (): void => {
+    GameStateManager.updateState({ isPlaying: false })
+  },
+
+  // 切换游戏状态
+  toggleGameState: (): void => {
+    GameStateManager.updateState({ isPlaying: !currentGameState.isPlaying })
+  },
+
+  // 获取游戏状态
+  getGameState: (): boolean => {
+    return currentGameState.isPlaying
   }
 }
 

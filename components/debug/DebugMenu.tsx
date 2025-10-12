@@ -3,13 +3,16 @@
 import { useState, useEffect } from 'react'
 import { Settings, RotateCcw, Plus, Minus } from 'lucide-react'
 import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../config/data'
+import { initializeGameEngine } from '../../engine/core'
 import styles from '../../styles/animations.module.css'
 
 interface DebugMenuProps {
   onStateChange?: (newState: GameState) => void
+  onTriggerEmergencySelector?: () => void
+  onToggleRealTimeMetrics?: () => void
 }
 
-export default function DebugMenu({ onStateChange }: DebugMenuProps) {
+export default function DebugMenu({ onStateChange, onTriggerEmergencySelector, onToggleRealTimeMetrics }: DebugMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [gameState, setGameState] = useState<GameState>(INITIAL_GAME_STATE)
 
@@ -23,7 +26,7 @@ export default function DebugMenu({ onStateChange }: DebugMenuProps) {
     updateState()
     
     // 监听状态变化
-    const interval = setInterval(updateState, 100)
+    const interval = setInterval(updateState, 500)
     return () => clearInterval(interval)
   }, [])
 
@@ -32,6 +35,7 @@ export default function DebugMenu({ onStateChange }: DebugMenuProps) {
     const currentState = GameStateManager.getCurrentState()
     const newValue = Math.max(0, (currentState[key] as number) + delta)
     
+    console.log(`[DebugMenu] 更新 ${key}: ${currentState[key]} -> ${newValue}`)
     GameStateManager.updateState({ [key]: newValue })
     
     // 通知父组件状态变化
@@ -48,12 +52,36 @@ export default function DebugMenu({ onStateChange }: DebugMenuProps) {
     if (onStateChange) {
       onStateChange(INITIAL_GAME_STATE)
     }
+    
+    // 重新初始化游戏引擎
+    initializeGameEngine()
+  }
+
+  // 验证日期格式
+  const isValidDate = (dateString: string): boolean => {
+    const regex = /^\d{4}-\d{2}-\d{2}$/
+    if (!regex.test(dateString)) {
+      return false
+    }
+    
+    const date = new Date(dateString)
+    return date.toISOString().split('T')[0] === dateString
   }
 
   // 直接设置数值
   const setValue = (key: keyof GameState, value: string) => {
-    const numValue = parseFloat(value) || 0
-    GameStateManager.updateState({ [key]: numValue })
+    // 特殊处理日期字段
+    if (key === 'date') {
+      // 验证日期格式
+      if (isValidDate(value)) {
+        GameStateManager.updateState({ [key]: value })
+      } else {
+        return
+      }
+    } else {
+      const numValue = parseFloat(value) || 0
+      GameStateManager.updateState({ [key]: numValue })
+    }
     
     if (onStateChange) {
       onStateChange(GameStateManager.getCurrentState())
@@ -82,6 +110,33 @@ export default function DebugMenu({ onStateChange }: DebugMenuProps) {
           </h3>
           
           <div className="space-y-3">
+            {/* 游戏状态控制 */}
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium w-24">游戏状态:</label>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => GameStateManager.pauseGame()}
+                  className={`px-3 py-1 rounded text-xs font-medium transition-all duration-200 ${
+                    !gameState.isPlaying 
+                      ? 'bg-red-500 text-white' 
+                      : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                  }`}
+                >
+                  暂停
+                </button>
+                <button
+                  onClick={() => GameStateManager.startGame()}
+                  className={`px-3 py-1 rounded text-xs font-medium transition-all duration-200 ${
+                    gameState.isPlaying 
+                      ? 'bg-green-500 text-white' 
+                      : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                  }`}
+                >
+                  运行
+                </button>
+              </div>
+            </div>
+
             {/* 日期 */}
             <div className="flex items-center justify-between">
               <label className="text-sm font-medium w-24">日期:</label>
@@ -90,6 +145,8 @@ export default function DebugMenu({ onStateChange }: DebugMenuProps) {
                 value={gameState.date}
                 onChange={(e) => setValue('date', e.target.value)}
                 className="px-2 py-1 bg-gray-700 text-white text-xs rounded border border-gray-600"
+                min="2020-01-01"
+                max="2030-12-31"
               />
             </div>
 
@@ -285,14 +342,75 @@ export default function DebugMenu({ onStateChange }: DebugMenuProps) {
 
           {/* 状态摘要 */}
           <div className="mt-4 pt-3 border-t border-gray-700">
-            <h4 className="text-sm font-bold mb-2">状态摘要</h4>
+            <h4 className="text-sm font-bold mb-2">实时状态摘要</h4>
             <div className="text-xs space-y-1">
-              <div>行动点: {gameState.actionPoints}/10</div>
-              <div>资金: ${gameState.money.toLocaleString()}</div>
-              <div>犯罪率: {gameState.crimeRate}%</div>
-              <div>信任度: {gameState.communityTrust}%</div>
+              <div className="flex justify-between">
+                <span>游戏状态:</span>
+                <span className={`font-mono ${gameState.isPlaying ? 'text-green-400' : 'text-red-400'}`}>
+                  {gameState.isPlaying ? '运行中' : '已暂停'}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span>日期:</span>
+                <span className="font-mono">{gameState.date}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>行动点:</span>
+                <span className="font-mono">{gameState.actionPoints}/10</span>
+              </div>
+              <div className="flex justify-between">
+                <span>资金:</span>
+                <span className="font-mono">${gameState.money.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>案件数:</span>
+                <span className="font-mono">{Math.floor(gameState.caseCount)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>逮捕数:</span>
+                <span className="font-mono">{Math.floor(gameState.arrests)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>犯罪率:</span>
+                <span className="font-mono">{gameState.crimeRate}%</span>
+              </div>
+              <div className="flex justify-between">
+                <span>准确率:</span>
+                <span className="font-mono">{gameState.arrestAccuracy}%</span>
+              </div>
+              <div className="flex justify-between">
+                <span>信任度:</span>
+                <span className="font-mono">{gameState.communityTrust}%</span>
+              </div>
             </div>
           </div>
+
+
+          {/* 紧急事件选择器按钮 */}
+          {onTriggerEmergencySelector && (
+            <div className="mt-4 pt-3 border-t border-gray-700">
+              <button
+                onClick={onTriggerEmergencySelector}
+                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white text-sm font-medium rounded-md transition-all duration-200 hover:scale-105 mb-2"
+                title="打开紧急事件选择器"
+              >
+                🚨 紧急事件选择器
+              </button>
+            </div>
+          )}
+
+          {/* 实时运算控制按钮 */}
+          {onToggleRealTimeMetrics && (
+            <div className="mt-4 pt-3 border-t border-gray-700">
+              <button
+                onClick={onToggleRealTimeMetrics}
+                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md transition-all duration-200 hover:scale-105 mb-2"
+                title="切换实时指标计算"
+              >
+                📊 实时运算控制
+              </button>
+            </div>
+          )}
 
           {/* 重置按钮 */}
           <div className="mt-4 pt-3 border-t border-gray-700">
