@@ -82,6 +82,12 @@ export default function GamePage() {
 
   // 处理紧急事件选择
   const handleEmergencyEventSelect = (eventId: string) => {
+    // 记录当前游戏状态并暂停游戏
+    const currentGameState = GameStateManager.getCurrentState()
+    if (currentGameState.isPlaying) {
+      GameStateManager.pauseGame()
+    }
+    
     switch (eventId) {
       case 'crime-surge':
         setShowCrimeSurgeEvent(true)
@@ -136,7 +142,14 @@ export default function GamePage() {
         {/* 中央地标 */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
           <button
-            onClick={() => setShowCentralDistrict(true)}
+            onClick={() => {
+              // 暂停游戏
+              const currentGameState = GameStateManager.getCurrentState()
+              if (currentGameState.isPlaying) {
+                GameStateManager.pauseGame()
+              }
+              setShowCentralDistrict(true)
+            }}
             className="group relative flex flex-col items-center"
             title="Central District - Click to manage"
           >
@@ -294,7 +307,11 @@ export default function GamePage() {
       {/* Central District 面板 */}
       <CentralDistrictPanel
         isOpen={showCentralDistrict}
-        onClose={() => setShowCentralDistrict(false)}
+        onClose={() => {
+          setShowCentralDistrict(false)
+          // 恢复游戏状态
+          GameStateManager.startGame()
+        }}
         districtData={districtData}
       />
 
@@ -320,9 +337,15 @@ export default function GamePage() {
       {/* 犯罪激增紧急事件 */}
       <CrimeSurgeEvent
         isOpen={showCrimeSurgeEvent}
-        onClose={() => setShowCrimeSurgeEvent(false)}
+        onClose={() => {
+          setShowCrimeSurgeEvent(false)
+          // 恢复游戏状态
+          GameStateManager.startGame()
+        }}
         onComplete={(optionId) => {
           setShowCrimeSurgeEvent(false)
+          // 恢复游戏状态
+          GameStateManager.startGame()
         }}
       />
     </div>
