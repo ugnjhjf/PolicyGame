@@ -5,12 +5,27 @@ import Image from 'next/image'
 import { Calendar, Zap, DollarSign, FileText, Users, TrendingUp, Target, Heart, Play, Pause } from 'lucide-react'
 import styles from '../../styles/animations.module.css'
 import { INITIAL_GAME_STATE } from '../../lib/constants/gameState'
+import { CentralDistrictPanel, DistrictData } from '../../components/panel'
 
 export default function GamePage() {
   // 游戏状态数据
   const [gameState, setGameState] = useState(INITIAL_GAME_STATE)
   // 游戏进程控制状态
   const [isPlaying, setIsPlaying] = useState(true)
+  // 模态框状态
+  const [showCentralDistrict, setShowCentralDistrict] = useState(false)
+  
+  // Central District 数据
+  const [districtData] = useState<DistrictData>({
+    name: 'Central District',
+    population: 125000,
+    crimeRate: 8.5,
+    policePresence: 45,
+    surveillance: 78,
+    incidents: 12,
+    arrests: 8,
+    efficiency: 85.2
+  })
 
   return (
     <div className="min-h-screen relative">
@@ -34,6 +49,7 @@ export default function GamePage() {
         {/* 中央地标 */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
           <button
+            onClick={() => setShowCentralDistrict(true)}
             className="group relative flex flex-col items-center"
             title="Central District - Click to manage"
           >
@@ -162,6 +178,13 @@ export default function GamePage() {
           </div>
         </div>
       </div>
+
+      {/* Central District 面板 */}
+      <CentralDistrictPanel
+        isOpen={showCentralDistrict}
+        onClose={() => setShowCentralDistrict(false)}
+        districtData={districtData}
+      />
     </div>
   )
 }
