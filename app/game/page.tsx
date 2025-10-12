@@ -1,19 +1,32 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Calendar, Zap, DollarSign, FileText, Users, TrendingUp, Target, Heart, Play, Pause } from 'lucide-react'
 import styles from '../../styles/animations.module.css'
-import { INITIAL_GAME_STATE } from '../../lib/constants/gameState'
 import { CentralDistrictPanel, DistrictData } from '../../components/panel'
+import { DebugMenu } from '../../components/debug'
+import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../config/data'
 
 export default function GamePage() {
   // 游戏状态数据
-  const [gameState, setGameState] = useState(INITIAL_GAME_STATE)
+  const [gameState, setGameState] = useState<GameState>(INITIAL_GAME_STATE)
   // 游戏进程控制状态
   const [isPlaying, setIsPlaying] = useState(true)
   // 模态框状态
   const [showCentralDistrict, setShowCentralDistrict] = useState(false)
+
+  // 同步实时游戏状态
+  useEffect(() => {
+    const updateGameState = () => {
+      setGameState(GameStateManager.getCurrentState())
+    }
+    
+    // 初始同步
+    updateGameState()
+    
+    // 可以在这里添加定时器或其他状态同步逻辑
+  }, [])
   
   // Central District 数据
   const [districtData] = useState<DistrictData>({
@@ -185,6 +198,9 @@ export default function GamePage() {
         onClose={() => setShowCentralDistrict(false)}
         districtData={districtData}
       />
+
+      {/* 调试菜单 */}
+      <DebugMenu onStateChange={setGameState} />
     </div>
   )
 }
