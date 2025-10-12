@@ -58,7 +58,7 @@ export default function GamePage() {
                 <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
               </div>
             </div>
-            <div className="mt-2 px-2 py-1 bg-black/60 text-white text-xs font-medium rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <div className="mt-2 px-2 py-1 bg-black/60 text-gray-400 group-hover:text-white group-hover:scale-105 group-hover:px-3 group-hover:py-1.5 text-xs font-medium rounded-md transition-all duration-200 origin-center">
               Central District
             </div>
           </button>
@@ -75,7 +75,7 @@ export default function GamePage() {
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
               </div>
             </div>
-            <div className="mt-2 px-2 py-1 bg-black/60 text-white text-xs font-medium rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <div className="mt-2 px-2 py-1 bg-black/60 text-gray-400 group-hover:text-white group-hover:scale-105 group-hover:px-3 group-hover:py-1.5 text-xs font-medium rounded-md transition-all duration-200 origin-center">
               Surveillance Zone
             </div>
           </button>

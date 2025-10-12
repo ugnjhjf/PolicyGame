@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import '../styles/global/globals.css'
 import PageTransitionProvider from '../components/PageTransitionProvider'
 import PerformanceMonitor from '../components/PerformanceMonitor'
@@ -10,8 +10,12 @@ export const metadata: Metadata = {
   generator: 'Next.js',
   keywords: ['AI', 'policing', 'simulation', 'strategy', 'game'],
   authors: [{ name: 'PolicyGame Team' }],
-  viewport: 'width=device-width, initial-scale=1',
   themeColor: '#667eea',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({
