@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Settings, RotateCcw, Plus, Minus, Eye, EyeOff } from 'lucide-react'
+import { Settings, RotateCcw, Plus, Minus } from 'lucide-react'
 import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../config/data'
 import styles from '../../styles/animations.module.css'
 
@@ -12,7 +12,6 @@ interface DebugMenuProps {
 export default function DebugMenu({ onStateChange }: DebugMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [gameState, setGameState] = useState<GameState>(INITIAL_GAME_STATE)
-  const [isVisible, setIsVisible] = useState(false)
 
   // 同步游戏状态
   useEffect(() => {
@@ -61,20 +60,6 @@ export default function DebugMenu({ onStateChange }: DebugMenuProps) {
     }
   }
 
-  if (!isVisible) {
-    return (
-      <div className="fixed bottom-4 right-4 z-50">
-        <button
-          onClick={() => setIsVisible(true)}
-          className="p-3 bg-gray-800 hover:bg-gray-700 text-white rounded-full shadow-lg transition-all duration-200 hover:scale-110"
-          title="显示调试菜单"
-        >
-          <Settings className="w-5 h-5" />
-        </button>
-      </div>
-    )
-  }
-
   return (
     <div className="fixed bottom-4 right-4 z-50">
       {/* 主菜单按钮 */}
@@ -85,22 +70,6 @@ export default function DebugMenu({ onStateChange }: DebugMenuProps) {
           title={isOpen ? "关闭调试菜单" : "打开调试菜单"}
         >
           <Settings className="w-5 h-5" />
-        </button>
-        
-        <button
-          onClick={resetToInitial}
-          className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg transition-all duration-200 hover:scale-110"
-          title="重置所有数据"
-        >
-          <RotateCcw className="w-4 h-4" />
-        </button>
-        
-        <button
-          onClick={() => setIsVisible(false)}
-          className="p-2 bg-gray-600 hover:bg-gray-700 text-white rounded-full shadow-lg transition-all duration-200 hover:scale-110"
-          title="隐藏调试菜单"
-        >
-          <EyeOff className="w-4 h-4" />
         </button>
       </div>
 
@@ -323,6 +292,18 @@ export default function DebugMenu({ onStateChange }: DebugMenuProps) {
               <div>犯罪率: {gameState.crimeRate}%</div>
               <div>信任度: {gameState.communityTrust}%</div>
             </div>
+          </div>
+
+          {/* 重置按钮 */}
+          <div className="mt-4 pt-3 border-t border-gray-700">
+            <button
+              onClick={resetToInitial}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md transition-all duration-200 hover:scale-105"
+              title="重置所有数据到初始状态"
+            >
+              <RotateCcw className="w-4 h-4" />
+              重置所有数据
+            </button>
           </div>
         </div>
       )}

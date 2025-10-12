@@ -97,95 +97,104 @@ export default function GamePage() {
 
       {/* 顶部城市状态栏 */}
       <div className={`relative z-10 ${styles.glassEffect} shadow-lg border-b border-white/20 ${styles.gpuAccelerated}`}>
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="container mx-auto pl-1 pr-2 sm:pl-2 sm:pr-3 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 lg:gap-6">
             {/* 左侧：基础信息 */}
-            <div className="flex flex-wrap items-center gap-6">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 lg:gap-4">
               {/* 游戏控制按钮 */}
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => setIsPlaying(false)}
-                  className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                  className={`flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 ${
                     !isPlaying 
                       ? 'bg-red-500 text-white shadow-md' 
                       : 'bg-gray-200 text-gray-500 hover:bg-gray-300'
                   }`}
                   title="Pause Game"
                 >
-                  <Pause className="w-4 h-4" />
+                  <Pause className="w-3 h-3 sm:w-4 sm:h-4" />
                   <span>Pause</span>
                 </button>
                 <button
                   onClick={() => setIsPlaying(true)}
-                  className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                  className={`flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 ${
                     isPlaying 
                       ? 'bg-green-500 text-white shadow-md' 
                       : 'bg-gray-200 text-gray-500 hover:bg-gray-300'
                   }`}
                   title="Play Game"
                 >
-                  <Play className="w-4 h-4" />
+                  <Play className="w-3 h-3 sm:w-4 sm:h-4" />
                   <span>Play</span>
                 </button>
               </div>
 
               {/* 日期 */}
-              <div className="flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-blue-600" />
-                <span className="text-sm font-medium text-gray-700">Date:</span>
-                <span className="text-sm font-semibold text-gray-900">{gameState.date}</span>
+              <div className="flex items-center gap-1">
+                <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                <span className="text-xs sm:text-sm font-medium text-gray-700">Date:</span>
+                <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.date}</span>
               </div>
 
+              {/* 分隔符 */}
+              <div className="w-px h-4 sm:h-6 bg-gray-400"></div>
+
               {/* 行动点 */}
-              <div className="flex items-center gap-2">
-                <Zap className="w-5 h-5 text-yellow-500" />
-                <span className="text-sm font-medium text-gray-700">Action Points:</span>
-                <span className="text-sm font-semibold text-gray-900">{gameState.actionPoints}/10</span>
+              <div className="flex items-center gap-1">
+                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" />
+                <span className="text-xs sm:text-sm font-medium text-gray-700">Action Points:</span>
+                <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.actionPoints}/10</span>
               </div>
 
               {/* 金钱 */}
-              <div className="flex items-center gap-2">
-                <DollarSign className="w-5 h-5 text-green-600" />
-                <span className="text-sm font-medium text-gray-700">Budget:</span>
-                <span className="text-sm font-semibold text-gray-900">${gameState.money.toLocaleString()}</span>
+              <div className="flex items-center gap-1">
+                <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+                <span className="text-xs sm:text-sm font-medium text-gray-700">Budget:</span>
+                <span className="text-xs sm:text-sm font-semibold text-gray-900">${gameState.money.toLocaleString()}</span>
               </div>
             </div>
 
             {/* 右侧：城市状态指标 */}
-            <div className="flex flex-wrap items-center gap-4">
-              {/* 案件数量 */}
-              <div className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-red-500" />
-                <span className="text-sm font-medium text-gray-700">Cases:</span>
-                <span className="text-sm font-semibold text-gray-900">{gameState.caseCount}</span>
+            <div className="flex flex-wrap items-center gap-1 sm:gap-2 lg:gap-3">
+              {/* 案件数量 - 中性指标 */}
+              <div className="flex items-center gap-1">
+                <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
+                <span className="text-xs sm:text-sm font-medium text-gray-700">Cases:</span>
+                <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.caseCount}</span>
               </div>
 
-              {/* 抓捕人数 */}
-              <div className="flex items-center gap-2">
-                <Users className="w-5 h-5 text-purple-600" />
-                <span className="text-sm font-medium text-gray-700">Arrests:</span>
-                <span className="text-sm font-semibold text-gray-900">{gameState.arrests}</span>
+              {/* 抓捕人数 - 中性指标 */}
+              <div className="flex items-center gap-1">
+                <Users className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+                <span className="text-xs sm:text-sm font-medium text-gray-700">Arrests:</span>
+                <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.arrests}</span>
               </div>
 
-              {/* 犯罪率 */}
-              <div className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-orange-500" />
-                <span className="text-sm font-medium text-gray-700">Crime Rate:</span>
-                <span className="text-sm font-semibold text-gray-900">{gameState.crimeRate}%</span>
+              {/* 分隔符 */}
+              <div className="w-px h-4 sm:h-6 bg-gray-400"></div>
+
+              {/* 犯罪率 - 越低越好 */}
+              <div className="flex items-center gap-1">
+                <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
+                <span className="text-xs sm:text-sm font-medium text-gray-700">Crime Rate:</span>
+                <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.crimeRate}%</span>
               </div>
 
-              {/* 抓捕正确率 */}
-              <div className="flex items-center gap-2">
-                <Target className="w-5 h-5 text-indigo-600" />
-                <span className="text-sm font-medium text-gray-700">Accuracy:</span>
-                <span className="text-sm font-semibold text-gray-900">{gameState.arrestAccuracy}%</span>
+              {/* 分隔符 */}
+              <div className="w-px h-4 sm:h-6 bg-gray-400"></div>
+
+              {/* 抓捕正确率 - 越高越好 */}
+              <div className="flex items-center gap-1">
+                <Target className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600" />
+                <span className="text-xs sm:text-sm font-medium text-gray-700">Accuracy:</span>
+                <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.arrestAccuracy}%</span>
               </div>
 
-              {/* 社区信任度 */}
-              <div className="flex items-center gap-2">
-                <Heart className="w-5 h-5 text-pink-500" />
-                <span className="text-sm font-medium text-gray-700">Trust:</span>
-                <span className="text-sm font-semibold text-gray-900">{gameState.communityTrust}%</span>
+              {/* 社区信任度 - 越高越好 */}
+              <div className="flex items-center gap-1">
+                <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
+                <span className="text-xs sm:text-sm font-medium text-gray-700">Trust:</span>
+                <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.communityTrust}%</span>
               </div>
             </div>
           </div>
