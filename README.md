@@ -1,73 +1,76 @@
+|English|简体中文|[中文版](README.zh-CN.md)|
+|-------|--------|---------------------|
+
 # PolicyGame
 
-一个基于 Next.js 的现代化游戏项目，专注于政策模拟和决策分析。
+A modern game project based on Next.js, focusing on policy simulation and decision analysis.
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 环境要求
-- Node.js 18+ (推荐)
-- pnpm (推荐) 或 npm/yarn
+### Prerequisites
+- Node.js 18+ (recommended)
+- pnpm (preferred) or npm/yarn
 
-### 安装依赖
+### Installation
 ```bash
 pnpm install
 ```
 
-### 开发模式
+### Development
 ```bash
 pnpm dev
 ```
 
-### 构建生产版本
+### Production Build
 ```bash
 pnpm build
 pnpm start
 ```
 
-### 代码检查
+### Linting
 ```bash
 pnpm lint
 ```
 
-应用将在 http://localhost:3000 运行
+The app will run at http://localhost:3000
 
-## 🛠️ 技术栈
+## 🛠️ Tech Stack
 
-- **Next.js 15** - React 全栈框架
-- **React 19** - 用户界面库
-- **TypeScript** - 类型安全的 JavaScript
-- **Tailwind CSS** - 实用优先的 CSS 框架
-- **shadcn/ui** - 高质量 UI 组件库
-- **Radix UI** - 无障碍组件原语
+- **Next.js 15** - React full-stack framework
+- **React 19** - User interface library
+- **TypeScript** - Type-safe JavaScript
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn/ui** - High-quality UI component library
+- **Radix UI** - Accessible component primitives
 
-## 📁 项目结构
+## 📁 Project Structure
 
 ```
 PolicyGame/
-├── app/                    # Next.js 应用目录
-│   ├── globals.css        # 全局样式
-│   ├── layout.tsx         # 根布局
-│   └── page.tsx           # 主页面
-├── components/            # 组件目录
-│   └── ui/               # UI 组件库
-├── config/               # 配置文件
+├── app/                    # Next.js app directory
+│   ├── globals.css        # Global styles
+│   ├── layout.tsx         # Root layout
+│   └── page.tsx           # Main page
+├── components/            # Components directory
+│   └── ui/               # UI component library
+├── config/               # Configuration files
 ├── hooks/                # React Hooks
-├── lib/                  # 工具库
-├── types/                # TypeScript 类型定义
-└── public/               # 静态资源
+├── lib/                  # Utility libraries
+├── types/                # TypeScript type definitions
+└── public/               # Static assets
 ```
 
-## 🎯 开发指南
+## 🎯 Development Guidelines
 
-- 使用 TypeScript 进行类型安全开发
-- 遵循 Tailwind CSS 样式规范
-- 利用 shadcn/ui 组件库构建界面
-- 保持代码简洁和可维护性
+- Use TypeScript for type-safe development
+- Follow Tailwind CSS styling conventions
+- Leverage shadcn/ui component library for UI building
+- Keep code clean and maintainable
 
-## 📄 许可证
+## 📄 License
 
-本项目暂无许可证文件，请根据需要添加。
+This project currently has no license file. Please add one as needed.
 
 ---
 
-*项目正在开发中，欢迎贡献代码和建议！*
+*Project is under development. Contributions and suggestions are welcome!*
