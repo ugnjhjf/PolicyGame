@@ -29,6 +29,41 @@ export default function GamePage() {
         />
         {/* 半透明遮罩层，确保内容可读性 */}
         <div className="absolute inset-0 bg-black/20"></div>
+        
+        {/* 可点击地标 */}
+        {/* 中央地标 */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+          <button
+            className="group relative flex flex-col items-center"
+            title="Central District - Click to manage"
+          >
+            <div className="w-16 h-16 bg-blue-500/80 hover:bg-blue-600/90 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
+              </div>
+            </div>
+            <div className="mt-2 px-2 py-1 bg-black/60 text-white text-xs font-medium rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              Central District
+            </div>
+          </button>
+        </div>
+
+        {/* 左下角地标 */}
+        <div className="absolute bottom-[15%] left-[15%] z-10">
+          <button
+            className="group relative flex flex-col items-center"
+            title="Surveillance Zone - Click to monitor"
+          >
+            <div className="w-14 h-14 bg-green-500/80 hover:bg-green-600/90 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
+              <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              </div>
+            </div>
+            <div className="mt-2 px-2 py-1 bg-black/60 text-white text-xs font-medium rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              Surveillance Zone
+            </div>
+          </button>
+        </div>
       </div>
 
       {/* 顶部城市状态栏 */}
