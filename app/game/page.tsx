@@ -2,20 +2,15 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { Calendar, Zap, DollarSign, FileText, Users, TrendingUp, Target, Heart } from 'lucide-react'
+import { Calendar, Zap, DollarSign, FileText, Users, TrendingUp, Target, Heart, Play, Pause } from 'lucide-react'
+import styles from '../../styles/animations.module.css'
+import { INITIAL_GAME_STATE } from '../../lib/constants/gameState'
 
 export default function GamePage() {
   // 游戏状态数据
-  const [gameState, setGameState] = useState({
-    date: '2024-01-15',
-    actionPoints: 5,
-    money: 125000,
-    caseCount: 23,
-    arrests: 8,
-    crimeRate: 12.5,
-    arrestAccuracy: 78.3,
-    communityTrust: 65.2
-  })
+  const [gameState, setGameState] = useState(INITIAL_GAME_STATE)
+  // 游戏进程控制状态
+  const [isPlaying, setIsPlaying] = useState(true)
 
   return (
     <div className="min-h-screen relative">
@@ -27,17 +22,49 @@ export default function GamePage() {
           fill
           className="object-cover"
           priority
+          quality={75}
+          sizes="100vw"
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
         />
         {/* 半透明遮罩层，确保内容可读性 */}
         <div className="absolute inset-0 bg-black/20"></div>
       </div>
 
       {/* 顶部城市状态栏 */}
-      <div className="relative z-10 bg-white/80 backdrop-blur-md shadow-lg border-b border-white/20">
+      <div className={`relative z-10 ${styles.glassEffect} shadow-lg border-b border-white/20 ${styles.gpuAccelerated}`}>
         <div className="container mx-auto px-4 py-3">
           <div className="flex flex-wrap items-center justify-between gap-4">
             {/* 左侧：基础信息 */}
             <div className="flex flex-wrap items-center gap-6">
+              {/* 游戏控制按钮 */}
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setIsPlaying(false)}
+                  className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                    !isPlaying 
+                      ? 'bg-red-500 text-white shadow-md' 
+                      : 'bg-gray-200 text-gray-500 hover:bg-gray-300'
+                  }`}
+                  title="Pause Game"
+                >
+                  <Pause className="w-4 h-4" />
+                  <span>Pause</span>
+                </button>
+                <button
+                  onClick={() => setIsPlaying(true)}
+                  className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                    isPlaying 
+                      ? 'bg-green-500 text-white shadow-md' 
+                      : 'bg-gray-200 text-gray-500 hover:bg-gray-300'
+                  }`}
+                  title="Play Game"
+                >
+                  <Play className="w-4 h-4" />
+                  <span>Play</span>
+                </button>
+              </div>
+
               {/* 日期 */}
               <div className="flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-blue-600" />
@@ -100,7 +127,6 @@ export default function GamePage() {
           </div>
         </div>
       </div>
-
     </div>
   )
 }

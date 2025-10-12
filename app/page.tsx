@@ -1,12 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+import AnimatedButton from '../components/AnimatedButton'
 
 export default function Page() {
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
           {/* 左侧大图片 */}
           <div className="w-full lg:w-1/2">
             <div className="relative aspect-[4/3] w-full rounded-lg overflow-hidden">
@@ -49,16 +50,13 @@ export default function Page() {
 
              {/* Start Button */}
              <div className="flex justify-end">
-               <Link href="/game">
-                 <button className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl">
-                   <span className="text-lg font-semibold">Start Challenge</span>
-                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                 </button>
-               </Link>
+               <AnimatedButton href="/game">
+                 <span className="text-lg font-semibold">Start Challenge</span>
+               </AnimatedButton>
              </div>
            </div>
+          </div>
         </div>
       </div>
-    </div>
   )
 }

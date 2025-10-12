@@ -1,0 +1,42 @@
+/* GPU加速的动画类 */
+.gpuAccelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform, opacity;
+}
+
+/* 页面过渡动画 */
+.pageTransition {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+/* 图标动画 */
+.iconAnimation {
+  transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.iconAnimation:hover {
+  transform: translateX(4px) translateZ(0);
+}
+
+/* 毛玻璃效果优化 */
+.glassEffect {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.8);
+  will-change: backdrop-filter;
+}
+
+/* 阴影优化 */
+.shadowOptimized {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  will-change: box-shadow;
+}
+
+.shadowOptimized:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}

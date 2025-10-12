@@ -1,10 +1,17 @@
 import type { Metadata } from 'next'
-import './globals.css'
+import '../styles/global/globals.css'
+import PageTransitionProvider from '../components/PageTransitionProvider'
+import PerformanceMonitor from '../components/PerformanceMonitor'
+import { inter, poppins } from '../lib/fonts'
 
 export const metadata: Metadata = {
   title: 'Predictive Policing Simulation',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  description: 'AI-powered policing strategy simulation game',
+  generator: 'Next.js',
+  keywords: ['AI', 'policing', 'simulation', 'strategy', 'game'],
+  authors: [{ name: 'PolicyGame Team' }],
+  viewport: 'width=device-width, initial-scale=1',
+  themeColor: '#667eea',
 }
 
 export default function RootLayout({
@@ -13,8 +20,18 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body suppressHydrationWarning={true}>{children}</body>
+    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+      </head>
+      <body suppressHydrationWarning={true} className={inter.className}>
+        <PerformanceMonitor />
+        <PageTransitionProvider>
+          {children}
+        </PageTransitionProvider>
+      </body>
     </html>
   )
 }
