@@ -5,9 +5,6 @@ export interface DistrictData {
   crimeRate: number
   policePresence: number
   surveillance: number
-  incidents: number
-  arrests: number
-  efficiency: number
 }
 
 // 面板基础属性

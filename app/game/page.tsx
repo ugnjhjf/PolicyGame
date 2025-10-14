@@ -198,8 +198,11 @@ export default function GamePage() {
         </div>
       </div>
 
-      {/* 顶部城市状态栏 */}
-      <div className={`relative z-10 ${styles.glassEffect} shadow-lg border-b border-white/20 ${styles.gpuAccelerated}`}>
+       {/* 顶部城市状态栏 */}
+       <div className="relative z-10 shadow-lg border-b border-blue-200/30" style={{
+         background: 'rgba(219, 234, 254, 0.65)',
+         backdropFilter: 'blur(5px) saturate(120%)'
+       }}>
         <div className="container mx-auto pl-1 pr-2 sm:pl-2 sm:pr-3 py-3">
           <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 lg:gap-6">
             {/* 左侧：基础信息 */}
