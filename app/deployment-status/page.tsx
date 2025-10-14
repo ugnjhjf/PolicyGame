@@ -5,6 +5,7 @@ import { ArrowLeft, CheckCircle, Database, Brain, Settings, RotateCcw, TestTube,
 import Link from 'next/link'
 import styles from '../../styles/animations.module.css'
 import ProgressBar, { getStepsForPage } from '../../components/ProgressBar'
+import GameStatusBar from '../../components/GameStatusBar'
 
 interface LoadingStage {
   id: string
@@ -108,28 +109,16 @@ export default function DeploymentStatusPage() {
 
   return (
     <div className={`min-h-screen bg-gray-50 flex flex-col ${isAnimating ? styles.slideOutToLeft : styles.slideInFromRight}`}>
+      {/* 游戏状态栏 */}
+      <GameStatusBar />
+      
+      {/* 进度条 */}
       <ProgressBar steps={getStepsForPage('status')} />
       
-      <div className="bg-white shadow-sm border-b">
+      {/* 顶部导航 */}
+      <div className="bg-white shadow-sm border-b mt-28">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link 
-                href="/ai-summary" 
-                className="flex items-center gap-2 px-6 py-3 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-lg transition-all duration-200 hover:scale-105 shadow-lg"
-                onClick={(e) => {
-                  e.preventDefault()
-                  setIsAnimating(true)
-                  setTimeout(() => {
-                    window.location.href = '/ai-summary'
-                  }, 300)
-                }}
-              >
-                <ArrowLeft className="w-5 h-5" />
-                返回选择总结
-              </Link>
-            </div>
-            
             {!isLoading && (
               <button
                 onClick={handleReturnToGame}

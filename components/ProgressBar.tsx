@@ -16,7 +16,7 @@ interface ProgressBarProps {
 
 export default function ProgressBar({ steps, className = '' }: ProgressBarProps) {
   return (
-    <div className={`bg-white border-b border-gray-200 py-4 ${className}`}>
+    <div className={`fixed top-12 left-0 right-0 z-10 bg-white border-b border-gray-200 py-4 ${className}`}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           {steps.map((step, index) => (

@@ -3,6 +3,7 @@
 export interface GameState {
   // 基础信息
   date: string
+  round: number
   resources: number
 
   // 城市状态指标
@@ -18,6 +19,8 @@ export interface GameState {
 export interface GameConfig {
   // 基础配置
   maxResources: number
+  initialRound: number
+  maxRounds: number
 
   // 指标范围
   minCrimeRate: number
@@ -58,6 +61,7 @@ export interface GameConfig {
 export const INITIAL_GAME_STATE: GameState = {
   // 基础信息
   date: '2025-01-01',
+  round: 1,
   resources: 10,
 
   // 城市状态指标
@@ -74,6 +78,8 @@ export const INITIAL_GAME_STATE: GameState = {
 export const GAME_CONFIG: GameConfig = {
   // 基础配置
   maxResources: 10,
+  initialRound: 1,
+  maxRounds: 3,
 
   // 指标范围
   minCrimeRate: 0,

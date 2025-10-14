@@ -94,7 +94,7 @@ export default function GamePage() {
   })
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative pt-12">
       {/* 背景图片 */}
       <div className="fixed inset-0 z-0">
         <Image
@@ -230,6 +230,7 @@ export default function GamePage() {
           window.location.href = '/ai-dataset'
         }}
       />
+
     </div>
   )
 }

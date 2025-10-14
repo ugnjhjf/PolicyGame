@@ -129,7 +129,7 @@ export default function DeploymentPage() {
       <ProgressBar steps={getStepsForPage('deployment')} />
       
       {/* 顶部导航 */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-white shadow-sm border-b mt-28">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
