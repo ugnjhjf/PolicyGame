@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Calendar, Zap, DollarSign, FileText, Users, TrendingUp, Target, Heart, Play, Pause, Brain, Info } from 'lucide-react'
+import { Calendar, Zap, DollarSign, FileText, Users, TrendingUp, Target, Heart, Play, Pause, Brain, Info, Lock } from 'lucide-react'
+import { FaUserSecret, FaHandsHelping, FaUserNinja } from 'react-icons/fa'
 import styles from '../../styles/animations.module.css'
 import { CentralDistrictPanel, DistrictData } from '../../components/panel'
 import { DebugMenu } from '../../components/debug'
@@ -114,10 +115,7 @@ export default function GamePage() {
     population: 125000,
     crimeRate: 8.5,
     policePresence: 45,
-    surveillance: 78,
-    incidents: 12,
-    arrests: 8,
-    efficiency: 85.2
+    surveillance: 78
   })
 
   return (
@@ -297,7 +295,7 @@ export default function GamePage() {
               <div className="flex items-center gap-1">
                 <div className="relative">
                   <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 bg-purple-600/20 rounded-full"></div>
-                  <Users className="relative w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+                  <FaHandsHelping className="relative w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
                 </div>
                 <span className="text-xs sm:text-sm font-medium text-gray-700">Arrests:</span>
                 <span className="text-xs sm:text-sm font-semibold text-gray-900">{Math.floor(gameState.arrests)}</span>
@@ -311,7 +309,7 @@ export default function GamePage() {
                 <div className="flex items-center gap-1 cursor-pointer">
                   <div className="relative">
                     <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 bg-orange-500/20 rounded-full"></div>
-                    <TrendingUp className="relative w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
+                    <FaUserNinja className="relative w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
                   </div>
                   <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.crimeRate}%</span>
                 </div>
