@@ -89,9 +89,9 @@ export default function DebugMenu({ onStateChange, onTriggerEmergencySelector, o
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed top-4 right-4 z-50">
       {/* 主菜单按钮 */}
-      <div className="flex flex-col items-end gap-2 mb-2">
+      <div className="flex flex-col items-end gap-2">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="p-3 bg-gray-800 hover:bg-gray-700 text-white rounded-full shadow-lg transition-all duration-200 hover:scale-110"
@@ -103,7 +103,7 @@ export default function DebugMenu({ onStateChange, onTriggerEmergencySelector, o
 
       {/* 调试面板 */}
       {isOpen && (
-        <div className="bg-gray-900 text-white p-4 rounded-lg shadow-2xl w-80 max-h-96 overflow-y-auto">
+        <div className="bg-gray-900 text-white p-4 rounded-lg shadow-2xl w-80 max-h-96 overflow-y-auto mt-2">
           <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
             <Settings className="w-5 h-5" />
             调试菜单
