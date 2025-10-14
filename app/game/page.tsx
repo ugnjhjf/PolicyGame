@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Calendar, Zap, DollarSign, FileText, Users, TrendingUp, Target, Heart, Play, Pause, Brain } from 'lucide-react'
+import { Calendar, Zap, DollarSign, FileText, Users, TrendingUp, Target, Heart, Play, Pause, Brain, Info } from 'lucide-react'
 import styles from '../../styles/animations.module.css'
 import { CentralDistrictPanel, DistrictData } from '../../components/panel'
 import { DebugMenu } from '../../components/debug'
@@ -234,7 +234,10 @@ export default function GamePage() {
 
               {/* 日期 */}
               <div className="flex items-center gap-1">
-                <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                <div className="relative">
+                  <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 bg-blue-600/20 rounded-full"></div>
+                  <Calendar className="relative w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                </div>
                 <span className="text-xs sm:text-sm font-medium text-gray-700">Date:</span>
                 <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.date}</span>
               </div>
@@ -243,17 +246,35 @@ export default function GamePage() {
               <div className="w-px h-4 sm:h-6 bg-gray-400"></div>
 
               {/* 行动点 */}
-              <div className="flex items-center gap-1">
-                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" />
-                <span className="text-xs sm:text-sm font-medium text-gray-700">Action Points:</span>
-                <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.actionPoints}/10</span>
+              <div className="relative group">
+                <div className="flex items-center gap-1 cursor-pointer">
+                  <div className="relative">
+                    <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 bg-yellow-500/20 rounded-full"></div>
+                    <Zap className="relative w-4 h-4 sm:w-5 sm:h-5 text-yellow-500 drop-shadow-sm filter brightness-110" />
+                  </div>
+                  <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.actionPoints}/10</span>
+                </div>
+                {/* 悬浮提示 */}
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap">
+                  <div className="font-semibold">Action Points</div>
+                  <div className="text-gray-300">执行政策行动所需的点数，每回合恢复</div>
+                </div>
               </div>
 
               {/* 金钱 */}
-              <div className="flex items-center gap-1">
-                <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
-                <span className="text-xs sm:text-sm font-medium text-gray-700">Budget:</span>
-                <span className="text-xs sm:text-sm font-semibold text-gray-900">${gameState.money.toLocaleString()}</span>
+              <div className="relative group">
+                <div className="flex items-center gap-1 cursor-pointer">
+                  <div className="relative">
+                    <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full" style={{ backgroundColor: '#2EBC5520' }}></div>
+                    <DollarSign className="relative w-4 h-4 sm:w-5 sm:h-5" style={{ color: '#2EBC55' }} />
+                  </div>
+                  <span className="text-xs sm:text-sm font-semibold text-gray-900">${gameState.money.toLocaleString()}</span>
+                </div>
+                {/* 悬浮提示 */}
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap">
+                  <div className="font-semibold">Budget</div>
+                  <div className="text-gray-300">可用于政策实施的资金预算</div>
+                </div>
               </div>
             </div>
 
@@ -261,14 +282,20 @@ export default function GamePage() {
             <div className="flex flex-wrap items-center gap-1 sm:gap-2 lg:gap-3">
               {/* 案件数量 - 中性指标 */}
               <div className="flex items-center gap-1">
-                <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
+                <div className="relative">
+                  <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full" style={{ backgroundColor: '#E0736720' }}></div>
+                  <FileText className="relative w-4 h-4 sm:w-5 sm:h-5" style={{ color: '#E07367' }} />
+                </div>
                 <span className="text-xs sm:text-sm font-medium text-gray-700">Cases:</span>
                 <span className="text-xs sm:text-sm font-semibold text-gray-900">{Math.floor(gameState.caseCount)}</span>
               </div>
 
               {/* 抓捕人数 - 中性指标 */}
               <div className="flex items-center gap-1">
-                <Users className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+                <div className="relative">
+                  <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 bg-purple-600/20 rounded-full"></div>
+                  <Users className="relative w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+                </div>
                 <span className="text-xs sm:text-sm font-medium text-gray-700">Arrests:</span>
                 <span className="text-xs sm:text-sm font-semibold text-gray-900">{Math.floor(gameState.arrests)}</span>
               </div>
@@ -277,27 +304,69 @@ export default function GamePage() {
               <div className="w-px h-4 sm:h-6 bg-gray-400"></div>
 
               {/* 犯罪率 - 越低越好 */}
-              <div className="flex items-center gap-1">
-                <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
-                <span className="text-xs sm:text-sm font-medium text-gray-700">Crime Rate:</span>
-                <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.crimeRate}%</span>
+              <div className="relative group">
+                <div className="flex items-center gap-1 cursor-pointer">
+                  <div className="relative">
+                    <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 bg-orange-500/20 rounded-full"></div>
+                    <TrendingUp className="relative w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
+                  </div>
+                  <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.crimeRate}%</span>
+                </div>
+                {/* 悬浮提示 */}
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap">
+                  <div className="font-semibold">Crime Rate</div>
+                  <div className="text-gray-300">城市犯罪率百分比，越低越好</div>
+                </div>
               </div>
 
               {/* 分隔符 */}
               <div className="w-px h-4 sm:h-6 bg-gray-400"></div>
 
               {/* 抓捕正确率 - 越高越好 */}
-              <div className="flex items-center gap-1">
-                <Target className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600" />
-                <span className="text-xs sm:text-sm font-medium text-gray-700">Accuracy:</span>
-                <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.arrestAccuracy}%</span>
+              <div className="relative group">
+                <div className="flex items-center gap-1 cursor-pointer">
+                  <div className="relative">
+                    <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full" style={{ backgroundColor: '#7081FF20' }}></div>
+                    <Target className="relative w-4 h-4 sm:w-5 sm:h-5" style={{ color: '#7081FF' }} />
+                  </div>
+                  <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.arrestAccuracy}%</span>
+                </div>
+                {/* 悬浮提示 */}
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap">
+                  <div className="font-semibold">Accuracy</div>
+                  <div className="text-gray-300">抓捕行动准确率，越高越好</div>
+                </div>
               </div>
 
               {/* 社区信任度 - 越高越好 */}
-              <div className="flex items-center gap-1">
-                <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
-                <span className="text-xs sm:text-sm font-medium text-gray-700">Trust:</span>
-                <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.communityTrust}%</span>
+              <div className="relative group">
+                <div className="flex items-center gap-1 cursor-pointer">
+                  <div className="relative">
+                    <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full" style={{ backgroundColor: '#E9708520' }}></div>
+                    <Heart className="relative w-4 h-4 sm:w-5 sm:h-5" style={{ color: '#E97085' }} />
+                  </div>
+                  <span className="text-xs sm:text-sm font-semibold text-gray-900">{gameState.communityTrust}%</span>
+                </div>
+                {/* 悬浮提示 */}
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap">
+                  <div className="font-semibold">Trust</div>
+                  <div className="text-gray-300">社区对警方的信任度，越高越好</div>
+                </div>
+              </div>
+
+              {/* 信息提示图标 */}
+              <div className="relative group">
+                <div className="flex items-center">
+                  <div className="relative">
+                    <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 bg-blue-500/20 rounded-full"></div>
+                    <Info className="relative w-4 h-4 sm:w-5 sm:h-5 text-blue-500 hover:text-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer" />
+                  </div>
+                </div>
+                {/* 悬浮提示 */}
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap">
+                  <div className="font-semibold">提示</div>
+                  <div className="text-gray-300">将鼠标悬浮到指标上查看详细介绍</div>
+                </div>
               </div>
             </div>
           </div>
