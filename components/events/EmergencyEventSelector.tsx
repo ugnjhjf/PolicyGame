@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { AlertTriangle, Users, Shield, Brain, Settings, X } from 'lucide-react'
+import { AlertTriangle, Users, Shield, Brain, Settings, X, Megaphone } from 'lucide-react'
 import styles from '../../styles/animations.module.css'
 
 interface EmergencyEvent {
@@ -46,14 +46,10 @@ export default function EmergencyEventSelector({ isOpen, onClose, onSelectEvent 
       id: 'community-protest',
       name: '社区抗议',
       description: '社区居民因政策不满而组织大规模抗议活动',
-      icon: Users,
-      color: 'bg-blue-500',
-      hoverColor: 'hover:bg-blue-600',
-      status: 'locked',
-      requirements: {
-        level: 2,
-        previousEvents: ['crime-surge']
-      }
+      icon: Megaphone,
+      color: 'bg-orange-500',
+      hoverColor: 'hover:bg-orange-600',
+      status: 'available'
     },
     {
       id: 'police-strike',

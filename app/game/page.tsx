@@ -8,7 +8,7 @@ import { FaUserSecret, FaHandsHelping, FaUserNinja } from 'react-icons/fa'
 import styles from '../../styles/animations.module.css'
 import { CentralDistrictPanel, DistrictData } from '../../components/panel'
 import { DebugMenu } from '../../components/debug'
-import { EventManager, CrimeSurgeEvent, EventPanel, EmergencyEventSelector } from '../../components/events'
+import { EventManager, CrimeSurgeEvent, CommunityProtestEvent, EventPanel, EmergencyEventSelector } from '../../components/events'
 import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../config/data'
 import { initializeGameEngine } from '../../engine/core'
 
@@ -19,6 +19,7 @@ export default function GamePage() {
   const [showCentralDistrict, setShowCentralDistrict] = useState(false)
   // 紧急事件状态
   const [showCrimeSurgeEvent, setShowCrimeSurgeEvent] = useState(false)
+  const [showCommunityProtestEvent, setShowCommunityProtestEvent] = useState(false)
   // AI数据集状态
   const [showAIDataset, setShowAIDataset] = useState(false)
   // 紧急事件选择器状态
@@ -94,7 +95,7 @@ export default function GamePage() {
         setShowCrimeSurgeEvent(true)
         break
       case 'community-protest':
-        alert('社区抗议事件功能开发中...')
+        setShowCommunityProtestEvent(true)
         break
       case 'police-strike':
         alert('警察罢工事件功能开发中...')
@@ -414,6 +415,21 @@ export default function GamePage() {
         }}
         onComplete={(optionId) => {
           setShowCrimeSurgeEvent(false)
+          // 恢复游戏状态
+          GameStateManager.startGame()
+        }}
+      />
+      
+      {/* 社区抗议紧急事件 */}
+      <CommunityProtestEvent
+        isOpen={showCommunityProtestEvent}
+        onClose={() => {
+          setShowCommunityProtestEvent(false)
+          // 恢复游戏状态
+          GameStateManager.startGame()
+        }}
+        onComplete={(optionId) => {
+          setShowCommunityProtestEvent(false)
           // 恢复游戏状态
           GameStateManager.startGame()
         }}

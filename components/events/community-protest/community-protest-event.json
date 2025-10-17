@@ -1,0 +1,105 @@
+{
+  "id": "community-protest-emergency",
+  "title": "社区抗议活动紧急事件",
+  "description": "大量市民因不满政府政策而组织抗议活动，聚集在市中心广场。抗议活动规模不断扩大，已影响到正常交通秩序和商业活动。需要立即采取措施应对这一紧急情况。",
+  "imageUrl": "/city_overview2 .png",
+  "type": "emergency",
+  "priority": "critical",
+  "details": {
+    "protestSize": "5000+人",
+    "affectedAreas": ["市中心广场", "政府大楼", "主要商业街"],
+    "duration": "已持续3小时",
+    "trafficImpact": "严重拥堵",
+    "businessImpact": "多家商店被迫关闭"
+  },
+  "consequences": {
+    "immediate": [
+      "交通严重拥堵",
+      "商业活动被迫中断",
+      "公共秩序受到挑战"
+    ],
+    "longTerm": [
+      "政府公信力下降",
+      "投资环境恶化",
+      "社会稳定性受威胁"
+    ]
+  },
+  "options": [
+    {
+      "id": "dialogue-negotiation",
+      "title": "对话协商",
+      "description": "派出代表与抗议者进行对话，寻求和平解决方案",
+      "cost": 3000,
+      "actionPoints": 2,
+      "effects": {
+        "crimeRate": 0,
+        "communityTrust": 15,
+        "money": -3000,
+        "actionPoints": -2
+      },
+      "requirements": {
+        "actionPoints": 2,
+        "money": 3000
+      }
+    },
+    {
+      "id": "police-dispersal",
+      "title": "警力驱散",
+      "description": "调集警力维持秩序，必要时驱散抗议人群",
+      "cost": 8000,
+      "actionPoints": 4,
+      "effects": {
+        "crimeRate": 5,
+        "communityTrust": -20,
+        "money": -8000,
+        "actionPoints": -4
+      },
+      "requirements": {
+        "actionPoints": 4,
+        "money": 8000
+      }
+    },
+    {
+      "id": "policy-adjustment",
+      "title": "政策调整",
+      "description": "宣布暂停争议政策，重新评估并调整相关措施",
+      "cost": 12000,
+      "actionPoints": 6,
+      "effects": {
+        "crimeRate": -5,
+        "communityTrust": 25,
+        "money": -12000,
+        "actionPoints": -6
+      },
+      "requirements": {
+        "actionPoints": 6,
+        "money": 12000
+      }
+    },
+    {
+      "id": "wait-and-see",
+      "title": "观望等待",
+      "description": "暂时不采取行动，观察事态发展",
+      "cost": 0,
+      "actionPoints": 0,
+      "effects": {
+        "crimeRate": 10,
+        "communityTrust": -15,
+        "money": 0,
+        "actionPoints": 0
+      },
+      "requirements": {
+        "actionPoints": 0,
+        "money": 0
+      }
+    }
+  ],
+  "statistics": {
+    "protestSize": 5000,
+    "duration": 180,
+    "trafficDelay": 120,
+    "businessLoss": 50000,
+    "policeDeployed": 200,
+    "arrests": 0
+  }
+}
