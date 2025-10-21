@@ -137,13 +137,19 @@ export class GameEngine {
 
   // 手动触发指数计算
   calculateIndices(): {
+    dailyCases: number
+    dailyArrests: number
     crimeRateChange: number
     communityTrustChange: number
     arrestAccuracyChange: number
   } {
     const gameState = GameStateManager.getCurrentState()
     
+    const dailyCases = indexCalculator.calculateDailyCases(gameState)
+    
     return {
+      dailyCases,
+      dailyArrests: indexCalculator.calculateDailyArrests(gameState, dailyCases),
       crimeRateChange: indexCalculator.calculateDailyCrimeRateChange(gameState),
       communityTrustChange: indexCalculator.calculateDailyCommunityTrustChange(gameState),
       arrestAccuracyChange: indexCalculator.calculateDailyArrestAccuracyChange(gameState)

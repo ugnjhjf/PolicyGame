@@ -43,11 +43,13 @@ export class IndexCalculator {
     // 社区信任度影响因子（信任度越低，案件越多）
     const trustFactor = (100 - gameState.communityTrust) / 100
     
+    const caseFactor = 50
+    
     // 随机因子（增加不确定性）
     const randomFactor = this.getRandomFactor()
     
     // 权重公式计算
-    const newDailyCases = Math.round(baseCaseRate * crimeRateFactor * trustFactor * randomFactor)
+    const newDailyCases = Math.round(baseCaseRate * crimeRateFactor * trustFactor * randomFactor * caseFactor)
     
     console.log(`[Cases计算] 犯罪率: ${gameState.crimeRate}%, 今日新案件增加: ${newDailyCases.toFixed(2)}`)
     
@@ -58,16 +60,15 @@ export class IndexCalculator {
   // 计算每日逮捕数量
   calculateDailyArrests(gameState: any, newCases: number): number {
     // 计算因子
-    const accuracyRate = Math.max(gameState.arrestAccuracy / 100, this.config.minAccuracyRate)
-    const falseArrestRate = 100 - accuracyRate
+    const falseArrestRate = (100 - gameState.arrestAccuracy) / 100
     const randomFactor = this.getRandomFactor()
+
+    // 总计算公式：最终逮捕人数 = (新案件数 × 准确率 × 随机数) 
+    const newArrests = Math.round(newCases * falseArrestRate * randomFactor)
     
-    // 总计算公式：最终逮捕人数 = (新案件数 × 错抓率 × 随机数) 
-    const newArrests = newCases * falseArrestRate * randomFactor
-    
-    if (newArrests >= newCases) {
+    if (newArrests > newCases) {
       return newCases
-    } else{
+    } else {
       return newArrests
     }
   }
