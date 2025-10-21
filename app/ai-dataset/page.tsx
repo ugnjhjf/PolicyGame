@@ -9,6 +9,7 @@ import { AI_DATASETS, type DatasetInfo } from '../../config/ai/datasetConfig'
 export default function AIDatasetPage() {
   const [selectedDataset, setSelectedDataset] = useState<DatasetInfo | null>(null)
   const [showModal, setShowModal] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
 
   const handleDatasetSelect = (dataset: DatasetInfo) => {
     setSelectedDataset(dataset)
@@ -19,8 +20,13 @@ export default function AIDatasetPage() {
     if (selectedDataset) {
       // 纯视觉展示，不进行任何游戏数值操作
       console.log(`已选择数据集: ${selectedDataset.name} (仅视觉展示)`)
-      // 跳转到训练方式选择页面
-      window.location.href = '/ai-training-methods'
+      
+      // 添加退出动画
+      setIsAnimating(true)
+      setTimeout(() => {
+        // 跳转到训练方式选择页面
+        window.location.href = '/ai-training-methods'
+      }, 300)
     }
     setShowModal(false)
     setSelectedDataset(null)
@@ -51,7 +57,7 @@ export default function AIDatasetPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen bg-gray-50 ${isAnimating ? styles.slideOutToLeft : styles.slideInFromRight}`}>
       {/* 顶部导航 */}
       <div className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 py-4">
@@ -59,6 +65,13 @@ export default function AIDatasetPage() {
             <Link 
               href="/game" 
               className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+              onClick={(e) => {
+                e.preventDefault()
+                setIsAnimating(true)
+                setTimeout(() => {
+                  window.location.href = '/game'
+                }, 300)
+              }}
             >
               <ArrowLeft className="w-5 h-5" />
               返回游戏

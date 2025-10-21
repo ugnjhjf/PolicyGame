@@ -152,6 +152,7 @@ const TRAINING_METHODS: TrainingMethod[] = [
 export default function AITrainingMethodsPage() {
   const [selectedMethod, setSelectedMethod] = useState<TrainingMethod | null>(null)
   const [showModal, setShowModal] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
 
   const handleMethodSelect = (method: TrainingMethod) => {
     setSelectedMethod(method)
@@ -162,7 +163,12 @@ export default function AITrainingMethodsPage() {
     if (selectedMethod) {
       // 纯视觉展示，不进行任何游戏数值操作
       console.log(`已选择训练方式: ${selectedMethod.name} (仅视觉展示)`)
-      alert(`已选择训练方式: ${selectedMethod.name}\n\n注意：这只是视觉展示，不会影响游戏数值`)
+      
+      // 添加退出动画
+      setIsAnimating(true)
+      setTimeout(() => {
+        alert(`已选择训练方式: ${selectedMethod.name}\n\n注意：这只是视觉展示，不会影响游戏数值`)
+      }, 300)
     }
     setShowModal(false)
     setSelectedMethod(null)
@@ -192,7 +198,7 @@ export default function AITrainingMethodsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen bg-gray-50 ${isAnimating ? styles.slideOutToRight : styles.slideInFromLeft}`}>
       {/* 顶部导航 */}
       <div className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 py-4">
@@ -200,6 +206,13 @@ export default function AITrainingMethodsPage() {
             <Link 
               href="/ai-dataset" 
               className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+              onClick={(e) => {
+                e.preventDefault()
+                setIsAnimating(true)
+                setTimeout(() => {
+                  window.location.href = '/ai-dataset'
+                }, 300)
+              }}
             >
               <ArrowLeft className="w-5 h-5" />
               返回数据集选择
