@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ArrowLeft, CheckCircle, XCircle, DollarSign, Users, Target, AlertTriangle } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CheckCircle, XCircle, DollarSign, Users, Target, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
 import styles from '../../styles/animations.module.css'
 import { AI_DATASETS, type DatasetInfo } from '../../config/ai/datasetConfig'
@@ -17,8 +17,10 @@ export default function AIDatasetPage() {
 
   const handleConfirm = () => {
     if (selectedDataset) {
-      // 这里可以添加确认选择的逻辑
-      alert(`已选择数据集: ${selectedDataset.name}`)
+      // 纯视觉展示，不进行任何游戏数值操作
+      console.log(`已选择数据集: ${selectedDataset.name} (仅视觉展示)`)
+      // 跳转到训练方式选择页面
+      window.location.href = '/ai-training-methods'
     }
     setShowModal(false)
     setSelectedDataset(null)
@@ -264,9 +266,10 @@ export default function AIDatasetPage() {
               <div className="flex justify-center">
                 <button
                   onClick={handleConfirm}
-                  className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 hover:scale-105 shadow-lg"
+                  className="flex items-center gap-2 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 hover:scale-105 shadow-lg"
                 >
                   选择此数据集
+                  <ArrowRight className="w-5 h-5" />
                 </button>
               </div>
             </div>

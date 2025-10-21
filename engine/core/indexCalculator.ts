@@ -39,11 +39,10 @@ export class IndexCalculator {
     
     // 犯罪率影响因子
     const crimeRateFactor = (gameState.crimeRate / 100)
-    
     // 社区信任度影响因子（信任度越低，案件越多）
     const trustFactor = (100 - gameState.communityTrust) / 100
     
-    const caseFactor = 50
+    const caseFactor = gameState.caseFactor
     
     // 随机因子（增加不确定性）
     const randomFactor = this.getRandomFactor()

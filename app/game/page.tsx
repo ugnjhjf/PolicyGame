@@ -283,23 +283,35 @@ export default function GamePage() {
             {/* 右侧：城市状态指标 */}
             <div className="flex flex-wrap items-center gap-1 sm:gap-2 lg:gap-3">
               {/* 案件数量 - 中性指标 */}
-              <div className="flex items-center gap-1">
-                <div className="relative">
-                  <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full" style={{ backgroundColor: '#E0736720' }}></div>
-                  <FileText className="relative w-4 h-4 sm:w-5 sm:h-5" style={{ color: '#E07367' }} />
+              <div className="relative group">
+                <div className="flex items-center gap-1 cursor-pointer">
+                  <div className="relative">
+                    <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full" style={{ backgroundColor: '#E0736720' }}></div>
+                    <FileText className="relative w-4 h-4 sm:w-5 sm:h-5" style={{ color: '#E07367' }} />
+                  </div>
+                  <span className="text-xs sm:text-sm font-semibold text-gray-900">{Math.floor(gameState.caseCount)}</span>
                 </div>
-                <span className="text-xs sm:text-sm font-medium text-gray-700">Cases:</span>
-                <span className="text-xs sm:text-sm font-semibold text-gray-900">{Math.floor(gameState.caseCount)}</span>
+                {/* 悬浮提示 */}
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap">
+                  <div className="font-semibold">Cases</div>
+                  <div className="text-gray-300">每日报告案件数量</div>
+                </div>
               </div>
 
               {/* 抓捕人数 - 中性指标 */}
-              <div className="flex items-center gap-1">
-                <div className="relative">
-                  <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 bg-purple-600/20 rounded-full"></div>
-                  <FaHandsHelping className="relative w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+              <div className="relative group">
+                <div className="flex items-center gap-1 cursor-pointer">
+                  <div className="relative">
+                    <div className="absolute inset-0 w-4 h-4 sm:w-5 sm:h-5 bg-purple-600/20 rounded-full"></div>
+                    <FaHandsHelping className="relative w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+                  </div>
+                  <span className="text-xs sm:text-sm font-semibold text-gray-900">{Math.floor(gameState.arrests)}</span>
                 </div>
-                <span className="text-xs sm:text-sm font-medium text-gray-700">Arrests:</span>
-                <span className="text-xs sm:text-sm font-semibold text-gray-900">{Math.floor(gameState.arrests)}</span>
+                {/* 悬浮提示 */}
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap">
+                  <div className="font-semibold">Arrests</div>
+                  <div className="text-gray-300">每日逮捕人数</div>
+                </div>
               </div>
 
               {/* 分隔符 */}

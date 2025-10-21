@@ -12,6 +12,7 @@ export interface GameState {
   crimeRate: number
   arrestAccuracy: number
   communityTrust: number
+  caseFactor: number
   
   // 游戏控制状态
   isPlaying: boolean
@@ -71,6 +72,7 @@ export const INITIAL_GAME_STATE: GameState = {
   crimeRate: 10,
   arrestAccuracy: 10,
   communityTrust: 80,
+  caseFactor: 50,
   
   // 游戏控制状态
   isPlaying: false
