@@ -9,7 +9,8 @@ engine/core/
 ├── README.md           # 说明文档
 ├── index.ts           # 统一导出
 ├── dateManager.ts     # 日期管理模块
-└── gameEngine.ts      # 游戏引擎核心
+├── gameEngine.ts      # 游戏引擎核心
+└── indexCalculator.ts # 指数计算模块
 ```
 
 ## 功能说明
@@ -25,6 +26,7 @@ engine/core/
 - **闰年处理**: 正确处理闰年2月29日
 - **日期验证**: 确保日期格式和有效性
 - **日期计算**: 提供日期加减、差值计算等功能
+- **数值计算委托**: 将案件和逮捕数量计算委托给indexCalculator
 
 #### 使用方法
 ```typescript
@@ -49,6 +51,35 @@ dateManager.setDate('2024-12-31')
 dateManager.testDateLogic()
 ```
 
+### indexCalculator.ts - 指数计算模块
+
+负责处理游戏中的数值计算逻辑。
+
+#### 主要功能
+- **案件数量计算**: 根据犯罪率、社区信任度等因素计算每日案件数量
+- **逮捕数量计算**: 根据案件数量和逮捕准确率计算每日逮捕数量
+- **犯罪率变化计算**: 计算犯罪率的动态变化
+- **社区信任度变化计算**: 计算社区信任度的动态变化
+- **逮捕准确率变化计算**: 计算逮捕准确率的动态变化
+- **配置管理**: 支持动态调整计算参数
+
+#### 使用方法
+```typescript
+import { indexCalculator } from '../../engine/core'
+
+// 计算每日案件数量
+const newCases = indexCalculator.calculateDailyCases(gameState)
+
+// 计算每日逮捕数量
+const newArrests = indexCalculator.calculateDailyArrests(gameState, newCases)
+
+// 更新配置
+indexCalculator.updateConfig({
+  baseCaseRate: 25.0,
+  caseGenerationIntensity: 1.2
+})
+```
+
 ### gameEngine.ts - 游戏引擎核心
 
 统一管理所有核心游戏机制。
@@ -58,6 +89,7 @@ dateManager.testDateLogic()
 - **状态监控**: 实时监控游戏状态变化
 - **配置管理**: 动态调整引擎配置
 - **模块协调**: 协调各个核心模块的工作
+- **指数计算器集成**: 统一管理指数计算器配置和调用
 
 #### 使用方法
 ```typescript
@@ -75,8 +107,18 @@ const status = gameEngine.getEngineStatus()
 // 更新配置
 gameEngine.updateConfig({
   enableTimeFlow: true,
-  enableAutoUpdate: true
+  enableAutoUpdate: true,
+  indexCalculatorConfig: {
+    baseCaseRate: 25.0,
+    caseGenerationIntensity: 1.2
+  }
 })
+
+// 获取指数计算器
+const calculator = gameEngine.getIndexCalculator()
+
+// 手动触发指数计算
+const changes = gameEngine.calculateIndices()
 ```
 
 ## 集成说明

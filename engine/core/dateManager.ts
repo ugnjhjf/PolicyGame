@@ -1,16 +1,13 @@
 // 日期管理模块 - 处理游戏时间流逝和跨年逻辑
 
 import { GameStateManager } from '../../config/data'
+import { indexCalculator } from './indexCalculator'
 
 export interface DateManagerConfig {
   // 时间流逝间隔（毫秒）
   timeInterval: number
   // 是否启用自动时间流逝
   autoTimeFlow: boolean
-  // 案件生成强度（0-1）
-  caseGenerationIntensity: number
-  // 逮捕效率强度（0-1）
-  arrestEfficiencyIntensity: number
 }
 
 export class DateManager {
@@ -19,9 +16,7 @@ export class DateManager {
 
   constructor(config: DateManagerConfig = {
     timeInterval: 3000, // 3秒
-    autoTimeFlow: true,
-    caseGenerationIntensity: 1.0,
-    arrestEfficiencyIntensity: 1.0
+    autoTimeFlow: true
   }) {
     this.config = config
   }
@@ -57,19 +52,27 @@ export class DateManager {
     const currentState = GameStateManager.getCurrentState()
     const newDate = this.addDays(currentState.date, 1)
     
-    // 计算每日案件和逮捕数量
-    const newCases = this.calculateDailyCases(currentState)
-    const newArrests = this.calculateDailyArrests(currentState, newCases)
+    // 使用indexCalculator计算每日案件和逮捕数量
+    const newCases = indexCalculator.calculateDailyCases(currentState)
+    const newArrests = indexCalculator.calculateDailyArrests(currentState, newCases)
+    
+    // 计算每日指数变化
+    const crimeRateChange = indexCalculator.calculateDailyCrimeRateChange(currentState)
+    const communityTrustChange = indexCalculator.calculateDailyCommunityTrustChange(currentState)
+    const arrestAccuracyChange = indexCalculator.calculateDailyArrestAccuracyChange(currentState)
     
     // 确保案件数量不会小于逮捕数量
     const finalCases = Math.max(newCases, newArrests)
     const finalArrests = Math.min(newArrests, finalCases)
     
-    // 更新游戏状态（包括日期、案件和逮捕数量）
+    // 更新游戏状态（包括日期、案件、逮捕数量和指数变化）
     GameStateManager.updateState({ 
       date: newDate,
       caseCount: finalCases,
-      arrests: finalArrests
+      arrests: finalArrests,
+      crimeRate: Math.round(Math.max(0, Math.min(100, currentState.crimeRate + crimeRateChange)) * 10) / 10,
+      communityTrust: Math.round(Math.max(0, Math.min(100, currentState.communityTrust + communityTrustChange)) * 10) / 10,
+      arrestAccuracy: Math.round(Math.max(0, Math.min(100, currentState.arrestAccuracy + arrestAccuracyChange)) * 10) / 10
     })
   }
 
@@ -198,65 +201,6 @@ export class DateManager {
   }
 
 
-  // 计算每日案件数量
-  private calculateDailyCases(gameState: any): number {
-    // 基础案件生成率（每天）
-    const baseCaseRate = 20.0 * this.config.caseGenerationIntensity
-    
-    // 犯罪率影响因子
-    const crimeRateFactor = gameState.crimeRate / 100
-    
-    // 社区信任度影响因子（信任度越低，案件越多）
-    const trustFactor = (100 - gameState.communityTrust) / 100
-    
-    // 时间因子（游戏时间推进影响）
-    const timeFactor = this.getTimeFactor()
-    
-    // 随机因子（增加不确定性）
-    const randomFactor = 0.8 + Math.random() * 0.4 // 0.8-1.2
-    
-    // 权重公式计算
-    const caseIncrease = baseCaseRate * crimeRateFactor * trustFactor * timeFactor * randomFactor
-    
-    const newCases = Math.round(gameState.caseCount + caseIncrease)
-    console.log(`[Cases计算] 犯罪率: ${gameState.crimeRate}%, 案件增加: ${caseIncrease.toFixed(2)}, 新案件: ${newCases}`)
-    
-    // 直接相加并限制为整数
-    return newCases
-  }
-
-  // 计算每日逮捕数量
-  private calculateDailyArrests(gameState: any, newCases: number): number {
-    // 基础常量
-    const minAccuracyRate = 0.1  // 最小准确率
-    const minArrestIncrease = 0.01  // 最小逮捕增加
-    const randomMin = 0.7  // 随机因子最小值
-    const randomMax = 1.3  // 随机因子最大值
-    
-    // 计算因子
-    const accuracyRate = Math.max(gameState.arrestAccuracy / 100, minAccuracyRate)
-    const falseArrestRate = 1 - accuracyRate
-    const randomFactor = randomMin + Math.random() * (randomMax - randomMin)
-    
-    // 案件和逮捕计算
-    const caseIncrease = newCases - gameState.caseCount
-    const baseArrestIncrease = Math.max(caseIncrease * falseArrestRate, minArrestIncrease)
-    const arrestIncrease = baseArrestIncrease * randomFactor
-    
-    // 最终计算
-    const newArrests = Math.round(gameState.arrests + arrestIncrease)
-    const finalArrests = Math.min(newArrests, newCases)
-    
-    // 总计算公式：最终逮捕人数 = (当前逮捕数 + 案件增加量 × 错抓率 × 随机数) 且不超过新案件总数
-    return finalArrests
-  }
-
-  // 获取时间因子
-  private getTimeFactor(): number {
-    // 这里可以根据游戏时间、季节等因素调整
-    // 目前返回固定值，后续可以扩展
-    return 1.0
-  }
 
   // 更新配置
   updateConfig(newConfig: Partial<DateManagerConfig>): void {

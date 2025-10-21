@@ -2,6 +2,7 @@
 
 import { GameStateManager } from '../../config/data'
 import { dateManager, initializeDateManager } from './dateManager'
+import { indexCalculator, IndexCalculatorConfig } from './indexCalculator'
 
 export interface GameEngineConfig {
   // 是否启用自动时间流逝
@@ -10,6 +11,8 @@ export interface GameEngineConfig {
   enableAutoUpdate: boolean
   // 状态检查间隔（毫秒）
   stateCheckInterval: number
+  // 指数计算器配置
+  indexCalculatorConfig?: Partial<IndexCalculatorConfig>
 }
 
 export class GameEngine {
@@ -20,9 +23,15 @@ export class GameEngine {
   constructor(config: GameEngineConfig = {
     enableTimeFlow: true,
     enableAutoUpdate: true,
-    stateCheckInterval: 100
+    stateCheckInterval: 100,
+    indexCalculatorConfig: {}
   }) {
     this.config = config
+    
+    // 初始化指数计算器配置
+    if (config.indexCalculatorConfig) {
+      indexCalculator.updateConfig(config.indexCalculatorConfig)
+    }
   }
 
   // 启动游戏引擎
@@ -95,6 +104,7 @@ export class GameEngine {
     // 检查游戏状态健康度
     const status = GameStateManager.checkGameStatus()
     if (!status.isHealthy) {
+      console.warn('[GameEngine] 游戏状态不健康:', status.warnings)
     }
   }
 
@@ -104,17 +114,50 @@ export class GameEngine {
     isRunning: boolean
     timeFlowEnabled: boolean
     autoUpdateEnabled: boolean
+    indexCalculatorConfig: IndexCalculatorConfig
   } {
     return {
       isRunning: this.isRunning,
       timeFlowEnabled: this.config.enableTimeFlow,
-      autoUpdateEnabled: this.config.enableAutoUpdate
+      autoUpdateEnabled: this.config.enableAutoUpdate,
+      indexCalculatorConfig: indexCalculator.getConfig()
+    }
+  }
+
+  // 获取指数计算器实例
+  getIndexCalculator() {
+    return indexCalculator
+  }
+
+  // 更新指数计算器配置
+  updateIndexCalculatorConfig(newConfig: Partial<IndexCalculatorConfig>): void {
+    indexCalculator.updateConfig(newConfig)
+    this.config.indexCalculatorConfig = { ...this.config.indexCalculatorConfig, ...newConfig }
+  }
+
+  // 手动触发指数计算
+  calculateIndices(): {
+    crimeRateChange: number
+    communityTrustChange: number
+    arrestAccuracyChange: number
+  } {
+    const gameState = GameStateManager.getCurrentState()
+    
+    return {
+      crimeRateChange: indexCalculator.calculateDailyCrimeRateChange(gameState),
+      communityTrustChange: indexCalculator.calculateDailyCommunityTrustChange(gameState),
+      arrestAccuracyChange: indexCalculator.calculateDailyArrestAccuracyChange(gameState)
     }
   }
 
   // 更新配置
   updateConfig(newConfig: Partial<GameEngineConfig>): void {
     this.config = { ...this.config, ...newConfig }
+    
+    // 更新指数计算器配置
+    if (newConfig.indexCalculatorConfig) {
+      indexCalculator.updateConfig(newConfig.indexCalculatorConfig)
+    }
     
     // 如果引擎正在运行，重新启动以应用新配置
     if (this.isRunning) {

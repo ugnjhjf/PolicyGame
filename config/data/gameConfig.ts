@@ -62,15 +62,15 @@ export interface GameConfig {
 export const INITIAL_GAME_STATE: GameState = {
   // 基础信息
   date: '2025-01-01',
-  actionPoints: 5,
-  money: 125000,
+  actionPoints: 10,
+  money: 100000,
   
   // 城市状态指标
-  caseCount: 23,
-  arrests: 8,
-  crimeRate: 12.5,
-  arrestAccuracy: 78.3,
-  communityTrust: 65.2,
+  caseCount: 1,
+  arrests: 0,
+  crimeRate: 10,
+  arrestAccuracy: 10,
+  communityTrust: 80,
   
   // 游戏控制状态
   isPlaying: false
