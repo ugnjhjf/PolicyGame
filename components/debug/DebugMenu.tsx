@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Settings, RotateCcw, Plus, Minus } from 'lucide-react'
 import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../config/data'
-import { initializeGameEngine } from '../../engine/core'
+// import { initializeGameEngine } from '../../engine/core' // 已移除实时模拟功能
 import styles from '../../styles/animations.module.css'
 
 interface DebugMenuProps {
@@ -16,18 +16,11 @@ export default function DebugMenu({ onStateChange, onTriggerEmergencySelector, o
   const [isOpen, setIsOpen] = useState(false)
   const [gameState, setGameState] = useState<GameState>(INITIAL_GAME_STATE)
 
-  // 同步游戏状态
+  // 初始化游戏状态（移除实时同步）
   useEffect(() => {
-    const updateState = () => {
-      const currentState = GameStateManager.getCurrentState()
-      setGameState(currentState)
-    }
-    
-    updateState()
-    
-    // 监听状态变化
-    const interval = setInterval(updateState, 500)
-    return () => clearInterval(interval)
+    // 只进行一次初始状态同步
+    const currentState = GameStateManager.getCurrentState()
+    setGameState(currentState)
   }, [])
 
   // 更新单个数值
@@ -37,6 +30,9 @@ export default function DebugMenu({ onStateChange, onTriggerEmergencySelector, o
     
     console.log(`[DebugMenu] 更新 ${key}: ${currentState[key]} -> ${newValue}`)
     GameStateManager.updateState({ [key]: newValue })
+    
+    // 更新本地状态
+    setGameState(GameStateManager.getCurrentState())
     
     // 通知父组件状态变化
     if (onStateChange) {
@@ -53,8 +49,7 @@ export default function DebugMenu({ onStateChange, onTriggerEmergencySelector, o
       onStateChange(INITIAL_GAME_STATE)
     }
     
-    // 重新初始化游戏引擎
-    initializeGameEngine()
+    // 实时模拟功能已移除，不再需要重新初始化游戏引擎
   }
 
   // 验证日期格式
@@ -82,6 +77,9 @@ export default function DebugMenu({ onStateChange, onTriggerEmergencySelector, o
       const numValue = parseFloat(value) || 0
       GameStateManager.updateState({ [key]: numValue })
     }
+    
+    // 更新本地状态
+    setGameState(GameStateManager.getCurrentState())
     
     if (onStateChange) {
       onStateChange(GameStateManager.getCurrentState())
@@ -150,26 +148,26 @@ export default function DebugMenu({ onStateChange, onTriggerEmergencySelector, o
               />
             </div>
 
-            {/* 行动点 */}
+            {/* 资源 */}
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium w-24">行动点:</label>
+              <label className="text-sm font-medium w-24">资源:</label>
               <div className="flex items-center gap-1">
                 <button
-                  onClick={() => updateValue('actionPoints', -1)}
+                  onClick={() => updateValue('resources', -1)}
                   className="p-1 bg-red-600 hover:bg-red-700 rounded text-xs"
                 >
                   <Minus className="w-3 h-3" />
                 </button>
                 <input
                   type="number"
-                  value={gameState.actionPoints}
-                  onChange={(e) => setValue('actionPoints', e.target.value)}
+                  value={gameState.resources}
+                  onChange={(e) => setValue('resources', e.target.value)}
                   className="w-16 px-2 py-1 bg-gray-700 text-white text-xs rounded border border-gray-600 text-center"
                   min="0"
                   max="10"
                 />
                 <button
-                  onClick={() => updateValue('actionPoints', 1)}
+                  onClick={() => updateValue('resources', 1)}
                   className="p-1 bg-green-600 hover:bg-green-700 rounded text-xs"
                 >
                   <Plus className="w-3 h-3" />
@@ -177,83 +175,6 @@ export default function DebugMenu({ onStateChange, onTriggerEmergencySelector, o
               </div>
             </div>
 
-            {/* 金钱 */}
-            <div className="flex items-center justify-between">
-              <label className="text-sm font-medium w-24">金钱:</label>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => updateValue('money', -10000)}
-                  className="p-1 bg-red-600 hover:bg-red-700 rounded text-xs"
-                >
-                  <Minus className="w-3 h-3" />
-                </button>
-                <input
-                  type="number"
-                  value={gameState.money}
-                  onChange={(e) => setValue('money', e.target.value)}
-                  className="w-20 px-2 py-1 bg-gray-700 text-white text-xs rounded border border-gray-600 text-center"
-                  min="0"
-                />
-                <button
-                  onClick={() => updateValue('money', 10000)}
-                  className="p-1 bg-green-600 hover:bg-green-700 rounded text-xs"
-                >
-                  <Plus className="w-3 h-3" />
-                </button>
-              </div>
-            </div>
-
-            {/* 案件数量 */}
-            <div className="flex items-center justify-between">
-              <label className="text-sm font-medium w-24">案件数:</label>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => updateValue('caseCount', -1)}
-                  className="p-1 bg-red-600 hover:bg-red-700 rounded text-xs"
-                >
-                  <Minus className="w-3 h-3" />
-                </button>
-                <input
-                  type="number"
-                  value={gameState.caseCount}
-                  onChange={(e) => setValue('caseCount', e.target.value)}
-                  className="w-16 px-2 py-1 bg-gray-700 text-white text-xs rounded border border-gray-600 text-center"
-                  min="0"
-                />
-                <button
-                  onClick={() => updateValue('caseCount', 1)}
-                  className="p-1 bg-green-600 hover:bg-green-700 rounded text-xs"
-                >
-                  <Plus className="w-3 h-3" />
-                </button>
-              </div>
-            </div>
-
-            {/* 逮捕人数 */}
-            <div className="flex items-center justify-between">
-              <label className="text-sm font-medium w-24">逮捕数:</label>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => updateValue('arrests', -1)}
-                  className="p-1 bg-red-600 hover:bg-red-700 rounded text-xs"
-                >
-                  <Minus className="w-3 h-3" />
-                </button>
-                <input
-                  type="number"
-                  value={gameState.arrests}
-                  onChange={(e) => setValue('arrests', e.target.value)}
-                  className="w-16 px-2 py-1 bg-gray-700 text-white text-xs rounded border border-gray-600 text-center"
-                  min="0"
-                />
-                <button
-                  onClick={() => updateValue('arrests', 1)}
-                  className="p-1 bg-green-600 hover:bg-green-700 rounded text-xs"
-                >
-                  <Plus className="w-3 h-3" />
-                </button>
-              </div>
-            </div>
 
             {/* 犯罪率 */}
             <div className="flex items-center justify-between">
@@ -355,20 +276,8 @@ export default function DebugMenu({ onStateChange, onTriggerEmergencySelector, o
                 <span className="font-mono">{gameState.date}</span>
               </div>
               <div className="flex justify-between">
-                <span>行动点:</span>
-                <span className="font-mono">{gameState.actionPoints}/10</span>
-              </div>
-              <div className="flex justify-between">
-                <span>资金:</span>
-                <span className="font-mono">${gameState.money.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>案件数:</span>
-                <span className="font-mono">{Math.floor(gameState.caseCount)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>逮捕数:</span>
-                <span className="font-mono">{Math.floor(gameState.arrests)}</span>
+                <span>资源:</span>
+                <span className="font-mono">{gameState.resources}/10</span>
               </div>
               <div className="flex justify-between">
                 <span>犯罪率:</span>

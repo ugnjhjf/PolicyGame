@@ -18,12 +18,11 @@ export interface GameEngineConfig {
 export class GameEngine {
   private config: GameEngineConfig
   private isRunning: boolean = false
-  private stateCheckInterval: NodeJS.Timeout | null = null
 
   constructor(config: GameEngineConfig = {
-    enableTimeFlow: true,
-    enableAutoUpdate: true,
-    stateCheckInterval: 100,
+    enableTimeFlow: false, // 默认禁用自动时间流逝
+    enableAutoUpdate: false, // 默认禁用自动状态更新
+    stateCheckInterval: 100, // 保留配置但不使用
     indexCalculatorConfig: {}
   }) {
     this.config = config
@@ -34,7 +33,7 @@ export class GameEngine {
     }
   }
 
-  // 启动游戏引擎
+  // 启动游戏引擎 - 已移除自动功能
   start(): void {
     if (this.isRunning) {
       return
@@ -42,18 +41,11 @@ export class GameEngine {
 
     this.isRunning = true
     
-    // 初始化日期管理器
-    if (this.config.enableTimeFlow) {
-      initializeDateManager()
-    }
-
-    // 启动状态检查
-    if (this.config.enableAutoUpdate) {
-      this.startStateCheck()
-    }
+    // 实时模拟功能已移除，不再自动启动日期管理器
+    console.warn('[GameEngine] 自动状态更新功能已移除')
   }
 
-  // 停止游戏引擎
+  // 停止游戏引擎 - 已移除自动功能
   stop(): void {
     if (!this.isRunning) {
       return
@@ -61,51 +53,7 @@ export class GameEngine {
 
     this.isRunning = false
     
-    // 停止日期管理器
-    dateManager.stopTimeFlow()
-    
-    // 停止状态检查
-    this.stopStateCheck()
-
-  }
-
-  // 启动状态检查
-  private startStateCheck(): void {
-    this.stateCheckInterval = setInterval(() => {
-      this.updateGameState()
-    }, this.config.stateCheckInterval)
-  }
-
-  // 停止状态检查
-  private stopStateCheck(): void {
-    if (this.stateCheckInterval) {
-      clearInterval(this.stateCheckInterval)
-      this.stateCheckInterval = null
-    }
-  }
-
-
-  // 更新游戏状态
-  private updateGameState(): void {
-    const gameState = GameStateManager.getCurrentState()
-    
-    // 根据游戏状态控制日期管理器
-    if (gameState.isPlaying && !dateManager['intervalId']) {
-      dateManager.startTimeFlow()
-    } else if (!gameState.isPlaying && dateManager['intervalId']) {
-      dateManager.stopTimeFlow()
-    }
-
-    // 只有在游戏运行状态时才进行状态更新
-    if (!gameState.isPlaying) {
-      return
-    }
-
-    // 检查游戏状态健康度
-    const status = GameStateManager.checkGameStatus()
-    if (!status.isHealthy) {
-      console.warn('[GameEngine] 游戏状态不健康:', status.warnings)
-    }
+    // 实时模拟功能已移除，不再需要停止任何定时器
   }
 
 
@@ -182,7 +130,8 @@ export class GameEngine {
 // 创建默认的游戏引擎实例
 export const gameEngine = new GameEngine()
 
-// 自动启动游戏引擎
+// 初始化游戏引擎 - 已移除自动启动功能
 export const initializeGameEngine = () => {
-  gameEngine.start()
+  // 实时模拟功能已移除，此方法不再自动启动引擎
+  console.warn('[GameEngine] 自动启动功能已移除')
 }

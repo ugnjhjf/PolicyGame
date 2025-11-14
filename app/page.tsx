@@ -50,7 +50,7 @@ export default function Page() {
 
              {/* Start Button */}
              <div className="flex justify-end">
-               <AnimatedButton href="/game">
+               <AnimatedButton href="/story">
                  <span className="text-lg font-semibold">Start Challenge</span>
                </AnimatedButton>
              </div>

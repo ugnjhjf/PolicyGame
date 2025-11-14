@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { AlertTriangle, Users, Shield, Clock, TrendingUp, DollarSign, Zap } from 'lucide-react'
+import { AlertTriangle, Users, Shield, Clock, TrendingUp, Zap } from 'lucide-react'
 import { GameStateManager } from '../../../config/data'
 import styles from '../../../styles/animations.module.css'
 import eventData from './crime-surge-event.json'
@@ -11,16 +11,14 @@ interface EventOption {
   title: string
   description: string
   cost: number
-  actionPoints: number
+  resources: number
   effects: {
     crimeRate: number
     communityTrust: number
-    money: number
-    actionPoints: number
+    resources: number
   }
   requirements: {
-    actionPoints: number
-    money: number
+    resources: number
   }
 }
 
@@ -35,16 +33,9 @@ export default function CrimeSurgeEvent({ isOpen, onClose, onComplete }: CrimeSu
   const [gameState, setGameState] = useState(GameStateManager.getCurrentState())
   const hasAppliedCrimeIncrease = useRef(false)
 
-  // 同步游戏状态
+  // 初始化游戏状态（移除实时同步）
   useEffect(() => {
-    const updateGameState = () => {
-      setGameState(GameStateManager.getCurrentState())
-    }
-    
-    updateGameState()
-    const interval = setInterval(updateGameState, 100)
-    
-    return () => clearInterval(interval)
+    setGameState(GameStateManager.getCurrentState())
   }, [])
 
   // 事件触发时自动应用犯罪率上升20%（只执行一次）
@@ -71,15 +62,13 @@ export default function CrimeSurgeEvent({ isOpen, onClose, onComplete }: CrimeSu
       const option = eventData.options.find(opt => opt.id === selectedOption)
       if (option) {
         // 检查资源是否足够
-        if (gameState.actionPoints >= option.requirements.actionPoints && 
-            gameState.money >= option.requirements.money) {
+        if (gameState.resources >= option.requirements.resources) {
           
           // 应用效果
           GameStateManager.updateState({
             crimeRate: Math.max(0, gameState.crimeRate + option.effects.crimeRate),
             communityTrust: Math.max(0, Math.min(100, gameState.communityTrust + option.effects.communityTrust)),
-            money: gameState.money + option.effects.money,
-            actionPoints: gameState.actionPoints + option.effects.actionPoints
+            resources: gameState.resources + option.effects.resources
           })
           
           onComplete(selectedOption)
@@ -91,8 +80,7 @@ export default function CrimeSurgeEvent({ isOpen, onClose, onComplete }: CrimeSu
   }
 
   const canAfford = (option: EventOption) => {
-    return gameState.actionPoints >= option.requirements.actionPoints && 
-           gameState.money >= option.requirements.money
+    return gameState.resources >= option.requirements.resources
   }
 
   return (
@@ -203,13 +191,9 @@ export default function CrimeSurgeEvent({ isOpen, onClose, onComplete }: CrimeSu
                       <h4 className="font-semibold text-gray-900 mb-2">{option.title}</h4>
                       <p className="text-gray-600 text-sm mb-3">{option.description}</p>
                       <div className="flex items-center gap-4 text-sm">
-                        <div className="flex items-center gap-1 text-green-600">
-                          <DollarSign className="w-4 h-4" />
-                          <span>成本: ${option.cost.toLocaleString()}</span>
-                        </div>
                         <div className="flex items-center gap-1 text-blue-600">
                           <Zap className="w-4 h-4" />
-                          <span>行动点: {option.actionPoints}</span>
+                          <span>资源: {option.resources}</span>
                         </div>
                       </div>
                     </div>

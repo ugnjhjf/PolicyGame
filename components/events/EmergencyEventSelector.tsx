@@ -16,8 +16,7 @@ interface EmergencyEvent {
     level?: number
     previousEvents?: string[]
     resources?: {
-      money?: number
-      actionPoints?: number
+      resources?: number
     }
   }
 }
@@ -75,8 +74,7 @@ export default function EmergencyEventSelector({ isOpen, onClose, onSelectEvent 
       requirements: {
         level: 4,
         resources: {
-          money: 50000,
-          actionPoints: 10
+          resources: 10
         }
       }
     },
@@ -215,8 +213,7 @@ export default function EmergencyEventSelector({ isOpen, onClose, onSelectEvent 
                           )}
                           {event.requirements.resources && (
                             <div>
-                              {event.requirements.resources.money && `需要资金: $${event.requirements.resources.money.toLocaleString()}`}
-                              {event.requirements.resources.actionPoints && `需要行动点: ${event.requirements.resources.actionPoints}`}
+                              {event.requirements.resources.resources && `需要资源: ${event.requirements.resources.resources}`}
                             </div>
                           )}
                         </div>

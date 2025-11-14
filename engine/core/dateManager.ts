@@ -11,40 +11,24 @@ export interface DateManagerConfig {
 }
 
 export class DateManager {
-  private intervalId: NodeJS.Timeout | null = null
   private config: DateManagerConfig
 
   constructor(config: DateManagerConfig = {
-    timeInterval: 3000, // 3秒
-    autoTimeFlow: true
+    timeInterval: 3000, // 保留配置但不使用
+    autoTimeFlow: false // 默认禁用自动时间流逝
   }) {
     this.config = config
   }
 
-  // 开始时间流逝
+  // 开始时间流逝 - 已移除自动功能，保留方法以兼容旧代码
   startTimeFlow(): void {
-    if (this.intervalId) {
-      this.stopTimeFlow()
-    }
-
-    
-    this.intervalId = setInterval(() => {
-      const gameState = GameStateManager.getCurrentState()
-      
-      // 只有在游戏运行状态时才推进时间
-      if (gameState.isPlaying) {
-        this.advanceDay()
-      } else {
-      }
-    }, this.config.timeInterval)
+    // 实时模拟功能已移除，此方法不再执行任何操作
+    console.warn('[DateManager] 自动时间流逝功能已移除')
   }
 
-  // 停止时间流逝
+  // 停止时间流逝 - 已移除自动功能，保留方法以兼容旧代码
   stopTimeFlow(): void {
-    if (this.intervalId) {
-      clearInterval(this.intervalId)
-      this.intervalId = null
-    }
+    // 实时模拟功能已移除，此方法不再执行任何操作
   }
 
   // 推进一天
@@ -209,21 +193,15 @@ export class DateManager {
 
   // 销毁管理器
   destroy(): void {
-    this.stopTimeFlow()
+    // 实时模拟功能已移除，此方法不再执行任何操作
   }
 }
 
 // 创建默认的日期管理器实例
 export const dateManager = new DateManager()
 
-// 自动启动时间流逝（如果游戏正在运行）
+// 初始化日期管理器 - 已移除自动启动功能
 export const initializeDateManager = () => {
-  const gameState = GameStateManager.getCurrentState()
-  
-  
-  if (gameState.isPlaying) {
-    dateManager.startTimeFlow()
-  }
-  
-  // 游戏状态检查现在由游戏引擎处理
+  // 实时模拟功能已移除，此方法不再执行任何操作
+  console.warn('[DateManager] 自动时间流逝功能已移除')
 }

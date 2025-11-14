@@ -22,34 +22,17 @@ export const GameStateManager = {
     currentGameState = { ...INITIAL_GAME_STATE }
   },
 
-  // 增加行动点
-  addActionPoints: (points: number): void => {
-    const newPoints = Math.min(currentGameState.actionPoints + points, 10)
-    GameStateManager.updateState({ actionPoints: newPoints })
+  // 增加资源
+  addResources: (points: number): void => {
+    const newPoints = Math.min(currentGameState.resources + points, 10)
+    GameStateManager.updateState({ resources: newPoints })
   },
 
-  // 消耗行动点
-  consumeActionPoints: (points: number): boolean => {
-    if (currentGameState.actionPoints >= points) {
-      GameStateManager.updateState({ 
-        actionPoints: currentGameState.actionPoints - points 
-      })
-      return true
-    }
-    return false
-  },
-
-  // 增加金钱
-  addMoney: (amount: number): void => {
-    const newMoney = Math.max(0, currentGameState.money + amount)
-    GameStateManager.updateState({ money: newMoney })
-  },
-
-  // 消耗金钱
-  consumeMoney: (amount: number): boolean => {
-    if (currentGameState.money >= amount) {
-      GameStateManager.updateState({ 
-        money: currentGameState.money - amount 
+  // 消耗资源
+  consumeResources: (points: number): boolean => {
+    if (currentGameState.resources >= points) {
+      GameStateManager.updateState({
+        resources: currentGameState.resources - points
       })
       return true
     }
@@ -74,34 +57,13 @@ export const GameStateManager = {
     GameStateManager.updateState({ arrestAccuracy: newAccuracy })
   },
 
-  // 增加案件数量
-  addCases: (count: number): void => {
-    const newCases = currentGameState.caseCount + count
-    const newArrests = Math.min(currentGameState.arrests, newCases)
-    
-    GameStateManager.updateState({ 
-      caseCount: newCases,
-      arrests: newArrests
-    })
-  },
-
-  // 增加逮捕数量
-  addArrests: (count: number): void => {
-    const newArrests = currentGameState.arrests + count
-    const newCases = Math.max(currentGameState.caseCount, newArrests)
-    
-    GameStateManager.updateState({ 
-      caseCount: newCases,
-      arrests: newArrests
-    })
-  },
 
   // 推进日期
   advanceDate: (days: number = 1): void => {
     const currentDate = new Date(currentGameState.date)
     currentDate.setDate(currentDate.getDate() + days)
-    GameStateManager.updateState({ 
-      date: currentDate.toISOString().split('T')[0] 
+    GameStateManager.updateState({
+      date: currentDate.toISOString().split('T')[0]
     })
   },
 
@@ -109,10 +71,7 @@ export const GameStateManager = {
   getStatusSummary: () => {
     return {
       date: currentGameState.date,
-      actionPoints: `${currentGameState.actionPoints}/10`,
-      money: `$${currentGameState.money.toLocaleString()}`,
-      caseCount: currentGameState.caseCount,
-      arrests: currentGameState.arrests,
+      resources: `${currentGameState.resources}/10`,
       crimeRate: `${currentGameState.crimeRate}%`,
       arrestAccuracy: `${currentGameState.arrestAccuracy}%`,
       communityTrust: `${currentGameState.communityTrust}%`
@@ -122,20 +81,15 @@ export const GameStateManager = {
   // 检查游戏状态
   checkGameStatus: () => {
     const warnings = []
-    
-    if (currentGameState.actionPoints === 0) {
-      warnings.push('行动点不足')
+
+    if (currentGameState.resources === 0) {
+      warnings.push('资源不足')
     }
-    
-    if (currentGameState.money < 10000) {
-      warnings.push('资金不足')
-    }
-    
-    
+
     if (currentGameState.communityTrust < 30) {
       warnings.push('社区信任度过低')
     }
-    
+
     return {
       isHealthy: warnings.length === 0,
       warnings

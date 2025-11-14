@@ -3,27 +3,22 @@
 export interface GameState {
   // 基础信息
   date: string
-  actionPoints: number
-  money: number
-  
+  resources: number
+
   // 城市状态指标
-  caseCount: number
-  arrests: number
   crimeRate: number
   arrestAccuracy: number
   communityTrust: number
   caseFactor: number
-  
+
   // 游戏控制状态
   isPlaying: boolean
 }
 
 export interface GameConfig {
   // 基础配置
-  maxActionPoints: number
-  minMoney: number
-  maxMoney: number
-  
+  maxResources: number
+
   // 指标范围
   minCrimeRate: number
   maxCrimeRate: number
@@ -31,15 +26,15 @@ export interface GameConfig {
   maxAccuracy: number
   minTrust: number
   maxTrust: number
-  
+
   // 游戏机制
-  actionPointCost: {
+  resourceCost: {
     deployResources: number
     updateSurveillance: number
     viewReports: number
     makeArrest: number
   }
-  
+
   // 区域配置
   districts: {
     central: {
@@ -63,17 +58,14 @@ export interface GameConfig {
 export const INITIAL_GAME_STATE: GameState = {
   // 基础信息
   date: '2025-01-01',
-  actionPoints: 10,
-  money: 100000,
-  
+  resources: 10,
+
   // 城市状态指标
-  caseCount: 1,
-  arrests: 0,
   crimeRate: 10,
   arrestAccuracy: 10,
   communityTrust: 80,
   caseFactor: 50,
-  
+
   // 游戏控制状态
   isPlaying: false
 }
@@ -81,10 +73,8 @@ export const INITIAL_GAME_STATE: GameState = {
 // 游戏配置
 export const GAME_CONFIG: GameConfig = {
   // 基础配置
-  maxActionPoints: 10,
-  minMoney: 0,
-  maxMoney: 1000000,
-  
+  maxResources: 10,
+
   // 指标范围
   minCrimeRate: 0,
   maxCrimeRate: 100,
@@ -92,15 +82,15 @@ export const GAME_CONFIG: GameConfig = {
   maxAccuracy: 100,
   minTrust: 0,
   maxTrust: 100,
-  
+
   // 游戏机制
-  actionPointCost: {
+  resourceCost: {
     deployResources: 2,
     updateSurveillance: 1,
     viewReports: 0,
     makeArrest: 3
   },
-  
+
   // 区域配置
   districts: {
     central: {
@@ -134,23 +124,17 @@ export const GAME_EVENTS = {
       id: 'police_success',
       name: '警方成功行动',
       description: '成功破获重大案件',
-      effect: { arrests: 2, communityTrust: 5, crimeRate: -2 }
+      effect: { communityTrust: 5, crimeRate: -2 }
     },
-    {
-      id: 'budget_cut',
-      name: '预算削减',
-      description: '政府削减警务预算',
-      effect: { money: -10000, policePresence: -5 }
-    }
   ],
-  
+
   // 每日事件
   dailyEvents: [
     {
       id: 'daily_patrol',
       name: '日常巡逻',
       description: '增加警力巡逻',
-      cost: { actionPoints: 1 },
+      cost: { resources: 1 },
       effect: { crimeRate: -1, communityTrust: 1 }
     }
   ]
@@ -164,19 +148,12 @@ export const GAME_BALANCE = {
     surveillance: -0.05,  // 每1%监控减少0.05%犯罪率
     communityTrust: -0.08 // 每1%信任度减少0.08%犯罪率
   },
-  
+
   // 信任度影响因子
   trustFactors: {
     arrestAccuracy: 0.2,  // 每1%准确率增加0.2%信任度
     crimeRate: -0.3,      // 每1%犯罪率减少0.3%信任度
     policePresence: 0.1   // 每1%警力增加0.1%信任度
   },
-  
-  // 金钱消耗
-  moneyCosts: {
-    deployResources: 5000,
-    updateSurveillance: 3000,
-    viewReports: 0,
-    makeArrest: 2000
-  }
+
 }

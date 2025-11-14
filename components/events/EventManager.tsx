@@ -1,8 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import EventModal, { EventData } from './EventModal'
-import { GameStateManager } from '../../config/data'
 
 interface EventManagerProps {
   // 可以接收外部事件数据
@@ -12,19 +11,10 @@ interface EventManagerProps {
 export default function EventManager({ externalEvents = [] }: EventManagerProps) {
   const [currentEvent, setCurrentEvent] = useState<EventData | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [wasGamePlaying, setWasGamePlaying] = useState(false)
 
   // 处理事件显示
   const showEvent = (event: EventData) => {
-    // 记录当前游戏状态
-    const currentGameState = GameStateManager.getCurrentState()
-    setWasGamePlaying(currentGameState.isPlaying)
-    
-    // 如果游戏正在运行，则暂停游戏
-    if (currentGameState.isPlaying) {
-      GameStateManager.pauseGame()
-    }
-    
+    // 实时模拟功能已移除，不再需要暂停游戏
     setCurrentEvent(event)
     setIsModalOpen(true)
   }
@@ -42,18 +32,12 @@ export default function EventManager({ externalEvents = [] }: EventManagerProps)
     closeEvent()
   }
 
-  // 关闭事件并恢复游戏状态
+  // 关闭事件
   const closeEvent = () => {
     setIsModalOpen(false)
     setCurrentEvent(null)
     
-    // 如果之前游戏在运行，则恢复游戏状态
-    if (wasGamePlaying) {
-      GameStateManager.startGame()
-    }
-    
-    // 重置状态
-    setWasGamePlaying(false)
+    // 实时模拟功能已移除，不再需要恢复游戏状态
   }
 
 

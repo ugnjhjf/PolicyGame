@@ -32,7 +32,7 @@ export type EventPriority =
   | 'critical'     // 紧急优先级
 
 export interface EventEffect {
-  type: 'crimeRate' | 'communityTrust' | 'money' | 'actionPoints' | 'arrests' | 'caseCount'
+  type: 'crimeRate' | 'communityTrust' | 'resources'
   value: number
   description: string
 }
@@ -42,14 +42,13 @@ export interface EventOption {
   text: string
   effects: EventEffect[]
   requirements?: {
-    actionPoints?: number
-    money?: number
+    resources?: number
     communityTrust?: number
   }
 }
 
 export interface EventCondition {
-  type: 'date' | 'crimeRate' | 'communityTrust' | 'money' | 'actionPoints'
+  type: 'date' | 'crimeRate' | 'communityTrust' | 'resources'
   operator: '>' | '<' | '>=' | '<=' | '==' | '!='
   value: number | string
 }
