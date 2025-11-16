@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Brain, Zap, Target, Shield, Users, DollarSign, Clock, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
 import styles from '../../styles/animations.module.css'
+import ProgressBar, { getStepsForPage } from '../../components/ProgressBar'
 
 interface TrainingMethod {
   id: string
@@ -164,9 +165,16 @@ export default function AITrainingMethodsPage() {
 
   const handleConfirm = () => {
     if (selectedMethod) {
-      // 纯视觉展示，不进行任何游戏数值操作
+      // 保存选择的训练方式到localStorage
+      localStorage.setItem('selectedMethod', JSON.stringify(selectedMethod))
       console.log(`已选择训练方式: ${selectedMethod.name} (仅视觉展示)`)
-      alert(`已选择训练方式: ${selectedMethod.name}\\n\\n这只是一个演示页面，不会影响游戏数值。`)
+      
+      // 添加退出动画
+      setIsAnimating(true)
+      setTimeout(() => {
+        // 跳转到部署区域页面
+        window.location.href = '/deployment'
+      }, 300)
     }
   }
 
@@ -190,25 +198,38 @@ export default function AITrainingMethodsPage() {
 
   return (
     <div className={`min-h-screen bg-gray-50 flex flex-col ${isAnimating ? styles.slideOutToRight : styles.slideInFromLeft}`}>
+      {/* 进度条 */}
+      <ProgressBar steps={getStepsForPage('training')} />
+      
       {/* 顶部导航 */}
       <div className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
-            <Link 
-              href="/ai-dataset" 
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
-              onClick={(e) => {
-                e.preventDefault()
-                setIsAnimating(true)
-                setTimeout(() => {
-                  window.location.href = '/ai-dataset'
-                }, 300)
-              }}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Link 
+                href="/ai-dataset" 
+                className="flex items-center gap-2 px-6 py-3 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-lg transition-all duration-200 hover:scale-105 shadow-lg"
+                onClick={(e) => {
+                  e.preventDefault()
+                  setIsAnimating(true)
+                  setTimeout(() => {
+                    window.location.href = '/ai-dataset'
+                  }, 300)
+                }}
+              >
+                <ArrowLeft className="w-5 h-5" />
+                返回数据集选择
+              </Link>
+            </div>
+            
+            {/* 选择按钮 */}
+            <button
+              onClick={handleConfirm}
+              className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 hover:scale-105 shadow-lg"
             >
-              <ArrowLeft className="w-5 h-5" />
-              返回数据集选择
-            </Link>
-            <h1 className="text-2xl font-bold text-gray-900">AI训练方式选择</h1>
+              选择此训练方式
+              <ArrowRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </div>
@@ -377,23 +398,6 @@ export default function AITrainingMethodsPage() {
                     </div>
                   </div>
 
-                  {/* 操作按钮 */}
-                  <div className="flex gap-4">
-                    <button
-                      onClick={handleConfirm}
-                      className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
-                    >
-                      选择此训练方式
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
-                    <Link
-                      href="/game"
-                      className="flex items-center gap-2 px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-                    >
-                      <ArrowLeft className="w-4 h-4" />
-                      返回游戏
-                    </Link>
-                  </div>
                 </div>
               </div>
             </div>
