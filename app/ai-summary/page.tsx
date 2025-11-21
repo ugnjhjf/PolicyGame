@@ -101,10 +101,10 @@ export default function AISummaryPage() {
 
   const getDifficultyText = (difficulty: string) => {
     switch (difficulty) {
-      case 'easy': return '简单'
-      case 'medium': return '中等'
-      case 'hard': return '困难'
-      default: return '未知'
+      case 'easy': return 'Easy'
+      case 'medium': return 'Medium'
+      case 'hard': return 'Hard'
+      default: return 'Unknown'
     }
   }
 
@@ -135,7 +135,7 @@ export default function AISummaryPage() {
                 }}
               >
                 <ArrowLeft className="w-5 h-5" />
-                返回部署区域选择
+                Back to Deployment Area
               </Link>
             </div>
             
@@ -148,7 +148,7 @@ export default function AISummaryPage() {
                   : 'bg-gray-400 text-gray-200 cursor-not-allowed'
               }`}
             >
-              确认并部署
+              Confirm & Deploy
               <ArrowRight className="w-5 h-5" />
             </button>
           </div>
@@ -157,17 +157,17 @@ export default function AISummaryPage() {
 
       {isLoading ? (
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">正在加载您的选择...</p>
-          </div>
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading your selections...</p>
+            </div>
         </div>
       ) : (
         <div className="flex-1 overflow-y-auto p-6">
           <div className="container mx-auto max-w-6xl">
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">选择总结</h1>
-              <p className="text-gray-600">请确认您的AI部署配置</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Selection Summary</h1>
+              <p className="text-gray-600">Please confirm your AI deployment configuration</p>
             </div>
 
             {(!summaryData.selectedDataset || !summaryData.selectedMethod || !summaryData.selectedArea) && (
@@ -175,12 +175,12 @@ export default function AISummaryPage() {
                 <div className="flex items-center gap-3">
                   <AlertTriangle className="w-6 h-6 text-yellow-600" />
                   <div>
-                    <h3 className="text-lg font-semibold text-yellow-800">缺少选择信息</h3>
-                    <p className="text-yellow-700">请确保您已完成所有步骤的选择：</p>
+                    <h3 className="text-lg font-semibold text-yellow-800">Missing Selections</h3>
+                    <p className="text-yellow-700">Please ensure you have completed all steps:</p>
                     <ul className="mt-2 text-sm text-yellow-700">
-                      {!summaryData.selectedDataset && <li>• 数据集选择</li>}
-                      {!summaryData.selectedMethod && <li>• AI训练方式选择</li>}
-                      {!summaryData.selectedArea && <li>• 部署区域选择</li>}
+                      {!summaryData.selectedDataset && <li>• Dataset Selection</li>}
+                      {!summaryData.selectedMethod && <li>• Training Method Selection</li>}
+                      {!summaryData.selectedArea && <li>• Deployment Area Selection</li>}
                     </ul>
                   </div>
                 </div>
@@ -194,26 +194,26 @@ export default function AISummaryPage() {
                     <Database className="w-6 h-6 text-blue-600" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-gray-900">数据集选择</h2>
+                    <h2 className="text-xl font-bold text-gray-900">Dataset Selection</h2>
                     <p className="text-gray-600">{summaryData.selectedDataset.name}</p>
                   </div>
                   <CheckCircle className="w-6 h-6 text-green-500 ml-auto" />
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                   <div>
-                    <span className="text-gray-600">准确率:</span>
+                    <span className="text-gray-600">Accuracy:</span>
                     <span className="ml-2 font-semibold text-green-600">{summaryData.selectedDataset.accuracy}%</span>
                   </div>
                   <div>
-                    <span className="text-gray-600">数据量:</span>
-                    <span className="ml-2 font-semibold">{summaryData.selectedDataset.size.toLocaleString()}条</span>
+                    <span className="text-gray-600">Data Size:</span>
+                    <span className="ml-2 font-semibold">{summaryData.selectedDataset.size.toLocaleString()} records</span>
                   </div>
                   <div>
-                    <span className="text-gray-600">成本:</span>
+                    <span className="text-gray-600">Cost:</span>
                     <span className="ml-2 font-semibold text-blue-600">¥{summaryData.selectedDataset.cost.toLocaleString()}</span>
                   </div>
                   <div>
-                    <span className="text-gray-600">偏见程度:</span>
+                    <span className="text-gray-600">Bias Level:</span>
                     <span className={`ml-2 px-2 py-1 rounded-full text-xs ${summaryData.selectedDataset.bias === 'low' ? 'bg-green-100 text-green-600' : summaryData.selectedDataset.bias === 'medium' ? 'bg-yellow-100 text-yellow-600' : 'bg-red-100 text-red-600'}`}>
                       {summaryData.selectedDataset.bias}
                     </span>
@@ -229,26 +229,26 @@ export default function AISummaryPage() {
                     <Brain className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-gray-900">AI训练方式</h2>
+                    <h2 className="text-xl font-bold text-gray-900">Training Method</h2>
                     <p className="text-gray-600">{summaryData.selectedMethod.name}</p>
                   </div>
                   <CheckCircle className="w-6 h-6 text-green-500 ml-auto" />
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                   <div>
-                    <span className="text-gray-600">准确率:</span>
+                    <span className="text-gray-600">Accuracy:</span>
                     <span className="ml-2 font-semibold text-green-600">{summaryData.selectedMethod.accuracy}%</span>
                   </div>
                   <div>
-                    <span className="text-gray-600">成本:</span>
+                    <span className="text-gray-600">Cost:</span>
                     <span className="ml-2 font-semibold text-blue-600">¥{summaryData.selectedMethod.cost.toLocaleString()}</span>
                   </div>
                   <div>
-                    <span className="text-gray-600">训练时间:</span>
+                    <span className="text-gray-600">Training Time:</span>
                     <span className="ml-2 font-semibold text-purple-600">{summaryData.selectedMethod.time}</span>
                   </div>
                   <div>
-                    <span className="text-gray-600">难度:</span>
+                    <span className="text-gray-600">Difficulty:</span>
                     <span className={`ml-2 px-2 py-1 rounded-full text-xs ${getDifficultyColor(summaryData.selectedMethod.difficulty)}`}>
                       {getDifficultyText(summaryData.selectedMethod.difficulty)}
                     </span>
@@ -264,26 +264,26 @@ export default function AISummaryPage() {
                     <MapPin className="w-6 h-6 text-green-600" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-gray-900">部署区域</h2>
+                    <h2 className="text-xl font-bold text-gray-900">Deployment Area</h2>
                     <p className="text-gray-600">{summaryData.selectedArea.name}</p>
                   </div>
                   <CheckCircle className="w-6 h-6 text-green-500 ml-auto" />
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                   <div>
-                    <span className="text-gray-600">人口:</span>
+                    <span className="text-gray-600">Population:</span>
                     <span className="ml-2 font-semibold">{summaryData.selectedArea.population.toLocaleString()}</span>
                   </div>
                   <div>
-                    <span className="text-gray-600">犯罪率:</span>
+                    <span className="text-gray-600">Crime Rate:</span>
                     <span className="ml-2 font-semibold text-red-600">{summaryData.selectedArea.crimeRate}%</span>
                   </div>
                   <div>
-                    <span className="text-gray-600">警力覆盖:</span>
+                    <span className="text-gray-600">Police Presence:</span>
                     <span className="ml-2 font-semibold text-blue-600">{summaryData.selectedArea.policePresence}%</span>
                   </div>
                   <div>
-                    <span className="text-gray-600">监控覆盖:</span>
+                    <span className="text-gray-600">Surveillance Coverage:</span>
                     <span className="ml-2 font-semibold text-purple-600">{summaryData.selectedArea.surveillance}%</span>
                   </div>
                 </div>
@@ -294,30 +294,30 @@ export default function AISummaryPage() {
               <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                   <DollarSign className="w-6 h-6 text-blue-600" />
-                  成本总结
+                  Cost Summary
                 </h2>
                 <div className="space-y-3">
                   {summaryData.selectedDataset && (
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-700">数据集成本:</span>
+                      <span className="text-gray-700">Dataset Cost:</span>
                       <span className="font-semibold text-gray-900">¥{summaryData.selectedDataset.cost.toLocaleString()}</span>
                     </div>
                   )}
                   {summaryData.selectedMethod && (
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-700">训练方式成本:</span>
+                      <span className="text-gray-700">Training Method Cost:</span>
                       <span className="font-semibold text-gray-900">¥{summaryData.selectedMethod.cost.toLocaleString()}</span>
                     </div>
                   )}
                   {summaryData.selectedArea && (
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-700">部署成本:</span>
+                      <span className="text-gray-700">Deployment Cost:</span>
                       <span className="font-semibold text-gray-900">¥{summaryData.selectedArea.deploymentCost.toLocaleString()}</span>
                     </div>
                   )}
                   <div className="border-t border-gray-300 pt-3 mt-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-xl font-bold text-gray-900">总成本:</span>
+                      <span className="text-xl font-bold text-gray-900">Total Cost:</span>
                       <span className="text-2xl font-bold text-blue-600">¥{totalCost.toLocaleString()}</span>
                     </div>
                   </div>
@@ -329,15 +329,15 @@ export default function AISummaryPage() {
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                   <TrendingUp className="w-6 h-6 text-green-600" />
-                  预期效果
+                  Expected Results
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                    <span className="text-gray-700">部署效果:</span>
+                    <span className="text-gray-700">Deployment Effectiveness:</span>
                     <span className="font-bold text-2xl text-green-600">{summaryData.selectedArea.effectiveness}%</span>
                   </div>
                   <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                    <span className="text-gray-700">预计准确率:</span>
+                    <span className="text-gray-700">Expected Accuracy:</span>
                     <span className="font-bold text-2xl text-blue-600">
                       {summaryData.selectedMethod ? summaryData.selectedMethod.accuracy : 0}%
                     </span>

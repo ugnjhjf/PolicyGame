@@ -76,7 +76,7 @@ export default function AIDatasetPage() {
                 }}
               >
                 <ArrowLeft className="w-5 h-5" />
-                返回游戏
+                Back to main page
               </Link>
             </div>
             
@@ -86,7 +86,7 @@ export default function AIDatasetPage() {
                 onClick={handleConfirm}
                 className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 hover:scale-105 shadow-lg"
               >
-                选择此数据集
+                Select Dataset
                 <ArrowRight className="w-5 h-5" />
               </button>
             )}
@@ -99,8 +99,8 @@ export default function AIDatasetPage() {
         {/* 左侧数据集列表 */}
         <div className="w-1/3 bg-white border-r border-gray-200 overflow-y-auto">
           <div className="p-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">数据集列表</h2>
-            <p className="text-sm text-gray-600">选择合适的数据集来训练您的AI模型</p>
+            <h2 className="text-lg font-semibold text-gray-900 mb-2">Dataset List</h2>
+            <p className="text-sm text-gray-600">Select a suitable dataset to train your AI model</p>
           </div>
           
           <div className="space-y-1 p-2">
@@ -126,11 +126,11 @@ export default function AIDatasetPage() {
                       )}
                     </div>
                     <div className="flex items-center gap-4 text-xs text-gray-500">
-                      <span>准确率: {dataset.accuracy}%</span>
-                      <span>成本: ${dataset.cost.toLocaleString()}</span>
+                      <span>Accuracy: {dataset.accuracy}%</span>
+                      <span>Cost: ${dataset.cost.toLocaleString()}</span>
                     </div>
                     <div className={`inline-block px-2 py-1 rounded-full text-xs font-medium mt-1 ${getBiasColor(dataset.bias)}`}>
-                      偏见: {dataset.bias}
+                      Bias: {dataset.bias}
                     </div>
                   </div>
                 </div>
@@ -159,7 +159,7 @@ export default function AIDatasetPage() {
                 </div>
                 <div className="absolute bottom-4 left-4">
                   <div className={`px-3 py-1 rounded-full text-sm font-medium ${getBiasColor(selectedDataset.bias)} bg-white/90`}>
-                    偏见程度: {selectedDataset.bias}
+                    Bias Level: {selectedDataset.bias}
                   </div>
                 </div>
               </div>
@@ -181,25 +181,25 @@ export default function AIDatasetPage() {
                   {/* 基本指标 */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div className="space-y-4">
-                      <h3 className="text-lg font-semibold text-gray-900">基本指标</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">Basic Metrics</h3>
                       <div className="space-y-3">
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-600">准确率:</span>
+                          <span className="text-gray-600">Accuracy:</span>
                           <span className="font-medium text-lg">{selectedDataset.accuracy}%</span>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-600">数据量:</span>
-                          <span className="font-medium text-lg">{selectedDataset.size.toLocaleString()}条</span>
+                          <span className="text-gray-600">Data Size:</span>
+                          <span className="font-medium text-lg">{selectedDataset.size.toLocaleString()} records</span>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-600">成本:</span>
+                          <span className="text-gray-600">Cost:</span>
                           <span className="font-medium text-lg flex items-center gap-1">
                             <DollarSign className="w-5 h-5" />
                             {selectedDataset.cost.toLocaleString()}
                           </span>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-600">偏见程度:</span>
+                          <span className="text-gray-600">Bias Level:</span>
                           <span className={`px-3 py-1 rounded-full text-sm font-medium ${getBiasColor(selectedDataset.bias)}`}>
                             {selectedDataset.bias}
                           </span>
@@ -209,7 +209,7 @@ export default function AIDatasetPage() {
 
                     {/* 特征列表 */}
                     <div className="space-y-4">
-                      <h3 className="text-lg font-semibold text-gray-900">数据特征</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">Data Features</h3>
                       <div className="flex flex-wrap gap-2">
                         {selectedDataset.features.map((feature, index) => (
                           <span
@@ -228,7 +228,7 @@ export default function AIDatasetPage() {
                     <div>
                       <h3 className="text-lg font-semibold text-green-600 mb-3 flex items-center gap-2">
                         <CheckCircle className="w-5 h-5" />
-                        优点
+                        Pros
                       </h3>
                       <ul className="space-y-2">
                         {selectedDataset.pros.map((pro, index) => (
@@ -242,7 +242,7 @@ export default function AIDatasetPage() {
                     <div>
                       <h3 className="text-lg font-semibold text-red-600 mb-3 flex items-center gap-2">
                         <AlertTriangle className="w-5 h-5" />
-                        缺点
+                        Cons
                       </h3>
                       <ul className="space-y-2">
                         {selectedDataset.cons.map((con, index) => (
@@ -262,8 +262,8 @@ export default function AIDatasetPage() {
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
                 <Target className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">选择数据集</h3>
-                <p className="text-gray-600">请从左侧列表中选择一个数据集查看详情</p>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Select Dataset</h3>
+                <p className="text-gray-600">Please select a dataset from the left list to view details</p>
               </div>
             </div>
           )}

@@ -61,11 +61,11 @@ export default function ProgressBar({ steps, className = '' }: ProgressBarProps)
 
 // 预定义的AI部署流程步骤
 export const AI_DEPLOYMENT_STEPS = [
-  { id: 'dataset', name: '数据集选择' },
-  { id: 'training', name: 'AI训练方式选择' },
-  { id: 'deployment', name: '部署区域' },
-  { id: 'summary', name: '选择总结' },
-  { id: 'status', name: '部署与目前状况' }
+  { id: 'dataset', name: 'Dataset Selection' },
+  { id: 'training', name: 'Training Method' },
+  { id: 'deployment', name: 'Deployment Area' },
+  { id: 'summary', name: 'Summary' },
+  { id: 'status', name: 'Deployment Status' }
 ] as const
 
 // 根据当前页面生成步骤状态的辅助函数

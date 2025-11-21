@@ -30,7 +30,7 @@ const DEPLOYMENT_AREAS: DeploymentArea[] = [
   {
     id: 'central',
     name: 'Central District',
-    description: '城市中心商业和行政区域，人口密集，犯罪率相对较低，是AI部署的理想选择',
+    description: 'Urban center commercial and administrative area with dense population and relatively low crime rate, ideal for AI deployment',
     icon: Building,
     color: 'text-blue-600',
     bgColor: 'bg-blue-100',
@@ -42,23 +42,23 @@ const DEPLOYMENT_AREAS: DeploymentArea[] = [
     deploymentCost: 25000,
     effectiveness: 92,
     pros: [
-      '人口密度高，数据收集效率高',
-      '基础设施完善，部署成本相对较低',
-      '犯罪率较低，风险可控',
-      '政府支持度高，政策环境良好'
+      'High population density, efficient data collection',
+      'Well-developed infrastructure, relatively low deployment cost',
+      'Low crime rate, controllable risks',
+      'High government support, favorable policy environment'
     ],
     cons: [
-      '人口密集，隐私保护要求高',
-      '商业活动频繁，可能影响部署',
-      '监管要求严格',
-      '竞争激烈，资源分配复杂'
+      'Dense population, high privacy protection requirements',
+      'Frequent commercial activities may affect deployment',
+      'Strict regulatory requirements',
+      'Intense competition, complex resource allocation'
     ],
-    features: ['商业中心', '政府机构', '交通枢纽', '金融区']
+    features: ['Business Center', 'Government Institutions', 'Transportation Hub', 'Financial District']
   },
   {
     id: 'surveillance',
     name: 'Surveillance Zone',
-    description: '监控重点区域，犯罪率较高但监控设施完善，适合AI系统进行犯罪预测和预防',
+    description: 'Key surveillance area with high crime rate but well-developed monitoring facilities, suitable for AI systems for crime prediction and prevention',
     icon: Eye,
     color: 'text-purple-600',
     bgColor: 'bg-purple-100',
@@ -70,18 +70,18 @@ const DEPLOYMENT_AREAS: DeploymentArea[] = [
     deploymentCost: 18000,
     effectiveness: 88,
     pros: [
-      '犯罪预测需求高，AI价值明显',
-      '现有监控设施完善',
-      '部署成本相对较低',
-      '效果立竿见影'
+      'High demand for crime prediction, clear AI value',
+      'Well-developed existing monitoring facilities',
+      'Relatively low deployment cost',
+      'Immediate effect'
     ],
     cons: [
-      '犯罪率较高，安全风险大',
-      '社会接受度可能较低',
-      '需要更多维护成本',
-      '可能引发隐私争议'
+      'High crime rate, significant security risks',
+      'May have lower social acceptance',
+      'Requires more maintenance costs',
+      'May trigger privacy disputes'
     ],
-    features: ['监控重点', '犯罪热点', '社区监控', '预警系统']
+    features: ['Surveillance Focus', 'Crime Hotspot', 'Community Monitoring', 'Early Warning System']
   }
 ]
 
@@ -115,9 +115,9 @@ export default function DeploymentPage() {
   }
 
   const getEffectivenessText = (effectiveness: number) => {
-    if (effectiveness >= 90) return '优秀'
-    if (effectiveness >= 80) return '良好'
-    return '一般'
+    if (effectiveness >= 90) return 'Excellent'
+    if (effectiveness >= 80) return 'Good'
+    return 'Fair'
   }
 
   return (
@@ -145,7 +145,7 @@ export default function DeploymentPage() {
                 }}
               >
                 <ArrowLeft className="w-5 h-5" />
-                返回训练方式选择
+                Back to Training Method
               </Link>
             </div>
             
@@ -155,7 +155,7 @@ export default function DeploymentPage() {
                 onClick={handleConfirm}
                 className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 hover:scale-105 shadow-lg"
               >
-                选择此部署区域
+                Select Deployment Area
                 <ArrowRight className="w-5 h-5" />
               </button>
             )}
@@ -168,7 +168,7 @@ export default function DeploymentPage() {
         {/* 左侧部署区域列表 */}
         <div className="w-1/3 bg-white border-r border-gray-200 overflow-y-auto">
           <div className="p-4">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">部署区域列表</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Deployment Areas</h2>
             <div className="space-y-3">
               {DEPLOYMENT_AREAS.map((area) => (
                 <div
@@ -192,19 +192,19 @@ export default function DeploymentPage() {
                   
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600">人口</span>
+                      <span className="text-gray-600">Population</span>
                       <span className="font-semibold text-blue-600">{area.population.toLocaleString()}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600">犯罪率</span>
+                      <span className="text-gray-600">Crime Rate</span>
                       <span className="font-semibold text-red-600">{area.crimeRate}%</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600">部署成本</span>
+                      <span className="text-gray-600">Deployment Cost</span>
                       <span className="font-semibold text-green-600">¥{area.deploymentCost.toLocaleString()}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600">效果</span>
+                      <span className="text-gray-600">Effectiveness</span>
                       <span className={`px-2 py-1 rounded-full text-xs ${getEffectivenessColor(area.effectiveness)}`}>
                         {getEffectivenessText(area.effectiveness)}
                       </span>
@@ -255,28 +255,28 @@ export default function DeploymentPage() {
                         <Users className="w-5 h-5 text-blue-600" />
                       </div>
                       <div className="text-2xl font-bold text-blue-600">{selectedArea.population.toLocaleString()}</div>
-                      <div className="text-sm text-gray-600">人口数量</div>
+                      <div className="text-sm text-gray-600">Population</div>
                     </div>
                     <div className="bg-white rounded-lg p-4 text-center shadow-sm">
                       <div className="flex items-center justify-center mb-2">
                         <AlertTriangle className="w-5 h-5 text-red-600" />
                       </div>
                       <div className="text-2xl font-bold text-red-600">{selectedArea.crimeRate}%</div>
-                      <div className="text-sm text-gray-600">犯罪率</div>
+                      <div className="text-sm text-gray-600">Crime Rate</div>
                     </div>
                     <div className="bg-white rounded-lg p-4 text-center shadow-sm">
                       <div className="flex items-center justify-center mb-2">
                         <Shield className="w-5 h-5 text-green-600" />
                       </div>
                       <div className="text-2xl font-bold text-green-600">{selectedArea.policePresence}%</div>
-                      <div className="text-sm text-gray-600">警力覆盖</div>
+                      <div className="text-sm text-gray-600">Police Presence</div>
                     </div>
                     <div className="bg-white rounded-lg p-4 text-center shadow-sm">
                       <div className="flex items-center justify-center mb-2">
                         <TrendingUp className="w-5 h-5 text-purple-600" />
                       </div>
                       <div className="text-2xl font-bold text-purple-600">{selectedArea.effectiveness}%</div>
-                      <div className="text-sm text-gray-600">部署效果</div>
+                      <div className="text-sm text-gray-600">Effectiveness</div>
                     </div>
                   </div>
 
@@ -285,7 +285,7 @@ export default function DeploymentPage() {
                     <div className="bg-white rounded-lg p-6 shadow-sm">
                       <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                         <CheckCircle className="w-5 h-5 text-green-600" />
-                        优势
+                        Pros
                       </h3>
                       <ul className="space-y-2">
                         {selectedArea.pros.map((pro, index) => (
@@ -299,7 +299,7 @@ export default function DeploymentPage() {
                     <div className="bg-white rounded-lg p-6 shadow-sm">
                       <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                         <XCircle className="w-5 h-5 text-red-600" />
-                        劣势
+                        Cons
                       </h3>
                       <ul className="space-y-2">
                         {selectedArea.cons.map((con, index) => (
@@ -314,7 +314,7 @@ export default function DeploymentPage() {
 
                   {/* 区域特征 */}
                   <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">区域特征</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Area Features</h3>
                     <div className="flex flex-wrap gap-2">
                       {selectedArea.features.map((feature, index) => (
                         <span
@@ -329,22 +329,22 @@ export default function DeploymentPage() {
 
                   {/* 部署信息 */}
                   <div className="bg-white rounded-lg p-6 shadow-sm">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">部署信息</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Deployment Info</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600">部署成本:</span>
+                        <span className="text-gray-600">Deployment Cost:</span>
                         <span className="font-medium text-lg text-green-600">¥{selectedArea.deploymentCost.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600">预期效果:</span>
+                        <span className="text-gray-600">Expected Effectiveness:</span>
                         <span className="font-medium text-lg text-blue-600">{selectedArea.effectiveness}%</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600">监控覆盖:</span>
+                        <span className="text-gray-600">Surveillance Coverage:</span>
                         <span className="font-medium text-lg text-purple-600">{selectedArea.surveillance}%</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600">警力支持:</span>
+                        <span className="text-gray-600">Police Support:</span>
                         <span className="font-medium text-lg text-orange-600">{selectedArea.policePresence}%</span>
                       </div>
                     </div>
@@ -356,7 +356,7 @@ export default function DeploymentPage() {
             <div className="h-full flex items-center justify-center">
               <div className="text-center text-gray-500">
                 <MapPin className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                <p className="text-lg">请从左侧选择一个部署区域</p>
+                <p className="text-lg">Please select a deployment area from the left</p>
               </div>
             </div>
           )}

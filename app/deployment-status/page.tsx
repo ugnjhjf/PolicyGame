@@ -19,48 +19,48 @@ interface LoadingStage {
 const LOADING_STAGES: LoadingStage[] = [
   {
     id: 'import',
-    title: '导入训练数据',
-    description: '正在从选定数据集中导入训练样本，准备进行模型训练...',
+    title: 'Importing Training Data',
+    description: 'Importing training samples from the selected dataset, preparing for model training...',
     icon: Database,
     color: 'text-blue-600',
     bgColor: 'bg-blue-100'
   },
   {
     id: 'train',
-    title: '训练模型',
-    description: '使用选定的训练方法对AI模型进行训练，优化模型参数...',
+    title: 'Training Model',
+    description: 'Training the AI model using the selected training method, optimizing model parameters...',
     icon: Brain,
     color: 'text-purple-600',
     bgColor: 'bg-purple-100'
   },
   {
     id: 'adjust',
-    title: '调整参数',
-    description: '根据训练结果调整模型超参数，提升模型性能...',
+    title: 'Adjusting Parameters',
+    description: 'Adjusting model hyperparameters based on training results to improve model performance...',
     icon: Settings,
     color: 'text-yellow-600',
     bgColor: 'bg-yellow-100'
   },
   {
     id: 'retrain',
-    title: '再训练',
-    description: '使用优化后的参数重新训练模型，确保最佳效果...',
+    title: 'Retraining',
+    description: 'Retraining the model with optimized parameters to ensure the best results...',
     icon: RotateCcw,
     color: 'text-orange-600',
     bgColor: 'bg-orange-100'
   },
   {
     id: 'test',
-    title: '测试结果',
-    description: '在测试集上验证模型性能，评估准确率和效果...',
+    title: 'Testing Results',
+    description: 'Validating model performance on the test set, evaluating accuracy and effectiveness...',
     icon: TestTube,
     color: 'text-green-600',
     bgColor: 'bg-green-100'
   },
   {
     id: 'complete',
-    title: '完成',
-    description: 'AI模型训练完成，已成功部署到选定区域！',
+    title: 'Complete',
+    description: 'AI model training completed and successfully deployed to the selected area!',
     icon: CheckCircle2,
     color: 'text-green-600',
     bgColor: 'bg-green-100'
@@ -124,7 +124,7 @@ export default function DeploymentStatusPage() {
                 onClick={handleReturnToGame}
                 className="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-200 hover:scale-105 shadow-lg"
               >
-                返回游戏
+                Back to Game
                 <CheckCircle className="w-5 h-5" />
               </button>
             )}
@@ -182,7 +182,7 @@ export default function DeploymentStatusPage() {
                 ))}
               </div>
               <p className="text-sm text-gray-500">
-                步骤 {currentStageIndex + 1} / {LOADING_STAGES.length}
+                Step {currentStageIndex + 1} / {LOADING_STAGES.length}
               </p>
             </div>
           )}
@@ -194,9 +194,9 @@ export default function DeploymentStatusPage() {
                 <div className="flex items-center justify-center mb-4">
                   <CheckCircle2 className="w-12 h-12 text-green-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-green-800 mb-2">部署完成！</h2>
+                <h2 className="text-2xl font-bold text-green-800 mb-2">Deployment Complete!</h2>
                 <p className="text-green-700">
-                  AI模型已成功部署到选定区域，现在可以开始使用AI辅助决策功能。
+                  The AI model has been successfully deployed to the selected area. You can now start using AI-assisted decision-making features.
                 </p>
               </div>
             </div>

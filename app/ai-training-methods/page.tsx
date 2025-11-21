@@ -27,132 +27,132 @@ interface TrainingMethod {
 const TRAINING_METHODS: TrainingMethod[] = [
   {
     id: 'gan',
-    name: 'GAN (生成对抗网络)',
-    description: '使用生成对抗网络技术训练AI模型，通过生成器和判别器的对抗学习提高模型性能',
+    name: 'GAN (Generative Adversarial Network)',
+    description: 'Train AI models using generative adversarial network technology, improving model performance through adversarial learning between generator and discriminator',
     icon: Brain,
     color: 'text-purple-600',
     bgColor: 'bg-purple-100',
     imageUrl: '/city_overview.png',
     accuracy: 85,
     cost: 15000,
-    time: '2-3天',
+    time: '2-3 days',
     difficulty: 'hard',
     pros: [
-      '生成高质量合成数据',
-      '提高模型泛化能力',
-      '减少数据偏见',
-      '适应性强'
+      'Generate high-quality synthetic data',
+      'Improve model generalization',
+      'Reduce data bias',
+      'Strong adaptability'
     ],
     cons: [
-      '训练复杂',
-      '计算资源需求大',
-      '训练时间长',
-      '调试困难'
+      'Complex training process',
+      'High computational resource requirements',
+      'Long training time',
+      'Difficult to debug'
     ],
-    features: ['数据增强', '对抗训练', '生成模型', '深度学习']
+    features: ['Data Augmentation', 'Adversarial Training', 'Generative Model', 'Deep Learning']
   },
   {
     id: 'rag',
-    name: 'RAG (检索增强生成)',
-    description: '结合检索和生成技术，通过外部知识库增强AI模型的推理和决策能力',
+    name: 'RAG (Retrieval-Augmented Generation)',
+    description: 'Combine retrieval and generation techniques to enhance AI model reasoning and decision-making capabilities through external knowledge bases',
     icon: Target,
     color: 'text-blue-600',
     bgColor: 'bg-blue-100',
     imageUrl: '/city_overview2 .png',
     accuracy: 92,
     cost: 12000,
-    time: '1-2天',
+    time: '1-2 days',
     difficulty: 'medium',
     pros: [
-      '知识更新及时',
-      '推理能力强',
-      '可解释性好',
-      '成本相对较低'
+      'Timely knowledge updates',
+      'Strong reasoning ability',
+      'Good interpretability',
+      'Relatively low cost'
     ],
     cons: [
-      '依赖外部知识库',
-      '检索延迟',
-      '知识库维护成本',
-      '可能检索到错误信息'
+      'Dependent on external knowledge base',
+      'Retrieval latency',
+      'Knowledge base maintenance cost',
+      'May retrieve incorrect information'
     ],
-    features: ['知识检索', '增强生成', '实时更新', '可解释AI']
+    features: ['Knowledge Retrieval', 'Augmented Generation', 'Real-time Updates', 'Explainable AI']
   },
   {
     id: 'transformer',
-    name: 'Transformer架构',
-    description: '基于注意力机制的深度学习架构，在自然语言处理和序列建模方面表现优异',
+    name: 'Transformer Architecture',
+    description: 'Deep learning architecture based on attention mechanism, excellent performance in natural language processing and sequence modeling',
     icon: Zap,
     color: 'text-yellow-600',
     bgColor: 'bg-yellow-100',
     imageUrl: '/city_overview3.png',
     accuracy: 88,
     cost: 10000,
-    time: '1-2天',
+    time: '1-2 days',
     difficulty: 'medium',
     pros: [
-      '并行计算效率高',
-      '长序列处理能力强',
-      '注意力机制优秀',
-      '预训练模型丰富'
+      'High parallel computing efficiency',
+      'Strong long-sequence processing capability',
+      'Excellent attention mechanism',
+      'Rich pre-trained models'
     ],
     cons: [
-      '内存消耗大',
-      '模型参数量大',
-      '推理速度相对较慢'
+      'High memory consumption',
+      'Large model parameters',
+      'Relatively slow inference speed'
     ],
-    features: ['注意力机制', '并行计算', '序列建模', '预训练模型']
+    features: ['Attention Mechanism', 'Parallel Computing', 'Sequence Modeling', 'Pre-trained Models']
   },
   {
     id: 'federated',
-    name: '联邦学习',
-    description: '分布式机器学习方法，在保护数据隐私的同时实现多源数据协同训练',
+    name: 'Federated Learning',
+    description: 'Distributed machine learning method that enables multi-source data collaborative training while protecting data privacy',
     icon: Shield,
     color: 'text-green-600',
     bgColor: 'bg-green-100',
     imageUrl: '/city_overview.png',
     accuracy: 80,
     cost: 8000,
-    time: '3-5天',
+    time: '3-5 days',
     difficulty: 'hard',
     pros: [
-      '保护数据隐私',
-      '多源数据协同',
-      '降低通信成本',
-      '符合法规要求'
+      'Protect data privacy',
+      'Multi-source data collaboration',
+      'Reduce communication costs',
+      'Comply with regulatory requirements'
     ],
     cons: [
-      '通信开销大',
-      '模型收敛慢',
-      '数据异构性挑战',
-      '安全性要求高'
+      'High communication overhead',
+      'Slow model convergence',
+      'Data heterogeneity challenges',
+      'High security requirements'
     ],
-    features: ['隐私保护', '分布式训练', '数据协同', '安全通信']
+    features: ['Privacy Protection', 'Distributed Training', 'Data Collaboration', 'Secure Communication']
   },
   {
     id: 'ensemble',
-    name: '集成学习',
-    description: '结合多个基础模型的预测结果，通过投票或平均等方式提高整体性能',
+    name: 'Ensemble Learning',
+    description: 'Combine predictions from multiple base models to improve overall performance through voting or averaging',
     icon: Users,
     color: 'text-orange-600',
     bgColor: 'bg-orange-100',
     imageUrl: '/city_overview2 .png',
     accuracy: 90,
     cost: 6000,
-    time: '1天',
+    time: '1 day',
     difficulty: 'easy',
     pros: [
-      '实现简单',
-      '性能稳定',
-      '成本较低',
-      '易于理解和调试'
+      'Simple implementation',
+      'Stable performance',
+      'Relatively low cost',
+      'Easy to understand and debug'
     ],
     cons: [
-      '计算资源需求大',
-      '模型存储空间大',
-      '训练时间长',
-      '可能过拟合'
+      'High computational resource requirements',
+      'Large model storage space',
+      'Long training time',
+      'May overfit'
     ],
-    features: ['多模型融合', '投票机制', '性能稳定', '易于实现']
+    features: ['Multi-model Fusion', 'Voting Mechanism', 'Stable Performance', 'Easy Implementation']
   }
 ]
 
@@ -190,10 +190,10 @@ export default function AITrainingMethodsPage() {
 
   const getDifficultyText = (difficulty: string) => {
     switch (difficulty) {
-      case 'easy': return '简单'
-      case 'medium': return '中等'
-      case 'hard': return '困难'
-      default: return '未知'
+      case 'easy': return 'Easy'
+      case 'medium': return 'Medium'
+      case 'hard': return 'Hard'
+      default: return 'Unknown'
     }
   }
 
@@ -222,7 +222,7 @@ export default function AITrainingMethodsPage() {
                 }}
               >
                 <ArrowLeft className="w-5 h-5" />
-                返回数据集选择
+                Back to Dataset Selection
               </Link>
             </div>
             
@@ -231,7 +231,7 @@ export default function AITrainingMethodsPage() {
               onClick={handleConfirm}
               className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 hover:scale-105 shadow-lg"
             >
-              选择此训练方式
+              Select Training Method
               <ArrowRight className="w-5 h-5" />
             </button>
           </div>
@@ -243,7 +243,7 @@ export default function AITrainingMethodsPage() {
         {/* 左侧训练方式列表 */}
         <div className="w-1/3 bg-white border-r border-gray-200 overflow-y-auto">
           <div className="p-4">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">训练方式列表</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Training Methods</h2>
             <div className="space-y-3">
               {TRAINING_METHODS.map((method) => (
                 <div
@@ -267,19 +267,19 @@ export default function AITrainingMethodsPage() {
                   
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600">准确率</span>
+                      <span className="text-gray-600">Accuracy</span>
                       <span className="font-semibold text-green-600">{method.accuracy}%</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600">成本</span>
+                      <span className="text-gray-600">Cost</span>
                       <span className="font-semibold text-blue-600">¥{method.cost.toLocaleString()}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600">时间</span>
+                      <span className="text-gray-600">Time</span>
                       <span className="font-semibold text-purple-600">{method.time}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600">难度</span>
+                      <span className="text-gray-600">Difficulty</span>
                       <span className={`px-2 py-1 rounded-full text-xs ${getDifficultyColor(method.difficulty)}`}>
                         {getDifficultyText(method.difficulty)}
                       </span>
@@ -330,28 +330,28 @@ export default function AITrainingMethodsPage() {
                         <Target className="w-5 h-5 text-green-600" />
                       </div>
                       <div className="text-2xl font-bold text-green-600">{selectedMethod.accuracy}%</div>
-                      <div className="text-sm text-gray-600">准确率</div>
+                      <div className="text-sm text-gray-600">Accuracy</div>
                     </div>
                     <div className="bg-white rounded-lg p-4 text-center shadow-sm">
                       <div className="flex items-center justify-center mb-2">
                         <DollarSign className="w-5 h-5 text-blue-600" />
                       </div>
                       <div className="text-2xl font-bold text-blue-600">¥{selectedMethod.cost.toLocaleString()}</div>
-                      <div className="text-sm text-gray-600">成本</div>
+                      <div className="text-sm text-gray-600">Cost</div>
                     </div>
                     <div className="bg-white rounded-lg p-4 text-center shadow-sm">
                       <div className="flex items-center justify-center mb-2">
                         <Clock className="w-5 h-5 text-purple-600" />
                       </div>
                       <div className="text-2xl font-bold text-purple-600">{selectedMethod.time}</div>
-                      <div className="text-sm text-gray-600">训练时间</div>
+                      <div className="text-sm text-gray-600">Training Time</div>
                     </div>
                     <div className="bg-white rounded-lg p-4 text-center shadow-sm">
                       <div className="flex items-center justify-center mb-2">
                         <TrendingUp className="w-5 h-5 text-orange-600" />
                       </div>
                       <div className="text-2xl font-bold text-orange-600">{getDifficultyText(selectedMethod.difficulty)}</div>
-                      <div className="text-sm text-gray-600">难度</div>
+                      <div className="text-sm text-gray-600">Difficulty</div>
                     </div>
                   </div>
 
@@ -360,7 +360,7 @@ export default function AITrainingMethodsPage() {
                     <div className="bg-white rounded-lg p-6 shadow-sm">
                       <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                         <CheckCircle className="w-5 h-5 text-green-600" />
-                        优势
+                        Pros
                       </h3>
                       <ul className="space-y-2">
                         {selectedMethod.pros.map((pro, index) => (
@@ -374,7 +374,7 @@ export default function AITrainingMethodsPage() {
                     <div className="bg-white rounded-lg p-6 shadow-sm">
                       <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                         <XCircle className="w-5 h-5 text-red-600" />
-                        劣势
+                        Cons
                       </h3>
                       <ul className="space-y-2">
                         {selectedMethod.cons.map((con, index) => (
@@ -389,7 +389,7 @@ export default function AITrainingMethodsPage() {
 
                   {/* 技术特性 */}
                   <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">技术特性</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Technical Features</h3>
                     <div className="flex flex-wrap gap-2">
                       {selectedMethod.features.map((feature, index) => (
                         <span
@@ -409,7 +409,7 @@ export default function AITrainingMethodsPage() {
             <div className="h-full flex items-center justify-center">
               <div className="text-center text-gray-500">
                 <Brain className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                <p className="text-lg">请从左侧选择一个训练方式</p>
+                <p className="text-lg">Please select a training method from the left</p>
               </div>
             </div>
           )}
