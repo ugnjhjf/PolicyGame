@@ -6,6 +6,7 @@ import Link from 'next/link'
 import styles from '../../styles/animations.module.css'
 import { AI_DATASETS, type DatasetInfo } from '../../config/ai/datasetConfig'
 import ProgressBar, { getStepsForPage } from '../../components/ProgressBar'
+import GameStatusBar from '../../components/GameStatusBar'
 
 export default function AIDatasetPage() {
   const [selectedDataset, setSelectedDataset] = useState<DatasetInfo | null>(AI_DATASETS[0]) // 默认选择第一个
@@ -52,6 +53,9 @@ export default function AIDatasetPage() {
 
   return (
     <div className={`min-h-screen bg-gray-50 flex flex-col ${isAnimating ? styles.slideOutToLeft : styles.slideInFromRight}`}>
+      {/* 游戏状态栏 */}
+      <GameStatusBar />
+      
       {/* 进度条 */}
       <ProgressBar steps={getStepsForPage('dataset')} />
       

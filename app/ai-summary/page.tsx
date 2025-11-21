@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, CheckCircle, Database, Brain, MapPin, Building, 
 import Link from 'next/link'
 import styles from '../../styles/animations.module.css'
 import ProgressBar, { getStepsForPage } from '../../components/ProgressBar'
+import GameStatusBar from '../../components/GameStatusBar'
 import { type DatasetInfo } from '../../config/ai/datasetConfig'
 
 interface TrainingMethod {
@@ -113,6 +114,9 @@ export default function AISummaryPage() {
 
   return (
     <div className={`min-h-screen bg-gray-50 flex flex-col ${isAnimating ? styles.slideOutToLeft : styles.slideInFromRight}`}>
+      {/* 游戏状态栏 */}
+      <GameStatusBar />
+      
       <ProgressBar steps={getStepsForPage('summary')} />
       
       <div className="bg-white shadow-sm border-b">

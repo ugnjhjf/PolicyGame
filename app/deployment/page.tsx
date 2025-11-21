@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, CheckCircle, XCircle, MapPin, Users, Shield, Eye
 import Link from 'next/link'
 import styles from '../../styles/animations.module.css'
 import ProgressBar, { getStepsForPage } from '../../components/ProgressBar'
+import GameStatusBar from '../../components/GameStatusBar'
 
 interface DeploymentArea {
   id: string
@@ -121,6 +122,9 @@ export default function DeploymentPage() {
 
   return (
     <div className={`min-h-screen bg-gray-50 flex flex-col ${isAnimating ? styles.slideOutToLeft : styles.slideInFromRight}`}>
+      {/* 游戏状态栏 */}
+      <GameStatusBar />
+      
       {/* 进度条 */}
       <ProgressBar steps={getStepsForPage('deployment')} />
       

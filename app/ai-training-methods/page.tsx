@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Brain, Zap, Target, Shield
 import Link from 'next/link'
 import styles from '../../styles/animations.module.css'
 import ProgressBar, { getStepsForPage } from '../../components/ProgressBar'
+import GameStatusBar from '../../components/GameStatusBar'
 
 interface TrainingMethod {
   id: string
@@ -198,6 +199,9 @@ export default function AITrainingMethodsPage() {
 
   return (
     <div className={`min-h-screen bg-gray-50 flex flex-col ${isAnimating ? styles.slideOutToRight : styles.slideInFromLeft}`}>
+      {/* 游戏状态栏 */}
+      <GameStatusBar />
+      
       {/* 进度条 */}
       <ProgressBar steps={getStepsForPage('training')} />
       
