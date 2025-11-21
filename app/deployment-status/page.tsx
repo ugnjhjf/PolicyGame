@@ -196,7 +196,7 @@ export default function DeploymentStatusPage() {
                 </div>
                 <h2 className="text-2xl font-bold text-green-800 mb-2">Deployment Complete!</h2>
                 <p className="text-green-700">
-                  The AI model has been successfully deployed to the selected area. You can now start using AI-assisted decision-making features.
+                  The AI model has been successfully deployed to the selected area.
                 </p>
               </div>
             </div>

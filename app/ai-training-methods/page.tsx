@@ -28,7 +28,7 @@ const TRAINING_METHODS: TrainingMethod[] = [
   {
     id: 'gan',
     name: 'GAN (Generative Adversarial Network)',
-    description: 'Train AI models using generative adversarial network technology, improving model performance through adversarial learning between generator and discriminator',
+    description: 'Using generative adversarial network, improving model performance through adversarial learning between generator and discriminator',
     icon: Brain,
     color: 'text-purple-600',
     bgColor: 'bg-purple-100',
@@ -54,7 +54,7 @@ const TRAINING_METHODS: TrainingMethod[] = [
   {
     id: 'rag',
     name: 'RAG (Retrieval-Augmented Generation)',
-    description: 'Combine retrieval and generation techniques to enhance AI model reasoning and decision-making capabilities through external knowledge bases',
+    description: 'Enhance AI model reasoning and decision-making capabilities through external knowledge bases',
     icon: Target,
     color: 'text-blue-600',
     bgColor: 'bg-blue-100',
@@ -80,7 +80,7 @@ const TRAINING_METHODS: TrainingMethod[] = [
   {
     id: 'transformer',
     name: 'Transformer Architecture',
-    description: 'Deep learning architecture based on attention mechanism, excellent performance in natural language processing and sequence modeling',
+    description: 'Excellent performance in natural language processing and sequence modeling',
     icon: Zap,
     color: 'text-yellow-600',
     bgColor: 'bg-yellow-100',
@@ -105,7 +105,7 @@ const TRAINING_METHODS: TrainingMethod[] = [
   {
     id: 'federated',
     name: 'Federated Learning',
-    description: 'Distributed machine learning method that enables multi-source data collaborative training while protecting data privacy',
+    description: 'Enables multi-source data collaborative training while protecting data privacy',
     icon: Shield,
     color: 'text-green-600',
     bgColor: 'bg-green-100',
@@ -131,7 +131,7 @@ const TRAINING_METHODS: TrainingMethod[] = [
   {
     id: 'ensemble',
     name: 'Ensemble Learning',
-    description: 'Combine predictions from multiple base models to improve overall performance through voting or averaging',
+    description: 'Improve overall performance through voting or averaging',
     icon: Users,
     color: 'text-orange-600',
     bgColor: 'bg-orange-100',
