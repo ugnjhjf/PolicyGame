@@ -9,6 +9,7 @@ import { DebugMenu } from '../../components/debug'
 import { EventManager, CrimeSurgeEvent, CommunityProtestEvent, EventPanel, EmergencyEventSelector } from '../../components/events'
 import DataCenterWelcome from '../../components/DataCenterWelcome'
 import GameStatusBar from '../../components/GameStatusBar'
+import GameObjectivePanel from '../../components/GameObjectivePanel'
 import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../config/data'
 // import { initializeGameEngine } from '../../engine/core' // 已移除实时模拟功能
 
@@ -170,6 +171,9 @@ export default function GamePage() {
 
       {/* 顶部城市状态栏 */}
       <GameStatusBar />
+
+      {/* 左侧目标面板 */}
+      <GameObjectivePanel />
 
       {/* Central District 面板 */}
       <CentralDistrictPanel
