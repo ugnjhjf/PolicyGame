@@ -20,7 +20,6 @@ interface PoliceStrategy {
   trustChange: number
   pros: string[]
   cons: string[]
-  features: string[]
 }
 
 const POLICE_STRATEGIES: PoliceStrategy[] = [
@@ -46,8 +45,7 @@ const POLICE_STRATEGIES: PoliceStrategy[] = [
       'Can displace crime to other areas',
       'May create tension with communities',
       'Requires accurate hotspot identification'
-    ],
-    features: ['Hotspot Focus', 'Intensive Patrols', 'Crime Suppression', 'Targeted Response']
+    ]
   },
   {
     id: 'proportional_patrol',
@@ -71,8 +69,7 @@ const POLICE_STRATEGIES: PoliceStrategy[] = [
       'Limited impact on crime hotspots',
       'Requires accurate data for distribution',
       'Moderate effectiveness overall'
-    ],
-    features: ['Balanced Distribution', 'Data-Driven', 'Fair Allocation', 'Moderate Impact']
+    ]
   },
   {
     id: 'random_patrol',
@@ -96,8 +93,7 @@ const POLICE_STRATEGIES: PoliceStrategy[] = [
       'May miss high-crime areas',
       'Less effective than targeted approaches',
       'Lower overall effectiveness'
-    ],
-    features: ['Random Distribution', 'Unpredictable', 'Wide Coverage', 'Low Cost']
+    ]
   }
 ]
 
@@ -278,21 +274,6 @@ export default function PoliceStrategyPage() {
                             {selectedStrategy.trustChange >= 0 ? '+' : ''}{selectedStrategy.trustChange}
                           </span>
                         </div>
-                      </div>
-                    </div>
-
-                    {/* 特征列表 */}
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold text-gray-900">Strategy Features</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedStrategy.features.map((feature, index) => (
-                          <span
-                            key={index}
-                            className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
-                          >
-                            {feature}
-                          </span>
-                        ))}
                       </div>
                     </div>
                   </div>

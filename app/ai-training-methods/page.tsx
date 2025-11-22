@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
-import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Brain, Zap, Target, Shield, Users, Clock, TrendingUp } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Brain, Zap, Target, Shield, Users, Clock, TrendingUp, Heart } from 'lucide-react'
 import Link from 'next/link'
 import styles from '../../styles/animations.module.css'
+import { GameStateManager } from '../../config/data'
 import ProgressBar, { getStepsForPage } from '../../components/ProgressBar'
 import GameStatusBar from '../../components/GameStatusBar'
 
@@ -21,7 +22,11 @@ interface TrainingMethod {
   difficulty: 'easy' | 'medium' | 'hard'
   pros: string[]
   cons: string[]
-  features: string[]
+  effects?: {
+    crimeRate: number // 犯罪率变化
+    accuracy: number // 准确率变化
+    communityTrust: number // 社区信任度变化
+  }
 }
 
 const TRAINING_METHODS: TrainingMethod[] = [
@@ -49,33 +54,11 @@ const TRAINING_METHODS: TrainingMethod[] = [
       'Long training time',
       'Difficult to debug'
     ],
-    features: ['Data Augmentation', 'Adversarial Training', 'Generative Model', 'Deep Learning']
-  },
-  {
-    id: 'rag',
-    name: 'RAG (Retrieval-Augmented Generation)',
-    description: 'Enhance AI model reasoning and decision-making capabilities through external knowledge bases',
-    icon: Target,
-    color: 'text-blue-600',
-    bgColor: 'bg-blue-100',
-    imageUrl: '/city_overview2 .png',
-    accuracy: 92,
-    resources: 4,
-    time: '1-2 days',
-    difficulty: 'medium',
-    pros: [
-      'Timely knowledge updates',
-      'Strong reasoning ability',
-      'Good interpretability',
-      'Relatively low resource consumption'
-    ],
-    cons: [
-      'Dependent on external knowledge base',
-      'Retrieval latency',
-      'Knowledge base maintenance resources',
-      'May retrieve incorrect information'
-    ],
-    features: ['Knowledge Retrieval', 'Augmented Generation', 'Real-time Updates', 'Explainable AI']
+    effects: {
+      crimeRate: -15,
+      accuracy: 20,
+      communityTrust: -10
+    }
   },
   {
     id: 'transformer',
@@ -100,65 +83,167 @@ const TRAINING_METHODS: TrainingMethod[] = [
       'Large model parameters',
       'Relatively slow inference speed'
     ],
-    features: ['Attention Mechanism', 'Parallel Computing', 'Sequence Modeling', 'Pre-trained Models']
+    effects: {
+      crimeRate: -8,
+      accuracy: 2,
+      communityTrust: 5
+    }
   },
   {
-    id: 'federated',
-    name: 'Federated Learning',
-    description: 'Enables multi-source data collaborative training while protecting data privacy',
-    icon: Shield,
-    color: 'text-green-600',
-    bgColor: 'bg-green-100',
-    imageUrl: '/city_overview.png',
-    accuracy: 80,
-    resources: 3,
-    time: '3-5 days',
-    difficulty: 'hard',
-    pros: [
-      'Protect data privacy',
-      'Multi-source data collaboration',
-      'Reduce communication resource consumption',
-      'Comply with regulatory requirements'
-    ],
-    cons: [
-      'High communication overhead',
-      'Slow model convergence',
-      'Data heterogeneity challenges',
-      'High security requirements'
-    ],
-    features: ['Privacy Protection', 'Distributed Training', 'Data Collaboration', 'Secure Communication']
-  },
-  {
-    id: 'ensemble',
-    name: 'Ensemble Learning',
-    description: 'Improve overall performance through voting or averaging',
-    icon: Users,
-    color: 'text-orange-600',
-    bgColor: 'bg-orange-100',
+    id: 'supervision',
+    name: 'Supervision Learning',
+    description: 'Train AI models using labeled data to learn patterns and make predictions',
+    icon: Target,
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-100',
     imageUrl: '/city_overview2 .png',
-    accuracy: 90,
-    resources: 2,
-    time: '1 day',
-    difficulty: 'easy',
+    accuracy: 92,
+    resources: 4,
+    time: '1-2 days',
+    difficulty: 'medium',
     pros: [
-      'Simple implementation',
-      'Stable performance',
-      'Relatively low resource consumption',
-      'Easy to understand and debug'
+      'High accuracy with labeled data',
+      'Strong pattern recognition',
+      'Good interpretability',
+      'Relatively low resource consumption'
     ],
     cons: [
-      'High computational resource requirements',
-      'Large model storage space',
-      'Long training time',
-      'May overfit'
+      'Requires large labeled dataset',
+      'Data labeling cost',
+      'May overfit to training data',
+      'Limited to labeled patterns'
     ],
-    features: ['Multi-model Fusion', 'Voting Mechanism', 'Stable Performance', 'Easy Implementation']
+    effects: {
+      crimeRate: -5,
+      accuracy: -10,
+      communityTrust: 20
+    }
   }
 ]
 
+// Round 2 Training Methods (Threshold Adjustment)
+const ROUND2_TRAINING_METHODS: TrainingMethod[] = [
+  {
+    id: 'lower-threshold',
+    name: 'Lower Threshold',
+    description: 'Reduce the decision threshold to increase detection sensitivity, catching more potential cases but with higher false positive risk.',
+    icon: TrendingUp,
+    color: 'text-red-600',
+    bgColor: 'bg-red-100',
+    imageUrl: '/city_overview.png',
+    accuracy: 90,
+    resources: 5,
+    time: '1-2 days',
+    difficulty: 'medium',
+    pros: [
+      'Higher detection rate',
+      'Catches more cases',
+      'Better crime prevention',
+      'Comprehensive coverage'
+    ],
+    cons: [
+      'Higher false positive rate',
+      'May reduce community trust',
+      'Resource intensive',
+      'Potential over-policing'
+    ],
+    effects: {
+      crimeRate: -15,
+      accuracy: 20,
+      communityTrust: -10
+    }
+  },
+  {
+    id: 'raise-threshold',
+    name: 'Raise Threshold',
+    description: 'Increase the decision threshold to reduce false positives, focusing only on high-confidence cases to maintain accuracy.',
+    icon: Target,
+    color: 'text-green-600',
+    bgColor: 'bg-green-100',
+    imageUrl: '/city_overview3.png',
+    accuracy: 95,
+    resources: 4,
+    time: '1-2 days',
+    difficulty: 'medium',
+    pros: [
+      'Lower false positive rate',
+      'Higher accuracy',
+      'Better community trust',
+      'More conservative approach'
+    ],
+    cons: [
+      'May miss some cases',
+      'Lower detection rate',
+      'Potential crime increase',
+      'Less comprehensive coverage'
+    ],
+    effects: {
+      crimeRate: 5,
+      accuracy: -5,
+      communityTrust: 10
+    }
+  },
+  {
+    id: 'region-optimized-threshold',
+    name: 'Region-Optimized Threshold',
+    description: 'Apply different threshold levels optimized for specific regions based on local crime patterns and community characteristics.',
+    icon: Zap,
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-100',
+    imageUrl: '/city_overview2 .png',
+    accuracy: 88,
+    resources: 4,
+    time: '1-2 days',
+    difficulty: 'medium',
+    pros: [
+      'Adaptive to local conditions',
+      'Balanced approach',
+      'Better regional accuracy',
+      'Context-aware decisions'
+    ],
+    cons: [
+      'Complex implementation',
+      'Requires regional data',
+      'May reduce overall trust',
+      'Moderate effectiveness'
+    ],
+    effects: {
+      crimeRate: -10,
+      accuracy: 10,
+      communityTrust: -5
+    }
+  }
+]
+
+// 根据 round 获取对应的训练方法
+const getTrainingMethodsForRound = (round: number): TrainingMethod[] => {
+  if (round === 2) {
+    return ROUND2_TRAINING_METHODS
+  }
+  return TRAINING_METHODS
+}
+
 export default function AITrainingMethodsPage() {
-  const [selectedMethod, setSelectedMethod] = useState<TrainingMethod | null>(TRAINING_METHODS[0]) // 默认选择第一个
+  const [trainingMethods, setTrainingMethods] = useState<TrainingMethod[]>([])
+  const [selectedMethod, setSelectedMethod] = useState<TrainingMethod | null>(null)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [currentRound, setCurrentRound] = useState(1)
+
+  useEffect(() => {
+    // 获取当前 round
+    const gameState = GameStateManager.getCurrentState()
+    const round = gameState.round
+    setCurrentRound(round)
+    
+    // 根据 round 加载对应的训练方法
+    const roundMethods = getTrainingMethodsForRound(round)
+    setTrainingMethods(roundMethods)
+    
+    // 设置默认选择第一个
+    if (roundMethods.length > 0) {
+      setSelectedMethod(roundMethods[0])
+    }
+  }, [])
 
   const handleMethodSelect = (method: TrainingMethod) => {
     setSelectedMethod(method)
@@ -245,7 +330,7 @@ export default function AITrainingMethodsPage() {
           <div className="p-4">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Training Methods</h2>
             <div className="space-y-3">
-              {TRAINING_METHODS.map((method) => (
+              {trainingMethods.map((method) => (
                 <div
                   key={method.id}
                   onClick={() => handleMethodSelect(method)}
@@ -272,7 +357,7 @@ export default function AITrainingMethodsPage() {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600">Resources</span>
-                      <span className="font-semibold text-blue-600">{method.resources}/10</span>
+                      <span className="font-semibold" style={{ color: '#FDE047' }}>{method.resources}/10</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600">Time</span>
@@ -334,9 +419,9 @@ export default function AITrainingMethodsPage() {
                     </div>
                     <div className="bg-white rounded-lg p-4 text-center shadow-sm">
                       <div className="flex items-center justify-center mb-2">
-                        <Zap className="w-5 h-5 text-blue-600" />
+                        <Zap className="w-5 h-5" style={{ color: '#A1A1AA' }} />
                       </div>
-                      <div className="text-2xl font-bold text-blue-600">{selectedMethod.resources}/10</div>
+                      <div className="text-2xl font-bold" style={{ color: '#FDE047' }}>{selectedMethod.resources}/10</div>
                       <div className="text-sm text-gray-600">Resources</div>
                     </div>
                     <div className="bg-white rounded-lg p-4 text-center shadow-sm">
@@ -354,6 +439,54 @@ export default function AITrainingMethodsPage() {
                       <div className="text-sm text-gray-600">Difficulty</div>
                     </div>
                   </div>
+
+                  {/* 效果显示 */}
+                  {selectedMethod.effects && (
+                    <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg p-6 mb-6 border border-blue-200">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">Effects on Game State</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="bg-white rounded-lg p-4 shadow-sm">
+                          <div className="flex items-center gap-2 mb-2">
+                            <TrendingUp className="w-5 h-5" style={{ color: '#A1A1AA' }} />
+                            <span className="text-sm font-medium text-gray-600">Crime Rate</span>
+                          </div>
+                          <div className={`text-2xl font-bold ${
+                            selectedMethod.effects.crimeRate > 0 ? 'text-red-600' : 
+                            selectedMethod.effects.crimeRate < 0 ? 'text-green-600' : 
+                            'text-gray-600'
+                          }`}>
+                            {selectedMethod.effects.crimeRate > 0 ? '+' : ''}{selectedMethod.effects.crimeRate}%
+                          </div>
+                        </div>
+                        <div className="bg-white rounded-lg p-4 shadow-sm">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Target className="w-5 h-5" style={{ color: '#A1A1AA' }} />
+                            <span className="text-sm font-medium text-gray-600">Accuracy</span>
+                          </div>
+                          <div className={`text-2xl font-bold ${
+                            selectedMethod.effects.accuracy > 0 ? 'text-green-600' : 
+                            selectedMethod.effects.accuracy < 0 ? 'text-red-600' : 
+                            'text-gray-600'
+                          }`}>
+                            {selectedMethod.effects.accuracy > 0 ? '+' : ''}{selectedMethod.effects.accuracy}%
+                          </div>
+                        </div>
+                        <div className="bg-white rounded-lg p-4 shadow-sm">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Heart className="w-5 h-5" style={{ color: '#A1A1AA' }} />
+                            <span className="text-sm font-medium text-gray-600">Community Trust</span>
+                          </div>
+                          <div className={`text-2xl font-bold ${
+                            selectedMethod.effects.communityTrust > 0 ? 'text-green-600' : 
+                            selectedMethod.effects.communityTrust < 0 ? 'text-red-600' : 
+                            'text-gray-600'
+                          }`}>
+                            {selectedMethod.effects.communityTrust > 0 ? '+' : ''}{selectedMethod.effects.communityTrust}%
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   {/* 优缺点对比 */}
                   <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -387,20 +520,6 @@ export default function AITrainingMethodsPage() {
                     </div>
                   </div>
 
-                  {/* 技术特性 */}
-                  <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Technical Features</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedMethod.features.map((feature, index) => (
-                        <span
-                          key={index}
-                          className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
-                        >
-                          {feature}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
 
                 </div>
               </div>

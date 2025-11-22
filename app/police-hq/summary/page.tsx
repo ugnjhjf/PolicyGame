@@ -20,7 +20,6 @@ interface PoliceStrategy {
   trustChange: number
   pros: string[]
   cons: string[]
-  features: string[]
 }
 
 interface SummaryData {
@@ -213,35 +212,7 @@ export default function PoliceHQSummaryPage() {
                 </div>
               </div>
             )}
-
-            {summaryData.selectedStrategy && (
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <TrendingUp className="w-6 h-6 text-green-600" />
-                  Expected Results
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                    <span className="text-gray-700">Crime Reduction:</span>
-                    <span className="font-bold text-2xl text-red-600">
-                      {summaryData.selectedStrategy.crimeReduction > 0 ? '-' : '+'}{Math.abs(summaryData.selectedStrategy.crimeReduction)}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                    <span className="text-gray-700">Accuracy Change:</span>
-                    <span className={`font-bold text-2xl ${summaryData.selectedStrategy.accuracyChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {summaryData.selectedStrategy.accuracyChange >= 0 ? '+' : ''}{summaryData.selectedStrategy.accuracyChange}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                    <span className="text-gray-700">Trust Change:</span>
-                    <span className={`font-bold text-2xl ${summaryData.selectedStrategy.trustChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {summaryData.selectedStrategy.trustChange >= 0 ? '+' : ''}{summaryData.selectedStrategy.trustChange}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
+            
           </div>
         </div>
       )}

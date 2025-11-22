@@ -7,6 +7,7 @@ import styles from '../../styles/animations.module.css'
 import ProgressBar, { getStepsForPage } from '../../components/ProgressBar'
 import GameStatusBar from '../../components/GameStatusBar'
 import { type DatasetInfo } from '../../config/ai/datasetConfig'
+import { GameStateManager } from '../../config/data'
 
 interface TrainingMethod {
   id: string
@@ -19,6 +20,11 @@ interface TrainingMethod {
   resources: number
   time: string
   difficulty: 'easy' | 'medium' | 'hard'
+  effects?: {
+    crimeRate: number
+    accuracy: number
+    communityTrust: number
+  }
 }
 
 interface SummaryData {
@@ -60,7 +66,18 @@ export default function AISummaryPage() {
   }, [])
 
   const handleConfirm = () => {
-    console.log('总结确认，准备部署 (仅视觉展示)')
+    if (summaryData.selectedDataset && summaryData.selectedMethod) {
+      // 立刻扣除资源
+      const totalResourceCost = (summaryData.selectedDataset.resources || 0) + (summaryData.selectedMethod.resources || 0)
+      if (totalResourceCost > 0) {
+        const currentState = GameStateManager.getCurrentState()
+        const newResources = Math.max(0, currentState.resources - totalResourceCost)
+        GameStateManager.updateState({ resources: newResources })
+        console.log(`Consumed resources: ${currentState.resources} -> ${newResources} (cost: ${totalResourceCost})`)
+      }
+      
+      console.log('总结确认，准备部署 (仅视觉展示)')
+    }
     
     // 添加退出动画
     setIsAnimating(true)
@@ -177,18 +194,14 @@ export default function AISummaryPage() {
                   </div>
                   <CheckCircle className="w-6 h-6 text-green-500 ml-auto" />
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                   <div>
                     <span className="text-gray-600">Accuracy:</span>
                     <span className="ml-2 font-semibold text-green-600">{summaryData.selectedDataset.accuracy}%</span>
                   </div>
                   <div>
-                    <span className="text-gray-600">Data Size:</span>
-                    <span className="ml-2 font-semibold">{summaryData.selectedDataset.size.toLocaleString()} records</span>
-                  </div>
-                  <div>
                     <span className="text-gray-600">Resources:</span>
-                    <span className="ml-2 font-semibold text-blue-600">{summaryData.selectedDataset.resources}/10</span>
+                    <span className="ml-2 font-semibold" style={{ color: '#FDE047' }}>{summaryData.selectedDataset.resources}/10</span>
                   </div>
                   <div>
                     <span className="text-gray-600">Bias Level:</span>
@@ -212,18 +225,14 @@ export default function AISummaryPage() {
                   </div>
                   <CheckCircle className="w-6 h-6 text-green-500 ml-auto" />
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                   <div>
                     <span className="text-gray-600">Accuracy:</span>
                     <span className="ml-2 font-semibold text-green-600">{summaryData.selectedMethod.accuracy}%</span>
                   </div>
                   <div>
                     <span className="text-gray-600">Resources:</span>
-                    <span className="ml-2 font-semibold text-blue-600">{summaryData.selectedMethod.resources}/10</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600">Training Time:</span>
-                    <span className="ml-2 font-semibold text-purple-600">{summaryData.selectedMethod.time}</span>
+                    <span className="ml-2 font-semibold" style={{ color: '#FDE047' }}>{summaryData.selectedMethod.resources}/10</span>
                   </div>
                   <div>
                     <span className="text-gray-600">Difficulty:</span>
@@ -238,50 +247,27 @@ export default function AISummaryPage() {
             {(summaryData.selectedDataset || summaryData.selectedMethod) && (
               <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <Zap className="w-6 h-6 text-blue-600" />
-                  Resources Summary
+                  <Zap className="w-6 h-6" style={{ color: '#A1A1AA' }} />
+                  Resources Allocation Summary
                 </h2>
                 <div className="space-y-3">
                   {summaryData.selectedDataset && (
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-700">Dataset Resources:</span>
+                      <span className="text-gray-700">Dataset Resources Cost:</span>
                       <span className="font-semibold text-gray-900">{summaryData.selectedDataset.resources}/10</span>
                     </div>
                   )}
                   {summaryData.selectedMethod && (
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-700">Training Method Resources:</span>
+                      <span className="text-gray-700">Training Method Cost:</span>
                       <span className="font-semibold text-gray-900">{summaryData.selectedMethod.resources}/10</span>
                     </div>
                   )}
                   <div className="border-t border-gray-300 pt-3 mt-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-xl font-bold text-gray-900">Total Resources:</span>
-                      <span className="text-2xl font-bold text-blue-600">{totalResources}/10</span>
+                      <span className="text-xl font-bold text-gray-900">Total Cost:</span>
+                      <span className="text-2xl font-bold" style={{ color: '#FDE047' }}>{totalResources}/10</span>
                     </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {summaryData.selectedMethod && (
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <TrendingUp className="w-6 h-6 text-green-600" />
-                  Expected Results
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                    <span className="text-gray-700">Expected Accuracy:</span>
-                    <span className="font-bold text-2xl text-blue-600">
-                      {summaryData.selectedMethod.accuracy}%
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                    <span className="text-gray-700">Training Time:</span>
-                    <span className="font-bold text-2xl text-purple-600">
-                      {summaryData.selectedMethod.time}
-                    </span>
                   </div>
                 </div>
               </div>

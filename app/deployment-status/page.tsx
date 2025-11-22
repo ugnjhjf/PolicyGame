@@ -7,6 +7,17 @@ import styles from '../../styles/animations.module.css'
 import ProgressBar, { getStepsForPage } from '../../components/ProgressBar'
 import GameStatusBar from '../../components/GameStatusBar'
 import { GameStateManager } from '../../config/data'
+import { type DatasetInfo } from '../../config/ai/datasetConfig'
+
+interface TrainingMethod {
+  id: string
+  name: string
+  effects?: {
+    crimeRate: number
+    accuracy: number
+    communityTrust: number
+  }
+}
 
 interface LoadingStage {
   id: string
@@ -95,8 +106,41 @@ export default function DeploymentStatusPage() {
       // 完成部署
       setIsLoading(false)
       
-      // 标记 Data Center 在本回合已完成
+      // 应用数据集和训练方法效果（在 Deployment Complete! 后）
       if (typeof window !== 'undefined') {
+        try {
+          const datasetStr = localStorage.getItem('selectedDataset')
+          const methodStr = localStorage.getItem('selectedMethod')
+          
+          const dataset: DatasetInfo | null = datasetStr ? JSON.parse(datasetStr) : null
+          const method: TrainingMethod | null = methodStr ? JSON.parse(methodStr) : null
+          
+          // 应用数据集效果
+          if (dataset?.effects) {
+            const stateAfterResource = GameStateManager.getCurrentState()
+            GameStateManager.updateState({
+              crimeRate: Math.max(0, Math.min(100, stateAfterResource.crimeRate + dataset.effects.crimeRate)),
+              arrestAccuracy: Math.max(0, Math.min(100, stateAfterResource.arrestAccuracy + dataset.effects.accuracy)),
+              communityTrust: Math.max(0, Math.min(100, stateAfterResource.communityTrust + dataset.effects.communityTrust))
+            })
+            console.log(`Applied dataset effects: Crime ${dataset.effects.crimeRate}, Accuracy ${dataset.effects.accuracy}, Trust ${dataset.effects.communityTrust}`)
+          }
+          
+          // 应用训练方法效果
+          if (method?.effects) {
+            const stateAfterDataset = GameStateManager.getCurrentState()
+            GameStateManager.updateState({
+              crimeRate: Math.max(0, Math.min(100, stateAfterDataset.crimeRate + method.effects.crimeRate)),
+              arrestAccuracy: Math.max(0, Math.min(100, stateAfterDataset.arrestAccuracy + method.effects.accuracy)),
+              communityTrust: Math.max(0, Math.min(100, stateAfterDataset.communityTrust + method.effects.communityTrust))
+            })
+            console.log(`Applied training method effects: Crime ${method.effects.crimeRate}, Accuracy ${method.effects.accuracy}, Trust ${method.effects.communityTrust}`)
+          }
+        } catch (error) {
+          console.error('Failed to apply effects:', error)
+        }
+        
+        // 标记 Data Center 在本回合已完成
         const gameState = GameStateManager.getCurrentState()
         const roundKey = `dataCenterCompleted_round${gameState.round}`
         localStorage.setItem(roundKey, 'true')
