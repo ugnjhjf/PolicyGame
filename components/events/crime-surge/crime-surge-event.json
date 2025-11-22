@@ -1,35 +1,35 @@
 {
   "id": "crime-surge-emergency",
-  "title": "犯罪率激增紧急事件",
-  "description": "近期城市犯罪率急剧上升，多个区域报告严重犯罪案件。现有警力严重不足，无法有效应对当前的犯罪浪潮。社区安全受到严重威胁，需要立即采取行动。",
+  "title": "Crime Surge Emergency Event",
+  "description": "The city's crime rate has risen sharply recently, with multiple areas reporting serious criminal cases. The existing police force is severely insufficient and unable to effectively respond to the current crime wave. Community safety is seriously threatened, immediate action is required.",
   "imageUrl": "/city_overview.png",
   "type": "emergency",
   "priority": "critical",
   "details": {
     "crimeIncrease": "20%",
-    "affectedAreas": ["中央区", "工业区", "住宅区"],
+    "affectedAreas": ["Central District", "Industrial District", "Residential District"],
     "reportedCases": 127,
     "arrests": 23,
     "policeShortage": "60%",
-    "responseTime": "平均45分钟"
+    "responseTime": "Average 45 minutes"
   },
   "consequences": {
     "immediate": [
-      "社区恐慌情绪蔓延",
-      "居民夜间不敢外出",
-      "商业活动受到严重影响"
+      "Community panic spreading",
+      "Residents afraid to go out at night",
+      "Business activities severely affected"
     ],
     "longTerm": [
-      "城市形象受损",
-      "投资环境恶化",
-      "人才流失加剧"
+      "City image damaged",
+      "Investment environment deteriorating",
+      "Talent drain intensifying"
     ]
   },
   "options": [
     {
       "id": "emergency-deployment",
-      "title": "紧急调派警力",
-      "description": "立即从其他区域调派警力支援，加强巡逻密度",
+      "title": "Emergency Police Deployment",
+      "description": "Immediately deploy police force from other areas for support, increase patrol density",
       "cost": 5000,
       "actionPoints": 3,
       "effects": {
@@ -45,8 +45,8 @@
     },
     {
       "id": "community-mobilization",
-      "title": "社区动员",
-      "description": "组织社区志愿者，建立邻里守望制度",
+      "title": "Community Mobilization",
+      "description": "Organize community volunteers, establish neighborhood watch system",
       "cost": 2000,
       "actionPoints": 2,
       "effects": {
@@ -62,8 +62,8 @@
     },
     {
       "id": "technology-upgrade",
-      "title": "技术升级",
-      "description": "部署更多监控设备，使用AI预测犯罪热点",
+      "title": "Technology Upgrade",
+      "description": "Deploy more surveillance equipment, use AI to predict crime hotspots",
       "cost": 15000,
       "actionPoints": 5,
       "effects": {
@@ -79,8 +79,8 @@
     },
     {
       "id": "do-nothing",
-      "title": "暂时观望",
-      "description": "等待更多信息，暂时不采取行动",
+      "title": "Temporary Wait",
+      "description": "Wait for more information, temporarily take no action",
       "cost": 0,
       "actionPoints": 0,
       "effects": {

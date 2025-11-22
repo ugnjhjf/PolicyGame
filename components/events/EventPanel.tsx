@@ -14,48 +14,48 @@ export default function EventPanel({ onTriggerEvent }: EventPanelProps) {
   const eventTypes = [
     {
       id: 'emergency-selector',
-      name: '紧急事件选择器',
-      description: '选择要触发的紧急事件',
+      name: 'Emergency Event Selector',
+      description: 'Select an emergency event to trigger',
       icon: AlertTriangle,
       color: 'bg-red-500',
       hoverColor: 'hover:bg-red-600'
     },
     {
       id: 'crime-surge',
-      name: '犯罪激增',
-      description: '犯罪率急剧上升，警力不足',
+      name: 'Crime Surge',
+      description: 'Crime rate rises sharply, insufficient police force',
       icon: AlertTriangle,
       color: 'bg-red-500',
       hoverColor: 'hover:bg-red-600'
     },
     {
       id: 'community-event',
-      name: '社区事件',
-      description: '社区抗议或集会活动',
+      name: 'Community Event',
+      description: 'Community protests or gatherings',
       icon: Users,
       color: 'bg-blue-500',
       hoverColor: 'hover:bg-blue-600'
     },
     {
       id: 'police-event',
-      name: '警力事件',
-      description: '警察罢工或设备故障',
+      name: 'Police Event',
+      description: 'Police strike or equipment failure',
       icon: Shield,
       color: 'bg-orange-500',
       hoverColor: 'hover:bg-orange-600'
     },
     {
       id: 'ai-dataset',
-      name: 'AI数据集',
-      description: '选择AI训练数据集',
+      name: 'AI Dataset',
+      description: 'Select AI training dataset',
       icon: Brain,
       color: 'bg-purple-500',
       hoverColor: 'hover:bg-purple-600'
     },
     {
       id: 'system-event',
-      name: '系统事件',
-      description: '系统维护或升级',
+      name: 'System Event',
+      description: 'System maintenance or upgrade',
       icon: Settings,
       color: 'bg-gray-500',
       hoverColor: 'hover:bg-gray-600'
@@ -74,7 +74,7 @@ export default function EventPanel({ onTriggerEvent }: EventPanelProps) {
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="p-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-lg transition-all duration-200 hover:scale-110"
-          title={isOpen ? "关闭事件面板" : "打开事件面板"}
+          title={isOpen ? "Close Event Panel" : "Open Event Panel"}
         >
           <Calendar className="w-5 h-5" />
         </button>
@@ -86,7 +86,7 @@ export default function EventPanel({ onTriggerEvent }: EventPanelProps) {
           <div className="p-4">
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Calendar className="w-5 h-5" />
-              事件面板
+              Event Panel
             </h3>
             
             <div className="space-y-2">
@@ -110,7 +110,7 @@ export default function EventPanel({ onTriggerEvent }: EventPanelProps) {
             
             <div className="mt-4 pt-3 border-t border-gray-200">
               <p className="text-xs text-gray-500 text-center">
-                点击事件类型触发对应事件
+                Click event type to trigger corresponding event
               </p>
             </div>
           </div>

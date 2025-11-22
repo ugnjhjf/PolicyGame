@@ -1,34 +1,34 @@
 {
   "id": "community-protest-emergency",
-  "title": "社区抗议活动紧急事件",
-  "description": "大量市民因不满政府政策而组织抗议活动，聚集在市中心广场。抗议活动规模不断扩大，已影响到正常交通秩序和商业活动。需要立即采取措施应对这一紧急情况。",
+  "title": "Community Protest Emergency Event",
+  "description": "A large number of citizens have organized protests due to dissatisfaction with government policies, gathering at the city center square. The protest scale continues to expand, affecting normal traffic order and business activities. Immediate action is required to address this emergency situation.",
   "imageUrl": "/city_overview2 .png",
   "type": "emergency",
   "priority": "critical",
   "details": {
-    "protestSize": "5000+人",
-    "affectedAreas": ["市中心广场", "政府大楼", "主要商业街"],
-    "duration": "已持续3小时",
-    "trafficImpact": "严重拥堵",
-    "businessImpact": "多家商店被迫关闭"
+    "protestSize": "5000+ people",
+    "affectedAreas": ["City Center Square", "Government Building", "Main Commercial Street"],
+    "duration": "3 hours ongoing",
+    "trafficImpact": "Severe Congestion",
+    "businessImpact": "Multiple stores forced to close"
   },
   "consequences": {
     "immediate": [
-      "交通严重拥堵",
-      "商业活动被迫中断",
-      "公共秩序受到挑战"
+      "Severe traffic congestion",
+      "Business activities forced to interrupt",
+      "Public order challenged"
     ],
     "longTerm": [
-      "政府公信力下降",
-      "投资环境恶化",
-      "社会稳定性受威胁"
+      "Government credibility decline",
+      "Investment environment deterioration",
+      "Social stability threatened"
     ]
   },
   "options": [
     {
       "id": "dialogue-negotiation",
-      "title": "对话协商",
-      "description": "派出代表与抗议者进行对话，寻求和平解决方案",
+      "title": "Dialogue and Negotiation",
+      "description": "Send representatives to dialogue with protesters, seeking peaceful solutions",
       "cost": 3000,
       "actionPoints": 2,
       "effects": {
@@ -44,8 +44,8 @@
     },
     {
       "id": "police-dispersal",
-      "title": "警力驱散",
-      "description": "调集警力维持秩序，必要时驱散抗议人群",
+      "title": "Police Dispersal",
+      "description": "Deploy police force to maintain order, disperse protesters if necessary",
       "cost": 8000,
       "actionPoints": 4,
       "effects": {
@@ -61,8 +61,8 @@
     },
     {
       "id": "policy-adjustment",
-      "title": "政策调整",
-      "description": "宣布暂停争议政策，重新评估并调整相关措施",
+      "title": "Policy Adjustment",
+      "description": "Announce suspension of controversial policies, re-evaluate and adjust related measures",
       "cost": 12000,
       "actionPoints": 6,
       "effects": {
@@ -78,8 +78,8 @@
     },
     {
       "id": "wait-and-see",
-      "title": "观望等待",
-      "description": "暂时不采取行动，观察事态发展",
+      "title": "Wait and See",
+      "description": "Temporarily take no action, observe the situation",
       "cost": 0,
       "actionPoints": 0,
       "effects": {

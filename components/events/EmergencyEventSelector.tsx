@@ -34,8 +34,8 @@ export default function EmergencyEventSelector({ isOpen, onClose, onSelectEvent 
   const emergencyEvents: EmergencyEvent[] = [
     {
       id: 'crime-surge',
-      name: '犯罪激增',
-      description: '犯罪率急剧上升，警力严重不足，需要立即采取行动',
+      name: 'Crime Surge',
+      description: 'Crime rate rises sharply, severe police shortage, immediate action required',
       icon: AlertTriangle,
       color: 'bg-red-500',
       hoverColor: 'hover:bg-red-600',
@@ -43,8 +43,8 @@ export default function EmergencyEventSelector({ isOpen, onClose, onSelectEvent 
     },
     {
       id: 'community-protest',
-      name: '社区抗议',
-      description: '社区居民因政策不满而组织大规模抗议活动',
+      name: 'Community Protest',
+      description: 'Community residents organize large-scale protests due to policy dissatisfaction',
       icon: Megaphone,
       color: 'bg-orange-500',
       hoverColor: 'hover:bg-orange-600',
@@ -52,8 +52,8 @@ export default function EmergencyEventSelector({ isOpen, onClose, onSelectEvent 
     },
     {
       id: 'police-strike',
-      name: '警察罢工',
-      description: '警察工会因薪资问题宣布罢工，警力完全瘫痪',
+      name: 'Police Strike',
+      description: 'Police union announces strike due to salary issues, police force completely paralyzed',
       icon: Shield,
       color: 'bg-orange-500',
       hoverColor: 'hover:bg-orange-600',
@@ -65,8 +65,8 @@ export default function EmergencyEventSelector({ isOpen, onClose, onSelectEvent 
     },
     {
       id: 'ai-system-failure',
-      name: 'AI系统故障',
-      description: 'AI预测系统出现严重故障，无法提供准确的犯罪预测',
+      name: 'AI System Failure',
+      description: 'AI prediction system experiences critical failure, unable to provide accurate crime predictions',
       icon: Brain,
       color: 'bg-purple-500',
       hoverColor: 'hover:bg-purple-600',
@@ -80,8 +80,8 @@ export default function EmergencyEventSelector({ isOpen, onClose, onSelectEvent 
     },
     {
       id: 'cyber-attack',
-      name: '网络攻击',
-      description: '城市管理系统遭受大规模网络攻击，数据安全受到威胁',
+      name: 'Cyber Attack',
+      description: 'City management system suffers large-scale cyber attack, data security threatened',
       icon: Settings,
       color: 'bg-gray-500',
       hoverColor: 'hover:bg-gray-600',
@@ -110,10 +110,10 @@ export default function EmergencyEventSelector({ isOpen, onClose, onSelectEvent 
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'available': return '可用'
-      case 'locked': return '锁定'
-      case 'completed': return '已完成'
-      default: return '未知'
+      case 'available': return 'Available'
+      case 'locked': return 'Locked'
+      case 'completed': return 'Completed'
+      default: return 'Unknown'
     }
   }
 
@@ -142,6 +142,7 @@ export default function EmergencyEventSelector({ isOpen, onClose, onSelectEvent 
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200 z-10"
+          title="Close"
         >
           <X className="w-5 h-5" />
         </button>
@@ -152,9 +153,9 @@ export default function EmergencyEventSelector({ isOpen, onClose, onSelectEvent 
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
               <AlertTriangle className="w-6 h-6 text-red-500" />
-              紧急事件选择器
+              Emergency Event Selector
             </h2>
-            <p className="text-gray-600">选择一个紧急事件来触发，不同事件有不同的解锁条件和影响</p>
+            <p className="text-gray-600">Select an emergency event to trigger, different events have different unlock conditions and effects</p>
           </div>
 
           {/* 事件列表 */}
@@ -206,14 +207,14 @@ export default function EmergencyEventSelector({ isOpen, onClose, onSelectEvent 
                       {event.requirements && (
                         <div className="text-xs text-gray-500 space-y-1">
                           {event.requirements.level && (
-                            <div>需要等级: {event.requirements.level}</div>
+                            <div>Required Level: {event.requirements.level}</div>
                           )}
                           {event.requirements.previousEvents && event.requirements.previousEvents.length > 0 && (
-                            <div>前置事件: {event.requirements.previousEvents.join(', ')}</div>
+                            <div>Prerequisites: {event.requirements.previousEvents.join(', ')}</div>
                           )}
                           {event.requirements.resources && (
                             <div>
-                              {event.requirements.resources.resources && `需要资源: ${event.requirements.resources.resources}`}
+                              {event.requirements.resources.resources && `Required Resources: ${event.requirements.resources.resources}`}
                             </div>
                           )}
                         </div>
@@ -236,7 +237,7 @@ export default function EmergencyEventSelector({ isOpen, onClose, onSelectEvent 
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'
               }`}
             >
-              {selectedEvent ? '触发选中事件' : '请选择一个事件'}
+              {selectedEvent ? 'Trigger Selected Event' : 'Please Select an Event'}
             </button>
           </div>
         </div>

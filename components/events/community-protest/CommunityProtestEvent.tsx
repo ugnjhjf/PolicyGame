@@ -44,7 +44,7 @@ export default function CommunityProtestEvent({ isOpen, onClose, onComplete }: C
       const currentState = GameStateManager.getCurrentState()
       const newCrimeRate = Math.min(100, currentState.crimeRate + 10)
       const newCommunityTrust = Math.max(0, currentState.communityTrust - 15)
-      console.log(`抗议事件影响: 犯罪率 ${currentState.crimeRate}% -> ${newCrimeRate}%, 社区信任 ${currentState.communityTrust}% -> ${newCommunityTrust}%`)
+      console.log(`Protest event impact: Crime rate ${currentState.crimeRate}% -> ${newCrimeRate}%, Community trust ${currentState.communityTrust}% -> ${newCommunityTrust}%`)
       GameStateManager.updateState({
         crimeRate: newCrimeRate,
         communityTrust: newCommunityTrust
@@ -75,7 +75,7 @@ export default function CommunityProtestEvent({ isOpen, onClose, onComplete }: C
           
           onComplete(selectedOption)
         } else {
-          alert('资源不足，无法执行此选项！')
+          alert('Insufficient resources, cannot execute this option!')
         }
       }
     }
@@ -99,6 +99,7 @@ export default function CommunityProtestEvent({ isOpen, onClose, onComplete }: C
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200 z-10"
+          title="Close"
         >
           <AlertTriangle className="w-5 h-5" />
         </button>
@@ -109,7 +110,7 @@ export default function CommunityProtestEvent({ isOpen, onClose, onComplete }: C
           <div className="mb-4 flex justify-start">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-orange-100 border border-orange-300 rounded-full">
               <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium text-orange-800">紧急事件 - 游戏已自动暂停</span>
+              <span className="text-sm font-medium text-orange-800">Emergency Event - Game Auto-Paused</span>
             </div>
           </div>
 
@@ -125,9 +126,9 @@ export default function CommunityProtestEvent({ isOpen, onClose, onComplete }: C
               <div className="absolute bottom-4 left-4 text-white">
                 <div className="flex items-center gap-2 mb-2">
                   <Megaphone className="w-6 h-6" />
-                  <span className="text-xl font-bold">抗议活动</span>
+                  <span className="text-xl font-bold">Protest Activity</span>
                 </div>
-                <p className="text-sm opacity-90">抗议规模 {eventData.details.protestSize}</p>
+                <p className="text-sm opacity-90">Protest Scale {eventData.details.protestSize}</p>
               </div>
             </div>
           </div>
@@ -145,28 +146,28 @@ export default function CommunityProtestEvent({ isOpen, onClose, onComplete }: C
             <div className="text-center">
               <div className="flex items-center justify-center gap-1 text-orange-600 mb-1">
                 <Users className="w-4 h-4" />
-                <span className="text-sm font-medium">抗议规模</span>
+                <span className="text-sm font-medium">Protest Scale</span>
               </div>
               <div className="text-2xl font-bold text-orange-600">{eventData.details.protestSize}</div>
             </div>
             <div className="text-center">
               <div className="flex items-center justify-center gap-1 text-red-600 mb-1">
                 <Clock className="w-4 h-4" />
-                <span className="text-sm font-medium">持续时间</span>
+                <span className="text-sm font-medium">Duration</span>
               </div>
               <div className="text-2xl font-bold text-red-600">{eventData.details.duration}</div>
             </div>
             <div className="text-center">
               <div className="flex items-center justify-center gap-1 text-yellow-600 mb-1">
                 <TrendingUp className="w-4 h-4" />
-                <span className="text-sm font-medium">交通影响</span>
+                <span className="text-sm font-medium">Traffic Impact</span>
               </div>
               <div className="text-2xl font-bold text-yellow-600">{eventData.details.trafficImpact}</div>
             </div>
             <div className="text-center">
               <div className="flex items-center justify-center gap-1 text-purple-600 mb-1">
                 <MessageSquare className="w-4 h-4" />
-                <span className="text-sm font-medium">商业影响</span>
+                <span className="text-sm font-medium">Business Impact</span>
               </div>
               <div className="text-2xl font-bold text-purple-600">{eventData.details.businessImpact}</div>
             </div>
@@ -174,7 +175,7 @@ export default function CommunityProtestEvent({ isOpen, onClose, onComplete }: C
 
           {/* 选项列表 */}
           <div className="mb-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">选择应对策略</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Select Response Strategy</h3>
             <div className="space-y-3">
               {eventData.options.map((option) => (
                 <div
@@ -195,7 +196,7 @@ export default function CommunityProtestEvent({ isOpen, onClose, onComplete }: C
                       <div className="flex items-center gap-4 text-sm">
                         <div className="flex items-center gap-1 text-blue-600">
                           <Zap className="w-4 h-4" />
-                          <span>资源: {option.resources}</span>
+                          <span>Resources: {option.resources}</span>
                         </div>
                       </div>
                     </div>
@@ -223,7 +224,7 @@ export default function CommunityProtestEvent({ isOpen, onClose, onComplete }: C
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'
               }`}
             >
-              {selectedOption ? '执行策略' : '请选择一个策略'}
+              {selectedOption ? 'Execute Strategy' : 'Please Select a Strategy'}
             </button>
           </div>
         </div>

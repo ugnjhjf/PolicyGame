@@ -42,7 +42,7 @@ export default function CrimeSurgeEvent({ isOpen, onClose, onComplete }: CrimeSu
     if (isOpen && !hasAppliedCrimeIncrease.current) {
       const currentState = GameStateManager.getCurrentState()
       const newCrimeRate = Math.min(100, currentState.crimeRate + 20)
-      console.log(`犯罪率上升: ${currentState.crimeRate}% -> ${newCrimeRate}%`)
+      console.log(`Crime rate increase: ${currentState.crimeRate}% -> ${newCrimeRate}%`)
       GameStateManager.updateState({
         crimeRate: newCrimeRate
       })
@@ -72,7 +72,7 @@ export default function CrimeSurgeEvent({ isOpen, onClose, onComplete }: CrimeSu
           
           onComplete(selectedOption)
         } else {
-          alert('资源不足，无法执行此选项！')
+          alert('Insufficient resources, cannot execute this option!')
         }
       }
     }
@@ -96,6 +96,7 @@ export default function CrimeSurgeEvent({ isOpen, onClose, onComplete }: CrimeSu
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200 z-10"
+          title="Close"
         >
           <AlertTriangle className="w-5 h-5" />
         </button>
@@ -106,7 +107,7 @@ export default function CrimeSurgeEvent({ isOpen, onClose, onComplete }: CrimeSu
           <div className="mb-4 flex justify-start">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-100 border border-red-300 rounded-full">
               <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium text-red-800">紧急事件 - 游戏已自动暂停</span>
+              <span className="text-sm font-medium text-red-800">Emergency Event - Game Auto-Paused</span>
             </div>
           </div>
 
@@ -122,9 +123,9 @@ export default function CrimeSurgeEvent({ isOpen, onClose, onComplete }: CrimeSu
               <div className="absolute bottom-4 left-4 text-white">
                 <div className="flex items-center gap-2 mb-2">
                   <AlertTriangle className="w-6 h-6" />
-                  <span className="text-xl font-bold">紧急状态</span>
+                  <span className="text-xl font-bold">Emergency Status</span>
                 </div>
-                <p className="text-sm opacity-90">犯罪率上升 {eventData.details.crimeIncrease}</p>
+                <p className="text-sm opacity-90">Crime Rate Increase {eventData.details.crimeIncrease}</p>
               </div>
             </div>
           </div>
@@ -142,28 +143,28 @@ export default function CrimeSurgeEvent({ isOpen, onClose, onComplete }: CrimeSu
             <div className="text-center">
               <div className="flex items-center justify-center gap-1 text-red-600 mb-1">
                 <TrendingUp className="w-4 h-4" />
-                <span className="text-sm font-medium">犯罪率上升</span>
+                <span className="text-sm font-medium">Crime Rate Increase</span>
               </div>
               <div className="text-2xl font-bold text-red-600">{eventData.details.crimeIncrease}</div>
             </div>
             <div className="text-center">
               <div className="flex items-center justify-center gap-1 text-blue-600 mb-1">
                 <Users className="w-4 h-4" />
-                <span className="text-sm font-medium">报告案件</span>
+                <span className="text-sm font-medium">Reported Cases</span>
               </div>
               <div className="text-2xl font-bold text-blue-600">{eventData.details.reportedCases}</div>
             </div>
             <div className="text-center">
               <div className="flex items-center justify-center gap-1 text-orange-600 mb-1">
                 <Shield className="w-4 h-4" />
-                <span className="text-sm font-medium">警力缺口</span>
+                <span className="text-sm font-medium">Police Shortage</span>
               </div>
               <div className="text-2xl font-bold text-orange-600">{eventData.details.policeShortage}</div>
             </div>
             <div className="text-center">
               <div className="flex items-center justify-center gap-1 text-gray-600 mb-1">
                 <Clock className="w-4 h-4" />
-                <span className="text-sm font-medium">响应时间</span>
+                <span className="text-sm font-medium">Response Time</span>
               </div>
               <div className="text-2xl font-bold text-gray-600">{eventData.details.responseTime}</div>
             </div>
@@ -171,7 +172,7 @@ export default function CrimeSurgeEvent({ isOpen, onClose, onComplete }: CrimeSu
 
           {/* 选项列表 */}
           <div className="mb-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">选择应对策略</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Select Response Strategy</h3>
             <div className="space-y-3">
               {eventData.options.map((option) => (
                 <div
@@ -192,7 +193,7 @@ export default function CrimeSurgeEvent({ isOpen, onClose, onComplete }: CrimeSu
                       <div className="flex items-center gap-4 text-sm">
                         <div className="flex items-center gap-1 text-blue-600">
                           <Zap className="w-4 h-4" />
-                          <span>资源: {option.resources}</span>
+                          <span>Resources: {option.resources}</span>
                         </div>
                       </div>
                     </div>
@@ -220,7 +221,7 @@ export default function CrimeSurgeEvent({ isOpen, onClose, onComplete }: CrimeSu
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'
               }`}
             >
-              {selectedOption ? '执行策略' : '请选择一个策略'}
+              {selectedOption ? 'Execute Strategy' : 'Please Select a Strategy'}
             </button>
           </div>
         </div>

@@ -37,7 +37,7 @@ export default function EventModal({ event, isOpen, onClose, onNext }: EventModa
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
-          title="关闭"
+          title="Close"
         >
           <X className="w-5 h-5" />
         </button>
@@ -48,7 +48,7 @@ export default function EventModal({ event, isOpen, onClose, onNext }: EventModa
           <div className="mb-4 flex justify-start">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-yellow-100 border border-yellow-300 rounded-full">
               <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium text-yellow-800">游戏已自动暂停</span>
+              <span className="text-sm font-medium text-yellow-800">Game Auto-Paused</span>
             </div>
           </div>
 
@@ -82,7 +82,7 @@ export default function EventModal({ event, isOpen, onClose, onNext }: EventModa
               onClick={onNext}
               className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 hover:scale-105 shadow-lg"
             >
-              下一步
+              Next
             </button>
           </div>
         </div>

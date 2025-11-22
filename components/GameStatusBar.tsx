@@ -86,7 +86,7 @@ export default function GameStatusBar() {
               {/* 悬浮提示 */}
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap">
                 <div className="font-semibold">Resources</div>
-                <div className="text-gray-300">执行政策行动所需的资源，每回合恢复</div>
+                <div className="text-gray-300">Resources required for policy actions, restored each round</div>
               </div>
             </div>
 
@@ -106,7 +106,7 @@ export default function GameStatusBar() {
               {/* 悬浮提示 */}
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap">
                 <div className="font-semibold">Crime Rate</div>
-                <div className="text-gray-300">城市犯罪率百分比，越低越好</div>
+                <div className="text-gray-300">City crime rate percentage, lower is better</div>
               </div>
             </div>
 
@@ -123,7 +123,7 @@ export default function GameStatusBar() {
               {/* 悬浮提示 */}
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap">
                 <div className="font-semibold">Accuracy</div>
-                <div className="text-gray-300">抓捕行动准确率，越高越好</div>
+                <div className="text-gray-300">Arrest action accuracy rate, higher is better</div>
               </div>
             </div>
 
@@ -140,7 +140,7 @@ export default function GameStatusBar() {
               {/* 悬浮提示 */}
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap">
                 <div className="font-semibold">Trust</div>
-                <div className="text-gray-300">社区对警方的信任度，越高越好</div>
+                <div className="text-gray-300">Community trust in police, higher is better</div>
               </div>
             </div>
 
@@ -151,8 +151,8 @@ export default function GameStatusBar() {
               </div>
               {/* 悬浮提示 */}
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap">
-                <div className="font-semibold">提示</div>
-                <div className="text-gray-300">将鼠标悬浮到指标上查看详细介绍</div>
+                <div className="font-semibold">Tip</div>
+                <div className="text-gray-300">Hover over indicators to view detailed information</div>
               </div>
             </div>
           </div>
