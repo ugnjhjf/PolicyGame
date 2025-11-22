@@ -68,7 +68,7 @@ export default function EventPanel({ onTriggerEvent }: EventPanelProps) {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-40">
+    <div className="fixed top-4 right-20 z-40">
       {/* 主按钮 */}
       <div className="flex flex-col items-end gap-2 mb-2">
         <button

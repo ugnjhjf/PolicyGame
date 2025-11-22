@@ -243,6 +243,13 @@ export default function GamePage() {
         }}
       />
 
+      {/* 开发者署名 */}
+      <div className="fixed bottom-4 right-4 z-10">
+        <p className="text-xs text-white/60 font-medium">
+          Developer: Rokidna G
+        </p>
+      </div>
+
     </div>
   )
 }

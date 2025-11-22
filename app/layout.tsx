@@ -5,7 +5,7 @@ import PerformanceMonitor from '../components/PerformanceMonitor'
 import { inter, poppins } from '../lib/fonts'
 
 export const metadata: Metadata = {
-  title: 'Predictive Policing Simulation',
+  title: 'AI Policing Simulation | Rokidna',
   description: 'AI-powered policing strategy simulation game',
   generator: 'Next.js',
   keywords: ['AI', 'policing', 'simulation', 'strategy', 'game'],
