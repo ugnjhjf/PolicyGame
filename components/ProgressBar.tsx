@@ -59,20 +59,27 @@ export default function ProgressBar({ steps, className = '' }: ProgressBarProps)
   )
 }
 
-// 预定义的AI部署流程步骤
+// 预定义的AI部署流程步骤（Data Center）
 export const AI_DEPLOYMENT_STEPS = [
   { id: 'dataset', name: 'Dataset Selection' },
   { id: 'training', name: 'Training Method' },
-  { id: 'deployment', name: 'Deployment Area' },
   { id: 'summary', name: 'Summary' },
   { id: 'status', name: 'Deployment Status' }
 ] as const
 
-// 根据当前页面生成步骤状态的辅助函数
-export function getStepsForPage(currentPage: string): ProgressStep[] {
-  const pageIndex = AI_DEPLOYMENT_STEPS.findIndex(step => step.id === currentPage)
+// 预定义的Police HQ流程步骤
+export const POLICE_HQ_STEPS = [
+  { id: 'strategy', name: 'Police Strategy' },
+  { id: 'summary', name: 'Summary' },
+  { id: 'status', name: 'Deployment Status' }
+] as const
+
+// 根据当前页面和流程类型生成步骤状态的辅助函数
+export function getStepsForPage(currentPage: string, flowType: 'datacenter' | 'policehq' = 'datacenter'): ProgressStep[] {
+  const steps = flowType === 'policehq' ? POLICE_HQ_STEPS : AI_DEPLOYMENT_STEPS
+  const pageIndex = steps.findIndex(step => step.id === currentPage)
   
-  return AI_DEPLOYMENT_STEPS.map((step, index) => ({
+  return steps.map((step, index) => ({
     id: step.id,
     name: step.name,
     completed: index < pageIndex,

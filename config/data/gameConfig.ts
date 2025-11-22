@@ -107,7 +107,7 @@ export const GAME_CONFIG: GameConfig = {
       surveillance: 78
     },
     surveillance: {
-      name: 'Surveillance Zone',
+      name: 'Police HQ',
       population: 85000,
       baseCrimeRate: 12.3,
       policePresence: 38,

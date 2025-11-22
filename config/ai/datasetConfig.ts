@@ -9,7 +9,7 @@ export interface DatasetInfo {
   size: number // 数据集大小（条数）
   accuracy: number // 准确率（百分比）
   bias: 'low' | 'medium' | 'high' // 偏见程度
-  cost: number // 成本
+  resources: number // 资源消耗
   features: string[] // 特征列表
   pros: string[] // 优点
   cons: string[] // 缺点
@@ -26,7 +26,7 @@ export const AI_DATASETS: DatasetInfo[] = [
     size: 50000,
     accuracy: 85,
     bias: 'medium',
-    cost: 10000,
+    resources: 3,
     features: ['Crime Type', 'Time Patterns', 'Location Distribution', 'Suspect Characteristics', 'Case Correlation'],
     pros: ['Comprehensive data', 'Complete history', 'Strong pattern recognition'],
     cons: ['May contain historical bias', 'Low update frequency'],
@@ -41,7 +41,7 @@ export const AI_DATASETS: DatasetInfo[] = [
     size: 75000,
     accuracy: 78,
     bias: 'low',
-    cost: 15000,
+    resources: 4,
     features: ['Behavior Trajectory', 'Time Patterns', 'Social Networks', 'Activity Patterns', 'Anomaly Detection'],
     pros: ['Strong real-time capability', 'Less bias', 'Accurate predictions'],
     cons: ['Privacy sensitive', 'Difficult data collection'],
@@ -56,9 +56,9 @@ export const AI_DATASETS: DatasetInfo[] = [
     size: 30000,
     accuracy: 72,
     bias: 'high',
-    cost: 5000,
+    resources: 2,
     features: ['Age Distribution', 'Income Level', 'Education Level', 'Occupation Type', 'Residential Area'],
-    pros: ['Low cost', 'Stable data', 'Wide coverage'],
+    pros: ['Low resource consumption', 'Stable data', 'Wide coverage'],
     cons: ['Severe bias', 'Slow updates', 'Privacy concerns'],
     recommended: false
   },
@@ -71,7 +71,7 @@ export const AI_DATASETS: DatasetInfo[] = [
     size: 40000,
     accuracy: 80,
     bias: 'medium',
-    cost: 8000,
+    resources: 3,
     features: ['Geographic Location', 'Crime Density', 'Time Distribution', 'Environmental Factors', 'Traffic Patterns'],
     pros: ['Strong spatial analysis', 'Good visualization', 'High practicality'],
     cons: ['Geographic limitations', 'Environmental dependency'],

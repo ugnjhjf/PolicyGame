@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Brain, Zap, Target, Shield, Users, DollarSign, Clock, TrendingUp } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Brain, Zap, Target, Shield, Users, Clock, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
 import styles from '../../styles/animations.module.css'
 import ProgressBar, { getStepsForPage } from '../../components/ProgressBar'
@@ -16,7 +16,7 @@ interface TrainingMethod {
   bgColor: string
   imageUrl: string
   accuracy: number
-  cost: number
+  resources: number
   time: string
   difficulty: 'easy' | 'medium' | 'hard'
   pros: string[]
@@ -34,7 +34,7 @@ const TRAINING_METHODS: TrainingMethod[] = [
     bgColor: 'bg-purple-100',
     imageUrl: '/city_overview.png',
     accuracy: 85,
-    cost: 15000,
+    resources: 5,
     time: '2-3 days',
     difficulty: 'hard',
     pros: [
@@ -60,19 +60,19 @@ const TRAINING_METHODS: TrainingMethod[] = [
     bgColor: 'bg-blue-100',
     imageUrl: '/city_overview2 .png',
     accuracy: 92,
-    cost: 12000,
+    resources: 4,
     time: '1-2 days',
     difficulty: 'medium',
     pros: [
       'Timely knowledge updates',
       'Strong reasoning ability',
       'Good interpretability',
-      'Relatively low cost'
+      'Relatively low resource consumption'
     ],
     cons: [
       'Dependent on external knowledge base',
       'Retrieval latency',
-      'Knowledge base maintenance cost',
+      'Knowledge base maintenance resources',
       'May retrieve incorrect information'
     ],
     features: ['Knowledge Retrieval', 'Augmented Generation', 'Real-time Updates', 'Explainable AI']
@@ -86,7 +86,7 @@ const TRAINING_METHODS: TrainingMethod[] = [
     bgColor: 'bg-yellow-100',
     imageUrl: '/city_overview3.png',
     accuracy: 88,
-    cost: 10000,
+    resources: 4,
     time: '1-2 days',
     difficulty: 'medium',
     pros: [
@@ -111,13 +111,13 @@ const TRAINING_METHODS: TrainingMethod[] = [
     bgColor: 'bg-green-100',
     imageUrl: '/city_overview.png',
     accuracy: 80,
-    cost: 8000,
+    resources: 3,
     time: '3-5 days',
     difficulty: 'hard',
     pros: [
       'Protect data privacy',
       'Multi-source data collaboration',
-      'Reduce communication costs',
+      'Reduce communication resource consumption',
       'Comply with regulatory requirements'
     ],
     cons: [
@@ -137,13 +137,13 @@ const TRAINING_METHODS: TrainingMethod[] = [
     bgColor: 'bg-orange-100',
     imageUrl: '/city_overview2 .png',
     accuracy: 90,
-    cost: 6000,
+    resources: 2,
     time: '1 day',
     difficulty: 'easy',
     pros: [
       'Simple implementation',
       'Stable performance',
-      'Relatively low cost',
+      'Relatively low resource consumption',
       'Easy to understand and debug'
     ],
     cons: [
@@ -173,8 +173,8 @@ export default function AITrainingMethodsPage() {
       // 添加退出动画
       setIsAnimating(true)
       setTimeout(() => {
-        // 跳转到部署区域页面
-        window.location.href = '/deployment'
+        // 跳转到总结页面
+        window.location.href = '/ai-summary'
       }, 300)
     }
   }
@@ -271,8 +271,8 @@ export default function AITrainingMethodsPage() {
                       <span className="font-semibold text-green-600">{method.accuracy}%</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600">Cost</span>
-                      <span className="font-semibold text-blue-600">¥{method.cost.toLocaleString()}</span>
+                      <span className="text-gray-600">Resources</span>
+                      <span className="font-semibold text-blue-600">{method.resources}/10</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600">Time</span>
@@ -334,10 +334,10 @@ export default function AITrainingMethodsPage() {
                     </div>
                     <div className="bg-white rounded-lg p-4 text-center shadow-sm">
                       <div className="flex items-center justify-center mb-2">
-                        <DollarSign className="w-5 h-5 text-blue-600" />
+                        <Zap className="w-5 h-5 text-blue-600" />
                       </div>
-                      <div className="text-2xl font-bold text-blue-600">¥{selectedMethod.cost.toLocaleString()}</div>
-                      <div className="text-sm text-gray-600">Cost</div>
+                      <div className="text-2xl font-bold text-blue-600">{selectedMethod.resources}/10</div>
+                      <div className="text-sm text-gray-600">Resources</div>
                     </div>
                     <div className="bg-white rounded-lg p-4 text-center shadow-sm">
                       <div className="flex items-center justify-center mb-2">

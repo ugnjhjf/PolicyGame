@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ArrowLeft, ArrowRight, CheckCircle, XCircle, DollarSign, Users, Target, AlertTriangle } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Users, Target, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
 import styles from '../../styles/animations.module.css'
 import { AI_DATASETS, type DatasetInfo } from '../../config/ai/datasetConfig'
@@ -127,7 +127,7 @@ export default function AIDatasetPage() {
                     </div>
                     <div className="flex items-center gap-4 text-xs text-gray-500">
                       <span>Accuracy: {dataset.accuracy}%</span>
-                      <span>Cost: ${dataset.cost.toLocaleString()}</span>
+                      <span>Resources: {dataset.resources}/10</span>
                     </div>
                     <div className={`inline-block px-2 py-1 rounded-full text-xs font-medium mt-1 ${getBiasColor(dataset.bias)}`}>
                       Bias: {dataset.bias}
@@ -192,10 +192,9 @@ export default function AIDatasetPage() {
                           <span className="font-medium text-lg">{selectedDataset.size.toLocaleString()} records</span>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-600">Cost:</span>
-                          <span className="font-medium text-lg flex items-center gap-1">
-                            <DollarSign className="w-5 h-5" />
-                            {selectedDataset.cost.toLocaleString()}
+                          <span className="text-gray-600">Resources:</span>
+                          <span className="font-medium text-lg">
+                            {selectedDataset.resources}/10
                           </span>
                         </div>
                         <div className="flex justify-between items-center">

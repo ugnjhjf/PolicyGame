@@ -10,7 +10,6 @@ interface EventOption {
   id: string
   title: string
   description: string
-  cost: number
   resources: number
   effects: {
     crimeRate: number

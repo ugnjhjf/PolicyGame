@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { Server } from 'lucide-react'
+import { Server, Shield, Building } from 'lucide-react'
 import styles from '../../styles/animations.module.css'
-import { CentralDistrictPanel, DistrictData } from '../../components/panel'
 import { DebugMenu } from '../../components/debug'
 import { EventManager, CrimeSurgeEvent, CommunityProtestEvent, EventPanel, EmergencyEventSelector } from '../../components/events'
 import DataCenterWelcome from '../../components/DataCenterWelcome'
+import PoliceHQWelcome from '../../components/PoliceHQWelcome'
 import GameStatusBar from '../../components/GameStatusBar'
 import GameObjectivePanel from '../../components/GameObjectivePanel'
 import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../config/data'
@@ -16,8 +16,6 @@ import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../conf
 export default function GamePage() {
   // 游戏状态数据
   const [gameState, setGameState] = useState<GameState>(INITIAL_GAME_STATE)
-  // 模态框状态
-  const [showCentralDistrict, setShowCentralDistrict] = useState(false)
   // 紧急事件状态
   const [showCrimeSurgeEvent, setShowCrimeSurgeEvent] = useState(false)
   const [showCommunityProtestEvent, setShowCommunityProtestEvent] = useState(false)
@@ -25,13 +23,32 @@ export default function GamePage() {
   const [showAIDataset, setShowAIDataset] = useState(false)
   // Data Center 欢迎页面状态
   const [showDataCenterWelcome, setShowDataCenterWelcome] = useState(false)
+  // Police HQ 欢迎页面状态
+  const [showPoliceHQWelcome, setShowPoliceHQWelcome] = useState(false)
   // 紧急事件选择器状态
   const [showEmergencySelector, setShowEmergencySelector] = useState(false)
 
   // 初始化游戏状态（移除实时同步）
   useEffect(() => {
     // 只进行一次初始状态同步
-    setGameState(GameStateManager.getCurrentState())
+    const currentState = GameStateManager.getCurrentState()
+    setGameState(currentState)
+    
+    // 保存初始状态（如果还没有保存过）
+    if (typeof window !== 'undefined') {
+      const initialDataKey = 'roundData_initial'
+      if (!localStorage.getItem(initialDataKey)) {
+        const initialData = {
+          round: 0,
+          label: 'Initial',
+          crimeRate: currentState.crimeRate,
+          arrestAccuracy: currentState.arrestAccuracy,
+          communityTrust: currentState.communityTrust,
+          resources: currentState.resources
+        }
+        localStorage.setItem(initialDataKey, JSON.stringify(initialData))
+      }
+    }
     
     // 不再初始化游戏引擎的自动功能
     // initializeGameEngine() // 已移除实时模拟功能
@@ -84,15 +101,6 @@ export default function GamePage() {
       default:
     }
   }
-  
-  // Central District 数据
-  const [districtData] = useState<DistrictData>({
-    name: 'Central District',
-    population: 125000,
-    crimeRate: 8.5,
-    policePresence: 45,
-    surveillance: 78
-  })
 
   return (
     <div className="min-h-screen relative pt-12">
@@ -113,28 +121,26 @@ export default function GamePage() {
         <div className="absolute inset-0 bg-black/20"></div>
         
         {/* 可点击地标 */}
-        {/* 中央地标 */}
+        {/* Government Complex */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
           <button
             onClick={() => {
-              setShowCentralDistrict(true)
+              window.location.href = '/government-complex'
             }}
             className="group relative flex flex-col items-center"
-            title="Central District - Click to manage"
+            title="Government Complex - View current situation report"
           >
-            <div className="w-16 h-16 bg-blue-500/80 hover:bg-blue-600/90 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
-              </div>
+            <div className="w-16 h-16 bg-green-500/80 hover:bg-green-600/90 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
+              <Building className="w-8 h-8 text-white" />
             </div>
             <div className="mt-2 px-2 py-1 bg-black/60 text-gray-400 group-hover:text-white group-hover:scale-105 group-hover:px-3 group-hover:py-1.5 text-xs font-medium rounded-md transition-all duration-200 origin-center">
-              Central District
+              Government Complex
             </div>
           </button>
         </div>
 
         {/* Data Center按钮 */}
-        <div className="absolute top-1/4 right-1/4 z-10">
+        <div className="absolute top-1/4 right-[40%] z-10">
           <button
             onClick={() => {
               setShowDataCenterWelcome(true)
@@ -151,19 +157,20 @@ export default function GamePage() {
           </button>
         </div>
 
-        {/* 左下角地标 */}
+        {/* Police HQ按钮 */}
         <div className="absolute bottom-[15%] left-[15%] z-10">
           <button
+            onClick={() => {
+              setShowPoliceHQWelcome(true)
+            }}
             className="group relative flex flex-col items-center"
-            title="Surveillance Zone - Click to monitor"
+            title="Police HQ - Click to configure"
           >
-            <div className="w-14 h-14 bg-green-500/80 hover:bg-green-600/90 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
-              <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              </div>
+            <div className="w-14 h-14 bg-blue-600/80 hover:bg-blue-700/90 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
+              <Shield className="w-6 h-6 text-white" />
             </div>
             <div className="mt-2 px-2 py-1 bg-black/60 text-gray-400 group-hover:text-white group-hover:scale-105 group-hover:px-3 group-hover:py-1.5 text-xs font-medium rounded-md transition-all duration-200 origin-center">
-              Surveillance Zone
+              Police HQ
             </div>
           </button>
         </div>
@@ -174,15 +181,6 @@ export default function GamePage() {
 
       {/* 左侧目标面板 */}
       <GameObjectivePanel />
-
-      {/* Central District 面板 */}
-      <CentralDistrictPanel
-        isOpen={showCentralDistrict}
-        onClose={() => {
-          setShowCentralDistrict(false)
-        }}
-        districtData={districtData}
-      />
 
       {/* 事件面板 */}
       <EventPanel onTriggerEvent={handleEventTrigger} />
@@ -232,6 +230,16 @@ export default function GamePage() {
           setShowDataCenterWelcome(false)
           // 跳转到AI数据集页面
           window.location.href = '/ai-dataset'
+        }}
+      />
+
+      {/* Police HQ 欢迎页面 */}
+      <PoliceHQWelcome
+        isOpen={showPoliceHQWelcome}
+        onComplete={() => {
+          setShowPoliceHQWelcome(false)
+          // 跳转到Police HQ策略选择页面
+          window.location.href = '/police-hq/strategy'
         }}
       />
 

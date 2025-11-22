@@ -11,16 +11,37 @@ export default function GameStatusBar() {
   const pathname = usePathname()
 
   useEffect(() => {
-    // 获取当前游戏状态
+    // 获取当前游戏状态（会从 localStorage 加载）
     setGameState(GameStateManager.getCurrentState())
+    
+    // 定期更新状态（每500ms）
+    const interval = setInterval(() => {
+      setGameState(GameStateManager.getCurrentState())
+    }, 500)
+    
+    return () => clearInterval(interval)
   }, [])
 
   // 检查是否在 Data Center 相关页面
   const isDataCenterPage = pathname?.startsWith('/ai-dataset') || 
                            pathname?.startsWith('/ai-training-methods') || 
-                           pathname?.startsWith('/deployment') || 
                            pathname?.startsWith('/ai-summary') ||
                            pathname?.startsWith('/deployment-status')
+  
+  // 检查是否在 Police HQ 相关页面
+  const isPoliceHQPage = pathname?.startsWith('/police-hq')
+  
+  // 检查是否在 Government Complex 页面
+  const isGovernmentComplexPage = pathname?.startsWith('/government-complex')
+  
+  // 检查是否在 Game Result 页面
+  const isGameResultPage = pathname?.startsWith('/game-result')
+  
+  // 检查是否在 Game Ending 页面
+  const isGameEndingPage = pathname?.startsWith('/game-ending')
+  
+  // 合并判断：如果是 Data Center、Police HQ、Government Complex、Game Result 或 Game Ending 页面，都不显示阴影
+  const shouldHideShadow = isDataCenterPage || isPoliceHQPage || isGovernmentComplexPage || isGameResultPage || isGameEndingPage
 
   return (
     <div className="fixed top-0 left-0 right-0 z-10" style={{
@@ -28,7 +49,7 @@ export default function GameStatusBar() {
       backdropFilter: 'blur(4px) saturate(100%)',
       background: 'rgba(39, 39, 42, 0.75)',
       borderBottom: '1px solid rgba(255,255,255,0.05)',
-      ...(isDataCenterPage ? {} : { boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)' })
+      ...(shouldHideShadow ? {} : { boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)' })
     }}>
       {/* 暗色渐变带 */}
       <div className="absolute left-0 right-0 top-12 h-8 pointer-events-none" style={{

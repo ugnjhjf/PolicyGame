@@ -22,7 +22,7 @@ interface DeploymentArea {
   pros: string[]
   cons: string[]
   features: string[]
-  deploymentCost: number
+  resources: number
   effectiveness: number
 }
 
@@ -39,11 +39,11 @@ const DEPLOYMENT_AREAS: DeploymentArea[] = [
     crimeRate: 8.5,
     policePresence: 45,
     surveillance: 78,
-    deploymentCost: 25000,
+    resources: 6,
     effectiveness: 92,
     pros: [
       'High population density, efficient data collection',
-      'Well-developed infrastructure, relatively low deployment cost',
+      'Well-developed infrastructure, relatively low resource consumption',
       'Low crime rate, controllable risks',
       'High government support, favorable policy environment'
     ],
@@ -57,7 +57,7 @@ const DEPLOYMENT_AREAS: DeploymentArea[] = [
   },
   {
     id: 'surveillance',
-    name: 'Surveillance Zone',
+    name: 'Police HQ',
     description: 'Key surveillance area with high crime rate but well-developed monitoring facilities, suitable for AI systems for crime prediction and prevention',
     icon: Eye,
     color: 'text-purple-600',
@@ -67,18 +67,18 @@ const DEPLOYMENT_AREAS: DeploymentArea[] = [
     crimeRate: 12.3,
     policePresence: 38,
     surveillance: 65,
-    deploymentCost: 18000,
+    resources: 5,
     effectiveness: 88,
     pros: [
       'High demand for crime prediction, clear AI value',
       'Well-developed existing monitoring facilities',
-      'Relatively low deployment cost',
+      'Relatively low resource consumption',
       'Immediate effect'
     ],
     cons: [
       'High crime rate, significant security risks',
       'May have lower social acceptance',
-      'Requires more maintenance costs',
+      'Requires more maintenance resources',
       'May trigger privacy disputes'
     ],
     features: ['Surveillance Focus', 'Crime Hotspot', 'Community Monitoring', 'Early Warning System']
@@ -200,8 +200,8 @@ export default function DeploymentPage() {
                       <span className="font-semibold text-red-600">{area.crimeRate}%</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600">Deployment Cost</span>
-                      <span className="font-semibold text-green-600">¥{area.deploymentCost.toLocaleString()}</span>
+                      <span className="text-gray-600">Resources</span>
+                      <span className="font-semibold text-green-600">{area.resources}/10</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600">Effectiveness</span>
@@ -332,8 +332,8 @@ export default function DeploymentPage() {
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">Deployment Info</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Deployment Cost:</span>
-                        <span className="font-medium text-lg text-green-600">¥{selectedArea.deploymentCost.toLocaleString()}</span>
+                        <span className="text-gray-600">Resources:</span>
+                        <span className="font-medium text-lg text-green-600">{selectedArea.resources}/10</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600">Expected Effectiveness:</span>

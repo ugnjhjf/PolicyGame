@@ -2,8 +2,34 @@
 
 import { GameState, INITIAL_GAME_STATE } from './gameConfig'
 
-// 实时游戏状态 - 可以被系统实时查看和修改
-export let currentGameState: GameState = { ...INITIAL_GAME_STATE }
+// 从 localStorage 加载游戏状态
+const loadGameStateFromStorage = (): GameState | null => {
+  if (typeof window === 'undefined') return null
+  try {
+    const saved = localStorage.getItem('gameState')
+    if (saved) {
+      const parsed = JSON.parse(saved)
+      return { ...INITIAL_GAME_STATE, ...parsed }
+    }
+  } catch (error) {
+    console.error('Failed to load game state from localStorage:', error)
+  }
+  return null
+}
+
+// 保存游戏状态到 localStorage
+const saveGameStateToStorage = (state: GameState): void => {
+  if (typeof window === 'undefined') return
+  try {
+    localStorage.setItem('gameState', JSON.stringify(state))
+  } catch (error) {
+    console.error('Failed to save game state to localStorage:', error)
+  }
+}
+
+// 初始化游戏状态 - 优先从 localStorage 加载，否则使用初始状态
+const initialState = loadGameStateFromStorage() || INITIAL_GAME_STATE
+export let currentGameState: GameState = { ...initialState }
 
 // 游戏状态管理函数
 export const GameStateManager = {
@@ -15,11 +41,14 @@ export const GameStateManager = {
   // 更新游戏状态
   updateState: (updates: Partial<GameState>): void => {
     currentGameState = { ...currentGameState, ...updates }
+    // 保存到 localStorage
+    saveGameStateToStorage(currentGameState)
   },
 
   // 重置游戏状态
   resetState: (): void => {
     currentGameState = { ...INITIAL_GAME_STATE }
+    saveGameStateToStorage(currentGameState)
   },
 
   // 增加资源

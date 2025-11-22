@@ -1,12 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowLeft, CheckCircle, Database, Brain, Settings, RotateCcw, TestTube, CheckCircle2 } from 'lucide-react'
+import { ArrowLeft, CheckCircle, Shield, Users, Settings, RotateCcw, TestTube, CheckCircle2, Target } from 'lucide-react'
 import Link from 'next/link'
-import styles from '../../styles/animations.module.css'
-import ProgressBar, { getStepsForPage } from '../../components/ProgressBar'
-import GameStatusBar from '../../components/GameStatusBar'
-import { GameStateManager } from '../../config/data'
+import styles from '../../../styles/animations.module.css'
+import ProgressBar, { getStepsForPage } from '../../../components/ProgressBar'
+import GameStatusBar from '../../../components/GameStatusBar'
+import { GameStateManager } from '../../../config/data'
 
 interface LoadingStage {
   id: string
@@ -19,41 +19,41 @@ interface LoadingStage {
 
 const LOADING_STAGES: LoadingStage[] = [
   {
-    id: 'import',
-    title: 'Importing Training Data',
-    description: 'Importing training samples from the selected dataset, preparing for model training...',
-    icon: Database,
+    id: 'planning',
+    title: 'Planning Deployment',
+    description: 'Analyzing selected strategy and preparing deployment plan for police forces...',
+    icon: Shield,
     color: 'text-blue-600',
     bgColor: 'bg-blue-100'
   },
   {
-    id: 'train',
-    title: 'Training Model',
-    description: 'Training the AI model using the selected training method, optimizing model parameters...',
-    icon: Brain,
+    id: 'allocation',
+    title: 'Allocating Resources',
+    description: 'Distributing police resources and personnel according to the selected strategy...',
+    icon: Users,
     color: 'text-purple-600',
     bgColor: 'bg-purple-100'
   },
   {
-    id: 'adjust',
-    title: 'Adjusting Parameters',
-    description: 'Adjusting model hyperparameters based on training results to improve model performance...',
+    id: 'configuration',
+    title: 'Configuring Operations',
+    description: 'Setting up patrol routes, schedules, and operational parameters...',
     icon: Settings,
     color: 'text-yellow-600',
     bgColor: 'bg-yellow-100'
   },
   {
-    id: 'retrain',
-    title: 'Retraining',
-    description: 'Retraining the model with optimized parameters to ensure the best results...',
-    icon: RotateCcw,
+    id: 'deployment',
+    title: 'Deploying Forces',
+    description: 'Deploying police units to designated areas and activating patrol operations...',
+    icon: Target,
     color: 'text-orange-600',
     bgColor: 'bg-orange-100'
   },
   {
-    id: 'test',
-    title: 'Testing Results',
-    description: 'Validating model performance on the test set, evaluating accuracy and effectiveness...',
+    id: 'monitoring',
+    title: 'Monitoring Operations',
+    description: 'Activating monitoring systems and tracking initial operational effectiveness...',
     icon: TestTube,
     color: 'text-green-600',
     bgColor: 'bg-green-100'
@@ -61,14 +61,14 @@ const LOADING_STAGES: LoadingStage[] = [
   {
     id: 'complete',
     title: 'Complete',
-    description: 'AI model training completed and successfully deployed to the selected area!',
+    description: 'Police strategy deployment completed and operations are now active!',
     icon: CheckCircle2,
     color: 'text-green-600',
     bgColor: 'bg-green-100'
   }
 ]
 
-export default function DeploymentStatusPage() {
+export default function PoliceHQDeploymentStatusPage() {
   const [currentStageIndex, setCurrentStageIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -95,10 +95,10 @@ export default function DeploymentStatusPage() {
       // 完成部署
       setIsLoading(false)
       
-      // 标记 Data Center 在本回合已完成
+      // 标记 Police HQ 在本回合已完成
       if (typeof window !== 'undefined') {
         const gameState = GameStateManager.getCurrentState()
-        const roundKey = `dataCenterCompleted_round${gameState.round}`
+        const roundKey = `policeHQCompleted_round${gameState.round}`
         localStorage.setItem(roundKey, 'true')
       }
     }
@@ -121,7 +121,7 @@ export default function DeploymentStatusPage() {
       <GameStatusBar />
       
       {/* 进度条 */}
-      <ProgressBar steps={getStepsForPage('status')} />
+      <ProgressBar steps={getStepsForPage('status', 'policehq')} />
       
       {/* 顶部导航 */}
       <div className="bg-white shadow-sm border-b mt-28">
@@ -204,7 +204,7 @@ export default function DeploymentStatusPage() {
                 </div>
                 <h2 className="text-2xl font-bold text-green-800 mb-2">Deployment Complete!</h2>
                 <p className="text-green-700">
-                  The AI model has been successfully deployed to the selected area.
+                  The police strategy has been successfully deployed and operations are now active.
                 </p>
               </div>
             </div>
@@ -214,3 +214,4 @@ export default function DeploymentStatusPage() {
     </div>
   )
 }
+
