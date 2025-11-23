@@ -12,16 +12,16 @@ export default function StoryPage() {
 
   const handleContinue = () => {
     setIsAnimating(true)
-    setTimeout(() => {
-      // 跳转到下一个页面（后续会实现）
-      window.location.href = '/game'
-    }, 300)
+      setTimeout(() => {
+        // Navigate to the next page
+        window.location.href = '/game'
+      }, 300)
   }
 
   return (
     <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 ${isAnimating ? styles.slideOutToLeft : styles.slideInFromRight}`}>
       <div className="container mx-auto px-4 py-8 lg:py-12">
-        {/* 返回按钮 */}
+        {/* Back Button */}
         <div className="mb-6">
           <Link 
             href="/" 
@@ -35,131 +35,131 @@ export default function StoryPage() {
             }}
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>返回首页</span>
+            <span>Back to Home</span>
           </Link>
         </div>
 
         <div className="max-w-5xl mx-auto">
-          {/* 标题区域 */}
+          {/* Title Section */}
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4">
               <BookOpen className="w-4 h-4" />
-              <span>故事背景</span>
+              <span>Story Background</span>
             </div>
             <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              智能警务战略家
+              Intelligent Policing Strategist
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              在科技与政策的交汇点，做出关键决策，训练智能系统，平衡有效执法与社区信任
+              At the intersection of technology and policy, make critical decisions, train intelligent systems, and balance effective law enforcement with community trust
             </p>
           </div>
 
-          {/* 主要内容区域 */}
+          {/* Main Content Section */}
           <div className="space-y-8 mb-12">
-            {/* 故事背景 - 长方形 */}
+            {/* Story Background - Rectangle Card */}
             <div className="bg-white rounded-lg shadow-lg p-6 lg:p-8">
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 bg-blue-100 rounded-lg">
                   <MapPin className="w-6 h-6 text-blue-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">故事背景</h2>
+                <h2 className="text-2xl font-bold text-gray-900">Story Background</h2>
               </div>
               
               <div className="space-y-4 text-gray-700 leading-relaxed">
                 <p>
-                  在2025年的未来都市，人工智能技术已经深度融入警务系统。作为城市警务部门的战略决策者，您面临着前所未有的挑战和机遇。
+                  In the futuristic city of 2025, artificial intelligence technology has been deeply integrated into the policing system. As a strategic decision-maker for the city's police department, you face unprecedented challenges and opportunities.
                 </p>
                 <p>
-                  城市犯罪率持续波动，社区对AI辅助执法的信任度成为关键因素。您需要不断训练和优化AI模型，使其能够准确预测犯罪，同时维护社区的信任和支持。
+                  Urban crime rates continue to fluctuate, and community trust in AI-assisted law enforcement has become a critical factor. You need to continuously train and optimize AI models to accurately predict crime while maintaining community trust and support.
                 </p>
                 <p>
-                  每一次数据选择、每一次训练方法的选择、每一次部署决策，都将影响城市的治安状况和社区关系。您的目标是在有效执法与社区信任之间找到最佳平衡点。
+                  Every data selection, every training method choice, and every deployment decision will impact the city's public safety and community relations. Your goal is to find the optimal balance between effective law enforcement and community trust.
                 </p>
               </div>
             </div>
 
-            {/* 玩家身份 - 在故事背景下面 */}
+            {/* Player Role - Below Story Background */}
             <div className="bg-white rounded-lg shadow-lg p-6 lg:p-8">
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 bg-indigo-100 rounded-lg">
                   <User className="w-6 h-6 text-indigo-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">您的身份</h2>
+                <h2 className="text-2xl font-bold text-gray-900">Your Role</h2>
               </div>
               
               <div className="space-y-4">
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-3 h-3 bg-indigo-500 rounded-full"></div>
-                    <span className="font-semibold text-gray-900">职位</span>
+                    <span className="font-semibold text-gray-900">Position</span>
                   </div>
-                  <p className="text-gray-700 ml-5">城市警务部门AI战略总监</p>
+                  <p className="text-gray-700 ml-5">AI Strategy Director of City Police Department</p>
                 </div>
 
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-3 h-3 bg-indigo-500 rounded-full"></div>
-                    <span className="font-semibold text-gray-900">职责</span>
+                    <span className="font-semibold text-gray-900">Responsibilities</span>
                   </div>
-                  <p className="text-gray-700 ml-5">负责AI模型的训练、部署和优化，制定警务策略，维护社区关系</p>
+                  <p className="text-gray-700 ml-5">Responsible for training, deploying, and optimizing AI models, formulating policing strategies, and maintaining community relations</p>
                 </div>
 
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-3 h-3 bg-indigo-500 rounded-full"></div>
-                    <span className="font-semibold text-gray-900">资源</span>
+                    <span className="font-semibold text-gray-900">Resources</span>
                   </div>
-                  <p className="text-gray-700 ml-5">拥有有限的资源和行动点数，需要谨慎分配</p>
+                  <p className="text-gray-700 ml-5">Have limited resources and action points that need to be allocated carefully</p>
                 </div>
 
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-3 h-3 bg-indigo-500 rounded-full"></div>
-                    <span className="font-semibold text-gray-900">目标</span>
+                    <span className="font-semibold text-gray-900">Objectives</span>
                   </div>
-                  <p className="text-gray-700 ml-5">降低犯罪率，提高逮捕准确率，维护社区信任度</p>
+                  <p className="text-gray-700 ml-5">Reduce crime rates, improve arrest accuracy, and maintain community trust</p>
                 </div>
               </div>
             </div>
 
-            {/* 核心挑战 - 四个长方形框，一行一个 */}
+            {/* Core Challenges - Four rectangular boxes, one per row */}
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">核心挑战</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Core Challenges</h3>
               
               <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg shadow-lg p-4 lg:p-6 border border-purple-100">
                 <div className="flex items-center gap-3">
                   <div className="w-3 h-3 bg-purple-500 rounded-full flex-shrink-0"></div>
-                  <span className="text-gray-700 text-lg">平衡AI模型的准确性与公平性</span>
+                  <span className="text-gray-700 text-lg">Balance AI model accuracy with fairness</span>
                 </div>
               </div>
 
               <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg shadow-lg p-4 lg:p-6 border border-purple-100">
                 <div className="flex items-center gap-3">
                   <div className="w-3 h-3 bg-purple-500 rounded-full flex-shrink-0"></div>
-                  <span className="text-gray-700 text-lg">维护社区对AI执法的信任</span>
+                  <span className="text-gray-700 text-lg">Maintain community trust in AI-assisted law enforcement</span>
                 </div>
               </div>
 
               <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg shadow-lg p-4 lg:p-6 border border-purple-100">
                 <div className="flex items-center gap-3">
                   <div className="w-3 h-3 bg-purple-500 rounded-full flex-shrink-0"></div>
-                  <span className="text-gray-700 text-lg">在资源有限的情况下做出最优决策</span>
+                  <span className="text-gray-700 text-lg">Make optimal decisions with limited resources</span>
                 </div>
               </div>
 
               <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg shadow-lg p-4 lg:p-6 border border-purple-100">
                 <div className="flex items-center gap-3">
                   <div className="w-3 h-3 bg-purple-500 rounded-full flex-shrink-0"></div>
-                  <span className="text-gray-700 text-lg">应对不断变化的犯罪模式和社区需求</span>
+                  <span className="text-gray-700 text-lg">Respond to constantly changing crime patterns and community needs</span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* 继续按钮 */}
+          {/* Continue Button */}
           <div className="flex justify-center">
             <AnimatedButton href="/game">
-              <span className="text-lg font-semibold">开始游戏</span>
+              <span className="text-lg font-semibold">Start Game</span>
             </AnimatedButton>
           </div>
         </div>
