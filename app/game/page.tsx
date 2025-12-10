@@ -2,31 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { Server, Shield, Building } from 'lucide-react'
-import styles from '../../styles/animations.module.css'
-import { DebugMenu } from '../../components/debug'
-import { EventManager, CrimeSurgeEvent, CommunityProtestEvent, EventPanel, EmergencyEventSelector } from '../../components/events'
-import DataCenterWelcome from '../../components/DataCenterWelcome'
-import PoliceHQWelcome from '../../components/PoliceHQWelcome'
 import GameStatusBar from '../../components/GameStatusBar'
-import GameObjectivePanel from '../../components/GameObjectivePanel'
 import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../config/data'
-// import { initializeGameEngine } from '../../engine/core' // 已移除实时模拟功能
 
 export default function GamePage() {
   // 游戏状态数据
   const [gameState, setGameState] = useState<GameState>(INITIAL_GAME_STATE)
-  // 紧急事件状态
-  const [showCrimeSurgeEvent, setShowCrimeSurgeEvent] = useState(false)
-  const [showCommunityProtestEvent, setShowCommunityProtestEvent] = useState(false)
-  // AI数据集状态
-  const [showAIDataset, setShowAIDataset] = useState(false)
-  // Data Center 欢迎页面状态
-  const [showDataCenterWelcome, setShowDataCenterWelcome] = useState(false)
-  // Police HQ 欢迎页面状态
-  const [showPoliceHQWelcome, setShowPoliceHQWelcome] = useState(false)
-  // 紧急事件选择器状态
-  const [showEmergencySelector, setShowEmergencySelector] = useState(false)
 
   // 初始化游戏状态（移除实时同步）
   useEffect(() => {
@@ -49,58 +30,7 @@ export default function GamePage() {
         localStorage.setItem(initialDataKey, JSON.stringify(initialData))
       }
     }
-    
-    // 不再初始化游戏引擎的自动功能
-    // initializeGameEngine() // 已移除实时模拟功能
   }, [])
-
-  // 处理事件触发
-  const handleEventTrigger = (eventType: string) => {
-    switch (eventType) {
-      case 'emergency-selector':
-        setShowEmergencySelector(true)
-        break
-      case 'crime-surge':
-        setShowCrimeSurgeEvent(true)
-        break
-      case 'ai-dataset':
-        // 跳转到AI数据集页面
-        window.location.href = '/ai-dataset'
-        break
-      case 'community-event':
-        alert('社区事件功能开发中...')
-        break
-      case 'police-event':
-        alert('警力事件功能开发中...')
-        break
-      case 'system-event':
-        alert('系统事件功能开发中...')
-        break
-      default:
-    }
-  }
-
-  // 处理紧急事件选择
-  const handleEmergencyEventSelect = (eventId: string) => {
-    switch (eventId) {
-      case 'crime-surge':
-        setShowCrimeSurgeEvent(true)
-        break
-      case 'community-protest':
-        setShowCommunityProtestEvent(true)
-        break
-      case 'police-strike':
-        alert('警察罢工事件功能开发中...')
-        break
-      case 'ai-system-failure':
-        alert('AI系统故障事件功能开发中...')
-        break
-      case 'cyber-attack':
-        alert('网络攻击事件功能开发中...')
-        break
-      default:
-    }
-  }
 
   return (
     <div className="min-h-screen relative pt-12">
@@ -120,128 +50,14 @@ export default function GamePage() {
         {/* 半透明遮罩层，确保内容可读性 */}
         <div className="absolute inset-0 bg-black/20"></div>
         
-        {/* 可点击地标 */}
-        {/* Government Complex */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-          <button
-            onClick={() => {
-              window.location.href = '/government-complex'
-            }}
-            className="group relative flex flex-col items-center"
-            title="Government Complex - View current situation report"
-          >
-            <div className="w-16 h-16 bg-green-500/80 hover:bg-green-600/90 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
-              <Building className="w-8 h-8 text-white" />
-            </div>
-            <div className="mt-2 px-2 py-1 bg-black/60 text-gray-400 group-hover:text-white group-hover:scale-105 group-hover:px-3 group-hover:py-1.5 text-xs font-medium rounded-md transition-all duration-200 origin-center">
-              Government Complex
-            </div>
-          </button>
-        </div>
-
-        {/* Data Center按钮 */}
-        <div className="absolute top-1/4 right-[40%] z-10">
-          <button
-            onClick={() => {
-              setShowDataCenterWelcome(true)
-            }}
-            className="group relative flex flex-col items-center"
-            title="Data Center - Click to configure"
-          >
-            <div className="w-14 h-14 bg-purple-500/80 hover:bg-purple-600/90 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
-              <Server className="w-6 h-6 text-white" />
-            </div>
-            <div className="mt-2 px-2 py-1 bg-black/60 text-gray-400 group-hover:text-white group-hover:scale-105 group-hover:px-3 group-hover:py-1.5 text-xs font-medium rounded-md transition-all duration-200 origin-center">
-              Data Center
-            </div>
-          </button>
-        </div>
-
-        {/* Police HQ按钮 */}
-        <div className="absolute bottom-[15%] left-[15%] z-10">
-          <button
-            onClick={() => {
-              setShowPoliceHQWelcome(true)
-            }}
-            className="group relative flex flex-col items-center"
-            title="Police HQ - Click to configure"
-          >
-            <div className="w-14 h-14 bg-blue-600/80 hover:bg-blue-700/90 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
-              <Shield className="w-6 h-6 text-white" />
-            </div>
-            <div className="mt-2 px-2 py-1 bg-black/60 text-gray-400 group-hover:text-white group-hover:scale-105 group-hover:px-3 group-hover:py-1.5 text-xs font-medium rounded-md transition-all duration-200 origin-center">
-              Police HQ
-            </div>
-          </button>
-        </div>
+        {/* TODO: Implement new Map Interaction Layer with (!) icons */}
+        
       </div>
 
-      {/* 顶部城市状态栏 */}
-      <GameStatusBar />
-
-      {/* 左侧目标面板 */}
-      <GameObjectivePanel />
-
-      {/* 事件面板 */}
-      <EventPanel onTriggerEvent={handleEventTrigger} />
-      
-      {/* 调试菜单 */}
-      <DebugMenu 
-        onStateChange={setGameState} 
-        onTriggerEmergencySelector={() => setShowEmergencySelector(true)}
-      />
-      
-      {/* 事件管理器 */}
-      <EventManager />
-      
-      {/* 紧急事件选择器 */}
-      <EmergencyEventSelector
-        isOpen={showEmergencySelector}
-        onClose={() => setShowEmergencySelector(false)}
-        onSelectEvent={handleEmergencyEventSelect}
-      />
-      
-      {/* 犯罪激增紧急事件 */}
-      <CrimeSurgeEvent
-        isOpen={showCrimeSurgeEvent}
-        onClose={() => {
-          setShowCrimeSurgeEvent(false)
-        }}
-        onComplete={(optionId) => {
-          setShowCrimeSurgeEvent(false)
-        }}
-      />
-      
-      {/* 社区抗议紧急事件 */}
-      <CommunityProtestEvent
-        isOpen={showCommunityProtestEvent}
-        onClose={() => {
-          setShowCommunityProtestEvent(false)
-        }}
-        onComplete={(optionId) => {
-          setShowCommunityProtestEvent(false)
-        }}
-      />
-
-      {/* Data Center 欢迎页面 */}
-      <DataCenterWelcome
-        isOpen={showDataCenterWelcome}
-        onComplete={() => {
-          setShowDataCenterWelcome(false)
-          // 跳转到AI数据集页面
-          window.location.href = '/ai-dataset'
-        }}
-      />
-
-      {/* Police HQ 欢迎页面 */}
-      <PoliceHQWelcome
-        isOpen={showPoliceHQWelcome}
-        onComplete={() => {
-          setShowPoliceHQWelcome(false)
-          // 跳转到Police HQ策略选择页面
-          window.location.href = '/police-hq/strategy'
-        }}
-      />
+      {/* 顶部城市状态栏 - TBD if needed for RPG mode */}
+      <div className="absolute top-0 w-full z-20">
+         {/* Placeholder for status bar if we keep it, o/w remove later */}
+      </div>
 
       {/* 开发者署名 */}
       <div className="fixed bottom-4 right-4 z-10">
