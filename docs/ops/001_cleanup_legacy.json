@@ -1,0 +1,9 @@
+{
+  "id": "001",
+  "timestamp": "2025-12-11T01:17:49+08:00",
+  "developer": "AI:Gemini_3",
+  "kind": "refactor",
+  "title": "Cleanup Legacy Simulation Code",
+  "summary": "Removed engine/core, unused region pages, and updated GamePage imports.",
+  "references": "001_cleanup_legacy"
+}
