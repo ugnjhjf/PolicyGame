@@ -1,0 +1,10 @@
+{
+  "clue_michael_cctv": {
+    "id": "clue_michael_fine_notice",
+    "title": "Michael's fine notice",
+    "content": "This fine notice contains some illeagl action records, such as crossing the sidewalk without using crosswalk. \nAlthough it is illegal, but his friend with other ethnicities don't have this problem.",
+    "regionId": "Mansion District",
+    "timestamp": "Day 1",
+    "isRead": false
+  }
+}

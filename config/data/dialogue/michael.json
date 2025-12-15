@@ -1,0 +1,22 @@
+{
+  "michael_dialogue": [
+      {
+        "name": "Michael",
+        "title": "Senior Software Engineer",
+        "traits": ["Black"],
+        "text": "I feel so frustrated due to the CCTV camera!"
+      },
+      {
+        "name": "Michael",
+        "title": "Senior Software Engineer",
+        "traits": ["Black"],
+        "text": "If I crossover at the front of the CCTV camera, \nit is <yellow>high possibility</yellow> that the police will come out and ask me some questions."
+      },
+      {
+        "name": "Michael",
+        "title": "Senior Software Engineer",
+        "traits": ["Black"],
+        "text": "It is so annoying that I can't even walk on the street normally, even I <b> don't do any illegal action!!!</b>"
+      }
+  ]
+}

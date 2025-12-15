@@ -1,7 +1,9 @@
 import auntZhangConcept from './aunt_zhang.json'
+import michaelConcept from './michael.json'
 
 const concepts = {
-  ...auntZhangConcept
+  ...auntZhangConcept,
+  ...michaelConcept
 }
 
 export default concepts

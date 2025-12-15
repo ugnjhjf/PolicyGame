@@ -20,18 +20,27 @@ export default function GamePage() {
   // RPG 状态
   const [rpgState, setRpgState] = useState<RPGState>(INITIAL_RPG_STATE)
   
-  // 覆盖初始事件为 Aunt Zhang
+  // 覆盖初始事件
   useEffect(() => {
      setRpgState(prev => ({
         ...prev,
         map: {
-            activeEvents: [{
-                id: 'aunt_zhang',
-                x: 35,
-                y: 65,
-                label: 'Aunt Zhang\'s Shop',
-                status: 'available'
-            }]
+            activeEvents: [
+                {
+                    id: 'aunt_zhang',
+                    x: 35,
+                    y: 65,
+                    label: 'Aunt Zhang\'s Shop',
+                    status: 'available'
+                },
+                {
+                    id: 'michael',
+                    x: 65,
+                    y: 35,
+                    label: 'Michael\'s Office',
+                    status: 'available'
+                }
+            ]
         }
      }))
   }, [])
@@ -40,7 +49,7 @@ export default function GamePage() {
   const [showPDA, setShowPDA] = useState(false)
   const [pdaTab, setPdaTab] = useState<'journal' | 'encyclopedia'>('journal')
   const [showDialogue, setShowDialogue] = useState(false)
-  const [dialogueContent, setDialogueContent] = useState<{ name: string; title?: string; text: string }>({ name: '', text: '' })
+  const [dialogueContent, setDialogueContent] = useState<{ name: string; title?: string; traits?: string[]; text: string }>({ name: '', text: '' })
   const [currentEventId, setCurrentEventId] = useState<string | null>(null)
   
   // Notification State
@@ -72,12 +81,18 @@ export default function GamePage() {
     const event = rpgState.map.activeEvents.find(e => e.id === eventId)
     if (!event) return
 
-    if (event.status === 'available') {
-        // Step 1: 人物对话
-        startDialogue('aunt_zhang_dialogue')
-    } else if (event.status === 'investigating') {
-        // Step 3: 调查分析
-        startDialogue('aunt_zhang_analysis')
+    if (eventId === 'aunt_zhang') {
+        if (event.status === 'available') {
+            startDialogue('aunt_zhang_dialogue')
+        } else if (event.status === 'investigating') {
+            startDialogue('aunt_zhang_analysis')
+        }
+    } else if (eventId === 'michael') {
+        if (event.status === 'available') {
+            startDialogue('michael_dialogue')
+        } else if (event.status === 'investigating') {
+            startDialogue('michael_analysis')
+        }
     }
   }
 
@@ -100,53 +115,57 @@ export default function GamePage() {
       if (!event) return
 
       if (event.status === 'available') {
-          // Transition to Investigating
-          // Add Clue
-          // ... (clue logic)
-          const newClue = clueData.clue_zhang_ledger
+          // Add Clue Phase
+          let newClue;
+          if (currentEventId === 'aunt_zhang') newClue = clueData.clue_zhang_ledger
+          else if (currentEventId === 'michael') newClue = clueData.clue_michael_cctv
           
-          setRpgState(prev => ({
-              ...prev,
-              player: {
-                  ...prev.player,
-                  journal: [...prev.player.journal, newClue]
-              },
-              map: {
-                  activeEvents: prev.map.activeEvents.map(e => 
-                      e.id === currentEventId ? { ...e, status: 'investigating' } : e
-                  )
-              }
-          }))
-          
-          // Show custom notification
-          setTimeout(() => {
-              triggerNotification('New Clue Discovered', newClue.title.split('(')[0].trim(), 'clue')
-              setPdaTab('journal') // Default to journal for clues
-          }, 300)
+          if (newClue) {
+              setRpgState(prev => ({
+                  ...prev,
+                  player: {
+                      ...prev.player,
+                      journal: [...prev.player.journal, newClue]
+                  },
+                  map: {
+                      activeEvents: prev.map.activeEvents.map(e => 
+                          e.id === currentEventId ? { ...e, status: 'investigating' } : e
+                      )
+                  }
+              }))
+              
+              setTimeout(() => {
+                  triggerNotification('New Clue Discovered', newClue.title.split('(')[0].trim(), 'clue')
+                  setPdaTab('journal')
+              }, 300)
+          }
 
       } else if (event.status === 'investigating') {
-          // Transition to Completed
-          // Unlock Concept
-          const newConcept = conceptData.concept_selection_bias
+          // Unlock Concept Phase
+          let newConcept;
+          if (currentEventId === 'aunt_zhang') newConcept = conceptData.concept_selection_bias
+          else if (currentEventId === 'michael') newConcept = conceptData.concept_algorithmic_bias
 
-          setRpgState(prev => ({
-              ...prev,
-              player: {
-                  ...prev.player,
-                  encyclopedia: [...prev.player.encyclopedia, newConcept]
-              },
-              map: {
-                  activeEvents: prev.map.activeEvents.map(e => 
-                      e.id === currentEventId ? { ...e, status: 'completed' } : e
-                  )
-              }
-          }))
+          if (newConcept) {
+              setRpgState(prev => ({
+                  ...prev,
+                  player: {
+                      ...prev.player,
+                      encyclopedia: [...prev.player.encyclopedia, newConcept]
+                  },
+                  map: {
+                      activeEvents: prev.map.activeEvents.map(e => 
+                          e.id === currentEventId ? { ...e, status: 'completed' } : e
+                      )
+                  }
+              }))
 
-          setTimeout(() => {
-              triggerNotification('PDA Encyclopedia Updated', `Unlocked: ${newConcept.title.split('(')[0].trim()}`, 'info')
-              setPdaTab('encyclopedia') // Switch to encyclopedia
-              setShowPDA(true)
-          }, 300)
+              setTimeout(() => {
+                  triggerNotification('PDA Encyclopedia Updated', `Unlocked: ${newConcept.title.split('(')[0].trim()}`, 'info')
+                  setPdaTab('encyclopedia')
+                  setShowPDA(true)
+              }, 300)
+          }
       }
   }
 
@@ -207,6 +226,7 @@ export default function GamePage() {
         isOpen={showDialogue}
         characterName={dialogueContent.name}
         characterTitle={dialogueContent.title}
+        characterTraits={dialogueContent.traits}
         text={dialogueContent.text}
         onNext={handleDialogueNext}
       />
