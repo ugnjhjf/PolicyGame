@@ -1,22 +1,6 @@
 import { X, FileText, AlertTriangle, CheckCircle } from 'lucide-react'
 
-export interface InvestigationReportData {
-  question: string
-  region: string
-  date: string
-  fileId: string
-  content: string
-  suggestion: string
-  chart?: {
-    title: string
-    labels: string[]
-    datasets: {
-      label: string
-      values: number[]
-      style: 'solid' | 'striped'
-    }[]
-  }
-}
+import { InvestigationReportData } from '../../types/rpg'
 
 interface InvestigationReportOverlayProps {
   isOpen: boolean
@@ -47,7 +31,7 @@ export function InvestigationReportOverlay({
         </div>
 
         {/* Main Content Area - Scrollable */}
-        <div className="flex-1 overflow-auto p-8">
+        <div className="flex-1 overflow-auto p-8 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-black/20 [&::-webkit-scrollbar-thumb]:bg-blue-900/50 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-blue-600 transition-colors">
             <div className={`grid gap-8 ${data.chart ? 'lg:grid-cols-2' : 'grid-cols-1'}`}>
                 
                 {/* Left Column: Text Data */}
@@ -127,7 +111,7 @@ export function InvestigationReportOverlay({
                                                             : undefined
                                                     }}
                                                 >
-                                                    <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 px-2 py-1 rounded whitespace-nowrap z-10">
+                                                    <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs text-white font-bold bg-black/80 px-2 py-1 rounded whitespace-nowrap z-10">
                                                         {value}%
                                                     </span>
                                                 </div>
