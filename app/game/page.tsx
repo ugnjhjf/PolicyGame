@@ -7,12 +7,14 @@ import GameStatusBar from '../../components/GameStatusBar'
 import { MapInteractiveLayer } from '../../components/map/MapInteractiveLayer'
 import { DialogueOverlay } from '../../components/vn/DialogueOverlay'
 import { PDAOverlay } from '../../components/pda/PDAOverlay'
+import { PDANotification, type PDANotificationProps } from '../../components/pda/PDANotification'
 import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../config/data'
 import { type RPGState, INITIAL_RPG_STATE } from '../../types/rpg'
 import dialogueData from '../../config/data/dialogue'
+import clueData from '../../config/data/journal'
+import conceptData from '../../config/data/encyclopedia'
 
 export default function GamePage() {
-  // 游戏状态数据
   // 游戏状态数据
   const [gameState, setGameState] = useState<GameState>(INITIAL_GAME_STATE)
   // RPG 状态
@@ -40,11 +42,21 @@ export default function GamePage() {
   const [dialogueContent, setDialogueContent] = useState({ name: '', text: '' })
   const [currentEventId, setCurrentEventId] = useState<string | null>(null)
   
+  // Notification State
+  const [notification, setNotification] = useState<Omit<PDANotificationProps, 'isVisible' | 'onClose'> | null>(null)
+  const [showNotification, setShowNotification] = useState(false)
+
+  const triggerNotification = (title: string, message: string, type: PDANotificationProps['type'] = 'info') => {
+      setNotification({ title, message, type })
+      setShowNotification(true)
+  }
+  
   // Dialogue Queue State
   const [dialogueQueue, setDialogueQueue] = useState<any[]>([])
   
   // Helper to start a dialogue sequence
   const startDialogue = (sequenceKey: keyof typeof dialogueData.events) => {
+      // @ts-ignore - Dynamic key access
       const sequence = dialogueData.events[sequenceKey]
       if (sequence && sequence.length > 0) {
           setDialogueQueue(sequence)
@@ -89,14 +101,7 @@ export default function GamePage() {
       if (event.status === 'available') {
           // Transition to Investigating
           // Add Clue
-          const newClue = {
-              id: 'clue_zhang_ledger',
-              title: '张阿姨的手写账本 (Zhang\'s Ledger)',
-              content: '一本沾着油渍的笔记本，密密麻麻记录着每天的现金流水，金额其实非常可观。',
-              regionId: 'Central District',
-              timestamp: 'Day 1',
-              isRead: false
-          }
+          const newClue = clueData.clue_zhang_ledger
           
           setRpgState(prev => ({
               ...prev,
@@ -111,20 +116,15 @@ export default function GamePage() {
               }
           }))
           
-          // Show small notification (Native for now)
-          setTimeout(() => alert("获得线索：张阿姨的手写账本"), 300)
+          // Show custom notification
+          setTimeout(() => {
+              triggerNotification('New Clue Discovered', newClue.title.split('(')[0].trim(), 'clue')
+          }, 300)
 
       } else if (event.status === 'investigating') {
           // Transition to Completed
           // Unlock Concept
-          const newConcept = {
-              id: 'concept_selection_bias',
-              title: 'Selection Bias (选择性偏差)',
-              category: 'Data Bias',
-              description: '如果在数据采集阶段，样本的选择不够全面（例如只覆盖数字用户），模型就会对未被选中的群体（如老年人、现金使用者）产生系统性的认知盲区。',
-              unlockedAt: 'Day 1',
-              isRead: false
-          }
+          const newConcept = conceptData.concept_selection_bias
 
           setRpgState(prev => ({
               ...prev,
@@ -140,7 +140,7 @@ export default function GamePage() {
           }))
 
           setTimeout(() => {
-              alert("PDA更新：解锁词条 Selection Bias")
+              triggerNotification('PDA Database Updated', `Unlocked: ${newConcept.title.split('(')[0].trim()}`, 'info')
               setShowPDA(true)
           }, 300)
       }
@@ -209,6 +209,17 @@ export default function GamePage() {
         concepts={rpgState.player.encyclopedia}
         clues={rpgState.player.journal}
       />
+
+      {/* Notifications */}
+      {notification && (
+        <PDANotification
+            isVisible={showNotification}
+            title={notification.title}
+            message={notification.message}
+            type={notification.type}
+            onClose={() => setShowNotification(false)}
+        />
+      )}
 
       {/* 开发者署名 */}
       <div className="fixed bottom-4 right-4 z-10">
