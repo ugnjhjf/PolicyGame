@@ -31,6 +31,7 @@ export interface MapEvent {
   y: number
   label: string
   status: MapEventStatus
+  progress?: number // 0-100 for investigation
   requirements?: string[] // flags or items required
 }
 

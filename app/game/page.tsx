@@ -7,6 +7,7 @@ import GameStatusBar from '../../components/GameStatusBar'
 import { MapInteractiveLayer } from '../../components/map/MapInteractiveLayer'
 import { DialogueOverlay } from '../../components/vn/DialogueOverlay'
 import { PDAOverlay } from '../../components/pda/PDAOverlay'
+import { InvestigationReportOverlay, type InvestigationReportData } from '../../components/pda/InvestigationReportOverlay'
 import { PDANotification, type PDANotificationProps } from '../../components/pda/PDANotification'
 import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../config/data'
 import { type RPGState, INITIAL_RPG_STATE } from '../../types/rpg'
@@ -75,26 +76,7 @@ export default function GamePage() {
       }
   }
 
-  // 处理地图事件点击
-  const handleMapEvent = (eventId: string) => {
-    setCurrentEventId(eventId)
-    const event = rpgState.map.activeEvents.find(e => e.id === eventId)
-    if (!event) return
 
-    if (eventId === 'aunt_zhang') {
-        if (event.status === 'available') {
-            startDialogue('aunt_zhang_dialogue')
-        } else if (event.status === 'investigating') {
-            startDialogue('aunt_zhang_analysis')
-        }
-    } else if (eventId === 'michael') {
-        if (event.status === 'available') {
-            startDialogue('michael_dialogue')
-        } else if (event.status === 'investigating') {
-            startDialogue('michael_analysis')
-        }
-    }
-  }
 
   const handleDialogueNext = () => {
       // Check if there are more lines
@@ -141,12 +123,104 @@ export default function GamePage() {
           }
 
       } else if (event.status === 'investigating') {
-          // Unlock Concept Phase
-          let newConcept;
-          if (currentEventId === 'aunt_zhang') newConcept = conceptData.concept_selection_bias
-          else if (currentEventId === 'michael') newConcept = conceptData.concept_algorithmic_bias
+          // Now handled by Report Overlay
+      }
+  }
 
-          if (newConcept) {
+  // 初始化游戏状态（移除实时同步）
+  useEffect(() => {
+    // 只进行一次初始状态同步
+    const currentState = GameStateManager.getCurrentState()
+    setGameState(currentState)
+  }, [])
+
+  // Report State
+  const [showReport, setShowReport] = useState(false)
+  const [reportData, setReportData] = useState<InvestigationReportData | null>(null)
+
+  // 处理地图事件点击
+  const handleMapEvent = (eventId: string) => {
+    setCurrentEventId(eventId)
+    const event = rpgState.map.activeEvents.find(e => e.id === eventId)
+    if (!event) return
+
+    if (event.status === 'available') {
+        // Step 1: Dialogue
+         if (eventId === 'aunt_zhang') startDialogue('aunt_zhang_dialogue')
+         else if (eventId === 'michael') startDialogue('michael_dialogue')
+    } else if (event.status === 'investigating') {
+        // Step 3: Investigation Logic
+        
+        // If not started or in progress, start timer
+        if (event.progress === undefined || event.progress < 100) {
+            // Simulate scanning
+            const interval = setInterval(() => {
+                setRpgState(prev => {
+                     const currentEvent = prev.map.activeEvents.find(e => e.id === eventId)
+                     if (!currentEvent) {
+                         clearInterval(interval)
+                         return prev
+                     }
+                     
+                     const newProgress = (currentEvent.progress || 0) + 10
+                     if (newProgress >= 100) clearInterval(interval)
+                     
+                     return {
+                         ...prev,
+                         map: {
+                             activeEvents: prev.map.activeEvents.map(e => 
+                                 e.id === eventId ? { ...e, progress: Math.min(newProgress, 100) } : e
+                             )
+                         }
+                     }
+                })
+            }, 100)
+        } else {
+             // Step 4: Show Report if done
+             // Load report data based on ID (Should be in JSON, mocking here for now)
+             let data: InvestigationReportData | null = null;
+             if (eventId === 'aunt_zhang') {
+                 data = {
+                     question: "Why was the loan rejected?",
+                     region: "Central District",
+                     date: "2050-05-21",
+                     fileId: "REP-2050-001",
+                     content: "Subject lacks digital credit history entirely. Traditional assets (cash) not recognized by current fin-tech algorithms.",
+                     suggestion: "System Update Required: Integrate physical asset verification module."
+                 }
+             } else if (eventId === 'michael') {
+                 data = {
+                     question: "Basis for High Risk Flag?",
+                     region: "Mansion District",
+                     date: "2050-05-21",
+                     fileId: "REP-2050-002",
+                     content: "Subject behavior (jaywalking) flagged purely on pattern matching. System failed to recognize missing infrastructure (no crosswalks within 2km).",
+                     suggestion: "System Update Required: Context-aware infrastructure mapping."
+                 }
+             }
+             
+             if (data) {
+                 setReportData(data)
+                 setShowReport(true)
+             }
+        }
+    }
+  }
+
+  const handleReportClose = () => {
+      setShowReport(false)
+      
+      // Step 5: Unlock Concept after report is read
+      if (!currentEventId) return
+      
+      const event = rpgState.map.activeEvents.find(e => e.id === currentEventId)
+      // Only complete if report was finished
+      if (event && event.status === 'investigating' && event.progress === 100) {
+           let newConcept;
+           if (currentEventId === 'aunt_zhang') newConcept = conceptData.concept_selection_bias
+           else if (currentEventId === 'michael') newConcept = conceptData.concept_algorithmic_bias
+
+           if (newConcept) {
               setRpgState(prev => ({
                   ...prev,
                   player: {
@@ -164,21 +238,16 @@ export default function GamePage() {
                   triggerNotification('PDA Encyclopedia Updated', `Unlocked: ${newConcept.title.split('(')[0].trim()}`, 'info')
                   setPdaTab('encyclopedia')
                   setShowPDA(true)
-              }, 300)
+              }, 500)
           }
       }
   }
 
-  // 初始化游戏状态（移除实时同步）
-  useEffect(() => {
-    // 只进行一次初始状态同步
-    const currentState = GameStateManager.getCurrentState()
-    setGameState(currentState)
-  }, [])
+  // ... (handleDialogueNext)
 
   return (
     <div className="min-h-screen relative pt-12">
-      {/* 背景图片 */}
+      {/* Background Image */}
       <div className="fixed inset-0 z-0">
         <Image
           src="/city_overview.png"
@@ -191,7 +260,7 @@ export default function GamePage() {
           placeholder="blur"
           blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
         />
-        {/* 半透明遮罩层，确保内容可读性 */}
+        {/* Semi-transparent mask */}
         <div className="absolute inset-0 bg-black/20"></div>
         
         {/* Map Interaction Layer */}
@@ -201,7 +270,7 @@ export default function GamePage() {
         />
       </div>
 
-      {/* 顶部城市状态栏 */}
+      {/* Top Status Bar */}
       <GameStatusBar />
 
       {/* PDA Button */}
@@ -239,6 +308,12 @@ export default function GamePage() {
         clues={rpgState.player.journal}
       />
 
+      <InvestigationReportOverlay
+          isOpen={showReport}
+          onClose={handleReportClose}
+          data={reportData}
+       />
+
       {/* Notifications */}
       {notification && (
         <PDANotification
@@ -250,13 +325,12 @@ export default function GamePage() {
         />
       )}
 
-      {/* Developer */}
+      {/* Developer Footer */}
       <div className="fixed bottom-4 right-4 z-10">
         <p className="text-xs text-white/60 font-medium">
           Developer: Rokidna G
         </p>
       </div>
-
     </div>
   )
 }
