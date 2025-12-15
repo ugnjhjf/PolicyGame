@@ -38,8 +38,9 @@ export default function GamePage() {
 
   // UI 状态
   const [showPDA, setShowPDA] = useState(false)
+  const [pdaTab, setPdaTab] = useState<'journal' | 'encyclopedia'>('journal')
   const [showDialogue, setShowDialogue] = useState(false)
-  const [dialogueContent, setDialogueContent] = useState({ name: '', text: '' })
+  const [dialogueContent, setDialogueContent] = useState<{ name: string; title?: string; text: string }>({ name: '', text: '' })
   const [currentEventId, setCurrentEventId] = useState<string | null>(null)
   
   // Notification State
@@ -73,7 +74,7 @@ export default function GamePage() {
 
     if (event.status === 'available') {
         // Step 1: 人物对话
-        startDialogue('aunt_zhang_start')
+        startDialogue('aunt_zhang_dialogue')
     } else if (event.status === 'investigating') {
         // Step 3: 调查分析
         startDialogue('aunt_zhang_analysis')
@@ -101,6 +102,7 @@ export default function GamePage() {
       if (event.status === 'available') {
           // Transition to Investigating
           // Add Clue
+          // ... (clue logic)
           const newClue = clueData.clue_zhang_ledger
           
           setRpgState(prev => ({
@@ -119,6 +121,7 @@ export default function GamePage() {
           // Show custom notification
           setTimeout(() => {
               triggerNotification('New Clue Discovered', newClue.title.split('(')[0].trim(), 'clue')
+              setPdaTab('journal') // Default to journal for clues
           }, 300)
 
       } else if (event.status === 'investigating') {
@@ -140,7 +143,8 @@ export default function GamePage() {
           }))
 
           setTimeout(() => {
-              triggerNotification('PDA Database Updated', `Unlocked: ${newConcept.title.split('(')[0].trim()}`, 'info')
+              triggerNotification('PDA Encyclopedia Updated', `Unlocked: ${newConcept.title.split('(')[0].trim()}`, 'info')
+              setPdaTab('encyclopedia') // Switch to encyclopedia
               setShowPDA(true)
           }, 300)
       }
@@ -184,7 +188,10 @@ export default function GamePage() {
       {/* PDA Button */}
       <div className="fixed bottom-8 left-8 z-30">
         <button 
-          onClick={() => setShowPDA(true)}
+          onClick={() => {
+              setPdaTab('journal')
+              setShowPDA(true)
+          }}
           className="group flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full shadow-lg hover:bg-blue-500 hover:scale-110 transition-all duration-300"
           title="Open PDA (Journal & Encyclopedia)"
         >
@@ -199,6 +206,7 @@ export default function GamePage() {
       <DialogueOverlay
         isOpen={showDialogue}
         characterName={dialogueContent.name}
+        characterTitle={dialogueContent.title}
         text={dialogueContent.text}
         onNext={handleDialogueNext}
       />
@@ -206,6 +214,7 @@ export default function GamePage() {
       <PDAOverlay
         isOpen={showPDA}
         onClose={() => setShowPDA(false)}
+        activeTab={pdaTab}
         concepts={rpgState.player.encyclopedia}
         clues={rpgState.player.journal}
       />
@@ -221,7 +230,7 @@ export default function GamePage() {
         />
       )}
 
-      {/* 开发者署名 */}
+      {/* Developer */}
       <div className="fixed bottom-4 right-4 z-10">
         <p className="text-xs text-white/60 font-medium">
           Developer: Rokidna G

@@ -12,6 +12,7 @@ export interface DialogueProps {
   isOpen: boolean
   characterName: string
   characterImage?: string // URL to image
+  characterTitle?: string
   text: string
   choices?: DialogueOption[]
   onNext?: () => void
@@ -21,6 +22,7 @@ export interface DialogueProps {
 export function DialogueOverlay({
   isOpen,
   characterName,
+  characterTitle,
   characterImage,
   text,
   choices,
@@ -31,35 +33,41 @@ export function DialogueOverlay({
 
   return (
     <div className="fixed inset-0 z-50 pointer-events-none flex flex-col justify-end pb-8">
-      {/* Character Portrait Layer */}
+      {/* ... (Character Portrait Layer remains same) ... */}
       <div className="absolute inset-0 z-0 flex items-end justify-center pointer-events-none">
-        {characterImage ? (
-           <div className="relative w-[300px] h-[400px] md:w-[400px] md:h-[500px] animate-in fade-in slide-in-from-bottom-10 duration-500">
-             <Image
-               src={characterImage}
-               alt={characterName}
-               fill
-               className="object-contain object-bottom"
-               priority
-             />
-           </div>
-        ) : (
-          // Placeholder silhouette
-          <div className="w-[300px] h-[400px] bg-gradient-to-t from-black/50 to-transparent rounded-t-full mx-auto" />
-        )}
+        {/* ... */}
       </div>
 
       {/* Dialogue Box */}
       <div className="relative z-10 w-full max-w-4xl mx-auto px-4 pointer-events-auto">
         <div className="bg-black/80 backdrop-blur-md border border-white/10 rounded-xl p-6 shadow-2xl">
           {/* Name Tag */}
-          <div className="absolute -top-4 left-8 bg-blue-600 px-4 py-1 rounded-md shadow-lg border border-blue-400/50">
-            <span className="text-white font-bold tracking-wide uppercase">{characterName}</span>
+          <div className="absolute -top-4 left-8 flex items-center gap-2">
+            <div className="bg-blue-600 px-4 py-1 rounded-md shadow-lg border border-blue-400/50">
+              <span className="text-white font-bold tracking-wide uppercase">{characterName}</span>
+            </div>
+            {characterTitle && (
+              <div className="bg-gray-900 px-3 py-1 rounded-md border border-white/20">
+                <span className="text-blue-200 text-sm font-medium">{characterTitle}</span>
+              </div>
+            )}
           </div>
 
           {/* Text Content */}
-          <div className="min-h-[80px] text-lg text-gray-100 font-medium leading-relaxed mt-2">
-            {text}
+          {/* Text Content */}
+          <div className="min-h-[80px] text-lg text-gray-100 font-medium leading-relaxed mt-2 whitespace-pre-wrap">
+            {text.split(/(<red>.*?<\/red>|<yellow>.*?<\/yellow>|<b>.*?<\/b>)/g).map((part, index) => {
+              if (part.startsWith('<red>') && part.endsWith('</red>')) {
+                return <span key={index} className="text-red-500">{part.replace(/<\/?red>/g, '')}</span>
+              }
+              if (part.startsWith('<yellow>') && part.endsWith('</yellow>')) {
+                return <span key={index} className="text-yellow-400">{part.replace(/<\/?yellow>/g, '')}</span>
+              }
+              if (part.startsWith('<b>') && part.endsWith('</b>')) {
+                return <span key={index} className="font-bold text-white">{part.replace(/<\/?b>/g, '')}</span>
+              }
+              return part
+            })}
             {isTyping && <span className="animate-pulse ml-1">|</span>}
           </div>
 

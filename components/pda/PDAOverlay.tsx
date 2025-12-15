@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Book, FileText, X } from 'lucide-react'
 
 // Types (Move to global types later)
@@ -35,6 +35,14 @@ export function PDAOverlay({
 }: PDAOverlayProps) {
   const [currentTab, setCurrentTab] = useState<'journal' | 'encyclopedia'>(activeTab)
   const [selectedItem, setSelectedItem] = useState<string | null>(null)
+
+  // Sync tab state when overlay opens
+  useEffect(() => {
+     if (isOpen) {
+         setCurrentTab(activeTab)
+         setSelectedItem(null)
+     }
+  }, [isOpen, activeTab])
 
   if (!isOpen) return null
 

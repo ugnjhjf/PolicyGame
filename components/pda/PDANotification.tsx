@@ -1,6 +1,6 @@
 'use client'
 
-import { Map, Zap, CheckCircle, Database } from 'lucide-react'
+import { Map, Zap, CheckCircle, Database, Book } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 export interface PDANotificationProps {
@@ -37,21 +37,21 @@ export function PDANotification({
 
   // Styles based on type
   const typeStyles = {
-    success: 'border-green-500 bg-green-500/10 text-green-100',
-    alert: 'border-red-500 bg-red-500/10 text-red-100',
-    info: 'border-blue-500 bg-blue-500/10 text-blue-100',
-    clue: 'border-yellow-500 bg-yellow-500/10 text-yellow-100'
+    success: 'border-green-500 bg-black/80 text-green-100 shadow-[0_0_15px_rgba(34,197,94,0.3)]',
+    alert: 'border-red-500 bg-black/80 text-red-100 shadow-[0_0_15px_rgba(239,68,68,0.3)]',
+    info: 'border-purple-500 bg-black/80 text-blue-100 shadow-[0_0_15px_rgba(59,130,246,0.3)]',
+    clue: 'border-yellow-500 bg-black/80 text-yellow-100 shadow-[0_0_15px_rgba(234,179,8,0.3)]'
   }
 
   const icons = {
     success: <CheckCircle className="w-5 h-5 text-green-400" />,
     alert: <Zap className="w-5 h-5 text-red-400" />,
-    info: <Database className="w-5 h-5 text-blue-400" />,
+    info: <Book className="w-5 h-5 text-blue-400" />,
     clue: <Map className="w-5 h-5 text-yellow-400" />
   }
 
   return (
-    <div className={`fixed top-24 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 transform ${
+    <div className={`fixed top-24 left-1/2 -translate-x-1/2 z-[100] transition-all duration-300 transform ${
       show ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'
     }`}>
       <div className={`

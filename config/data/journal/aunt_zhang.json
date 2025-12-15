@@ -1,8 +1,8 @@
 {
   "clue_zhang_ledger": {
     "id": "clue_zhang_ledger",
-    "title": "张阿姨的手写账本 (Zhang's Ledger)",
-    "content": "一本沾着油渍的笔记本，密密麻麻记录着每天的现金流水，金额其实非常可观。",
+    "title": "ZHANG's handbook",
+    "content": "A handwriting notebook with grease, recording the daily cash flow. Obvious, she is making lots of money and should be further considered.", 
     "regionId": "Central District",
     "timestamp": "Day 1",
     "isRead": false

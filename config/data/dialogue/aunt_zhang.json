@@ -1,36 +1,28 @@
 {
-  "aunt_zhang_start": [
+  "aunt_zhang_dialogue": [
       {
-        "name": "张阿姨 (Aunt Zhang)",
-        "text": "这是什么破机器！"
+        "name": "Aunt Zhang",
+        "title": "Bakery Owner",
+        "text": "What's wrong with this AI?"
       },
       {
-        "name": "张阿姨 (Aunt Zhang)",
-        "text": "我去申请扩大生意的贷款，"
+        "name": "Aunt Zhang",
+        "title": "Bakery Owner",
+        "text": "I went to bank and try to apply for loan, then the bank staff said that i should apply it online and approved by AI."},
+      {
+        "name": "Aunt Zhang",
+        "title": "Bakery Owner",
+        "text": "After I send the request. It <red>directly rejected</red> my request!\n The staff said that nothing they can help."
       },
       {
-        "name": "张阿姨 (Aunt Zhang)",
-        "text": "它直接秒拒，"
+        "name": "Aunt Zhang",
+        "title": "Bakery Owner",
+        "text": "It said I <b>do not have income source!</b> \nI can't belivet that!"
       },
       {
-        "name": "张阿姨 (Aunt Zhang)",
-        "text": "说我‘没有任何收入来源’！"
-      },
-      {
-        "name": "张阿姨 (Aunt Zhang)",
-        "text": "简直胡说八道，"
-      },
-      {
-        "name": "张阿姨 (Aunt Zhang)",
-        "text": "我每天卖手抓饼收的现金都锁在床底下的铁盒子里，"
-      },
-      {
-        "name": "张阿姨 (Aunt Zhang)",
-        "text": "数都数不过来，"
-      },
-      {
-        "name": "张阿姨 (Aunt Zhang)",
-        "text": "它凭什么说我没钱？"
+        "name": "Aunt Zhang",
+        "title": "Bakery Owner",
+        "text": "I just <yellow>keep my cash in the iron box under my bed!</yellow> \nWhy it just keep saying that I don't have income source?\nThis AI should taste my bread to correct this stupid mistake!"
       }
   ]
 }

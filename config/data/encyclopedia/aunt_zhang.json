@@ -1,7 +1,7 @@
 {
   "concept_selection_bias": {
     "id": "concept_selection_bias",
-    "title": "Selection Bias (选择性偏差)",
+    "title": "Selection Bias",
     "category": "Data Bias",
     "description": "如果在数据采集阶段，样本的选择不够全面（例如只覆盖数字用户），模型就会对未被选中的群体（如老年人、现金使用者）产生系统性的认知盲区。",
     "unlockedAt": "Day 1",
