@@ -98,7 +98,7 @@ export function PDAOverlay({
   const renderEncyclopedia = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
       <div className="border-r border-white/10 pr-4 overflow-y-auto">
-        <h3 className="text-lg font-bold text-purple-400 mb-4 sticky top-0 bg-gray-900 py-2">Data related concepts</h3>
+        <h3 className="text-lg font-bold text-purple-400 mb-4 sticky top-0 bg-gray-900 py-2">Data Related Concepts</h3>
         <div className="space-y-2">
           {concepts.length === 0 ? (
             <p className="text-gray-500 italic">No concept collected yet.</p>
