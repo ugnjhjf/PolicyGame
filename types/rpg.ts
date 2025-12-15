@@ -35,11 +35,31 @@ export interface MapEvent {
   requirements?: string[] // flags or items required
 }
 
+export interface InvestigationReportData {
+  id?: string // Added ID for listing
+  question: string
+  region: string
+  date: string
+  fileId: string
+  content: string
+  suggestion: string
+  chart?: {
+    title: string
+    labels: string[]
+    datasets: {
+      label: string
+      values: number[]
+      style: 'solid' | 'striped'
+    }[]
+  }
+}
+
 export interface RPGState {
   player: {
     inventory: Item[]
     journal: Clue[]
     encyclopedia: Concept[]
+    reports: InvestigationReportData[]
   }
   map: {
     activeEvents: MapEvent[]
@@ -51,7 +71,8 @@ export const INITIAL_RPG_STATE: RPGState = {
   player: {
     inventory: [],
     journal: [],
-    encyclopedia: []
+    encyclopedia: [],
+    reports: []
   },
   map: {
     activeEvents: [

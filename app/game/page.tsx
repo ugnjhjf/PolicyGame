@@ -3,14 +3,14 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Tablet } from 'lucide-react'
-import GameStatusBar from '../../components/GameStatusBar'
+import { INITIAL_RPG_STATE, RPGState, Concept, Clue, InvestigationReportData } from '../../types/rpg'
 import { MapInteractiveLayer } from '../../components/map/MapInteractiveLayer'
 import { DialogueOverlay } from '../../components/vn/DialogueOverlay'
 import { PDAOverlay } from '../../components/pda/PDAOverlay'
-import { InvestigationReportOverlay, type InvestigationReportData } from '../../components/pda/InvestigationReportOverlay'
+import GameStatusBar from '../../components/GameStatusBar'
+import { InvestigationReportOverlay } from '../../components/pda/InvestigationReportOverlay'
 import { PDANotification, type PDANotificationProps } from '../../components/pda/PDANotification'
 import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../config/data'
-import { type RPGState, INITIAL_RPG_STATE } from '../../types/rpg'
 import dialogueData from '../../config/data/dialogue'
 import clueData from '../../config/data/journal'
 import conceptData from '../../config/data/encyclopedia'
@@ -49,7 +49,7 @@ export default function GamePage() {
 
   // UI 状态
   const [showPDA, setShowPDA] = useState(false)
-  const [pdaTab, setPdaTab] = useState<'journal' | 'encyclopedia'>('journal')
+  const [pdaTab, setPdaTab] = useState<'journal' | 'encyclopedia' | 'reports'>('journal')
   const [showDialogue, setShowDialogue] = useState(false)
   const [dialogueContent, setDialogueContent] = useState<{ name: string; title?: string; traits?: string[]; text: string }>({ name: '', text: '' })
   const [currentEventId, setCurrentEventId] = useState<string | null>(null)
@@ -182,14 +182,28 @@ export default function GamePage() {
              let data: InvestigationReportData | null = null;
              
              if (eventId === 'aunt_zhang') {
-                 data = allReportData.aunt_zhang
+                 data = allReportData.aunt_zhang as InvestigationReportData
              } else if (eventId === 'michael') {
-                 data = allReportData.michael
+                 data = allReportData.michael as InvestigationReportData
              }
              
              if (data) {
                  setReportData(data)
                  setShowReport(true)
+                 
+                 // Unlock Report in State if new
+                 setRpgState(prev => {
+                     // Check 'prev.player.reports'
+                     if (prev.player.reports.some(r => r.fileId === data!.fileId)) return prev
+                     
+                     return {
+                         ...prev,
+                         player: {
+                             ...prev.player,
+                             reports: [...prev.player.reports, data!]
+                         }
+                     }
+                 })
              }
         }
     }
@@ -294,6 +308,12 @@ export default function GamePage() {
         activeTab={pdaTab}
         concepts={rpgState.player.encyclopedia}
         clues={rpgState.player.journal}
+        reports={rpgState.player.reports}
+        onReportSelect={(report) => {
+            setReportData(report)
+            setShowReport(true)
+            setShowPDA(false)
+        }}
       />
 
       <InvestigationReportOverlay
