@@ -8,20 +8,142 @@ import { MapInteractiveLayer } from '../../components/map/MapInteractiveLayer'
 import { DialogueOverlay } from '../../components/vn/DialogueOverlay'
 import { PDAOverlay } from '../../components/pda/PDAOverlay'
 import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../config/data'
+import { type RPGState, INITIAL_RPG_STATE } from '../../types/rpg'
+import dialogueData from '../../config/data/dialogue'
 
 export default function GamePage() {
   // 游戏状态数据
+  // 游戏状态数据
   const [gameState, setGameState] = useState<GameState>(INITIAL_GAME_STATE)
+  // RPG 状态
+  const [rpgState, setRpgState] = useState<RPGState>(INITIAL_RPG_STATE)
+  
+  // 覆盖初始事件为 Aunt Zhang
+  useEffect(() => {
+     setRpgState(prev => ({
+        ...prev,
+        map: {
+            activeEvents: [{
+                id: 'aunt_zhang',
+                x: 35,
+                y: 65,
+                label: 'Aunt Zhang\'s Shop',
+                status: 'available'
+            }]
+        }
+     }))
+  }, [])
+
   // UI 状态
   const [showPDA, setShowPDA] = useState(false)
   const [showDialogue, setShowDialogue] = useState(false)
+  const [dialogueContent, setDialogueContent] = useState({ name: '', text: '' })
   const [currentEventId, setCurrentEventId] = useState<string | null>(null)
   
+  // Dialogue Queue State
+  const [dialogueQueue, setDialogueQueue] = useState<any[]>([])
+  
+  // Helper to start a dialogue sequence
+  const startDialogue = (sequenceKey: keyof typeof dialogueData.events) => {
+      const sequence = dialogueData.events[sequenceKey]
+      if (sequence && sequence.length > 0) {
+          setDialogueQueue(sequence)
+          setDialogueContent(sequence[0])
+          setShowDialogue(true)
+      }
+  }
+
   // 处理地图事件点击
   const handleMapEvent = (eventId: string) => {
     setCurrentEventId(eventId)
-    // 模拟打开对话
-    setShowDialogue(true)
+    const event = rpgState.map.activeEvents.find(e => e.id === eventId)
+    if (!event) return
+
+    if (event.status === 'available') {
+        // Step 1: 人物对话
+        startDialogue('aunt_zhang_start')
+    } else if (event.status === 'investigating') {
+        // Step 3: 调查分析
+        startDialogue('aunt_zhang_analysis')
+    }
+  }
+
+  const handleDialogueNext = () => {
+      // Check if there are more lines
+      if (dialogueQueue.length > 1) {
+          const nextQueue = dialogueQueue.slice(1)
+          setDialogueQueue(nextQueue)
+          setDialogueContent(nextQueue[0])
+          return
+      }
+      
+      // End of dialogue
+      setShowDialogue(false)
+      setDialogueQueue([])
+      
+      if (!currentEventId) return
+
+      const event = rpgState.map.activeEvents.find(e => e.id === currentEventId)
+      if (!event) return
+
+      if (event.status === 'available') {
+          // Transition to Investigating
+          // Add Clue
+          const newClue = {
+              id: 'clue_zhang_ledger',
+              title: '张阿姨的手写账本 (Zhang\'s Ledger)',
+              content: '一本沾着油渍的笔记本，密密麻麻记录着每天的现金流水，金额其实非常可观。',
+              regionId: 'Central District',
+              timestamp: 'Day 1',
+              isRead: false
+          }
+          
+          setRpgState(prev => ({
+              ...prev,
+              player: {
+                  ...prev.player,
+                  journal: [...prev.player.journal, newClue]
+              },
+              map: {
+                  activeEvents: prev.map.activeEvents.map(e => 
+                      e.id === currentEventId ? { ...e, status: 'investigating' } : e
+                  )
+              }
+          }))
+          
+          // Show small notification (Native for now)
+          setTimeout(() => alert("获得线索：张阿姨的手写账本"), 300)
+
+      } else if (event.status === 'investigating') {
+          // Transition to Completed
+          // Unlock Concept
+          const newConcept = {
+              id: 'concept_selection_bias',
+              title: 'Selection Bias (选择性偏差)',
+              category: 'Data Bias',
+              description: '如果在数据采集阶段，样本的选择不够全面（例如只覆盖数字用户），模型就会对未被选中的群体（如老年人、现金使用者）产生系统性的认知盲区。',
+              unlockedAt: 'Day 1',
+              isRead: false
+          }
+
+          setRpgState(prev => ({
+              ...prev,
+              player: {
+                  ...prev.player,
+                  encyclopedia: [...prev.player.encyclopedia, newConcept]
+              },
+              map: {
+                  activeEvents: prev.map.activeEvents.map(e => 
+                      e.id === currentEventId ? { ...e, status: 'completed' } : e
+                  )
+              }
+          }))
+
+          setTimeout(() => {
+              alert("PDA更新：解锁词条 Selection Bias")
+              setShowPDA(true)
+          }, 300)
+      }
   }
 
   // 初始化游戏状态（移除实时同步）
@@ -29,22 +151,6 @@ export default function GamePage() {
     // 只进行一次初始状态同步
     const currentState = GameStateManager.getCurrentState()
     setGameState(currentState)
-    
-    // 保存初始状态（如果还没有保存过）
-    if (typeof window !== 'undefined') {
-      const initialDataKey = 'roundData_initial'
-      if (!localStorage.getItem(initialDataKey)) {
-        const initialData = {
-          round: 0,
-          label: 'Initial',
-          crimeRate: currentState.crimeRate,
-          arrestAccuracy: currentState.arrestAccuracy,
-          communityTrust: currentState.communityTrust,
-          resources: currentState.resources
-        }
-        localStorage.setItem(initialDataKey, JSON.stringify(initialData))
-      }
-    }
   }, [])
 
   return (
@@ -66,10 +172,13 @@ export default function GamePage() {
         <div className="absolute inset-0 bg-black/20"></div>
         
         {/* Map Interaction Layer */}
-        <MapInteractiveLayer onEventSelect={handleMapEvent} />
+        <MapInteractiveLayer 
+            events={rpgState.map.activeEvents}
+            onEventSelect={handleMapEvent} 
+        />
       </div>
 
-      {/* 顶部城市状态栏 - TBD if needed for RPG mode */}
+      {/* 顶部城市状态栏 */}
       <GameStatusBar />
 
       {/* PDA Button */}
@@ -89,33 +198,16 @@ export default function GamePage() {
       {/* Overlays */}
       <DialogueOverlay
         isOpen={showDialogue}
-        characterName={currentEventId === 'police-hq' ? "Chief Officer" : "System AI"}
-        // Placeholder text
-        text={`Welcome to the ${currentEventId?.replace('-', ' ')}. This is a demonstration of the dialogue system.`}
-        onNext={() => setShowDialogue(false)}
+        characterName={dialogueContent.name}
+        text={dialogueContent.text}
+        onNext={handleDialogueNext}
       />
 
       <PDAOverlay
         isOpen={showPDA}
         onClose={() => setShowPDA(false)}
-        concepts={[
-          {
-            id: 'c1',
-            title: 'Algorithmic Bias',
-            category: 'Ethics',
-            description: 'Systematic and repeatable errors in a computer system that create unfair outcomes, such as privileging one arbitrary group of users over others.',
-            unlockedAt: '2023-10-01'
-          }
-        ]}
-        clues={[
-          {
-            id: 'l1',
-            title: 'Suspicious Log File',
-            content: 'Found a log file indicating that 40% of training data was discarded without review.',
-            regionId: 'Data Center',
-            timestamp: 'Day 1'
-          }
-        ]}
+        concepts={rpgState.player.encyclopedia}
+        clues={rpgState.player.journal}
       />
 
       {/* 开发者署名 */}

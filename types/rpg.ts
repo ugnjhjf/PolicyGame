@@ -23,12 +23,14 @@ export interface Concept {
   isRead: boolean
 }
 
+export type MapEventStatus = 'available' | 'investigating' | 'completed'
+
 export interface MapEvent {
   id: string
   x: number
   y: number
   label: string
-  isCompleted: boolean
+  status: MapEventStatus
   requirements?: string[] // flags or items required
 }
 
@@ -52,9 +54,9 @@ export const INITIAL_RPG_STATE: RPGState = {
   },
   map: {
     activeEvents: [
-      { id: 'police-hq', x: 20, y: 70, label: 'Police HQ', isCompleted: false },
-      { id: 'gov-complex', x: 50, y: 50, label: 'Government Complex', isCompleted: false },
-      { id: 'data-center', x: 80, y: 30, label: 'Data Center', isCompleted: false },
+      { id: 'police-hq', x: 20, y: 70, label: 'Police HQ', status: 'available' },
+      { id: 'gov-complex', x: 50, y: 50, label: 'Government Complex', status: 'available' },
+      { id: 'data-center', x: 80, y: 30, label: 'Data Center', status: 'available' },
     ]
   },
   flags: {}

@@ -1,0 +1,28 @@
+{
+  "aunt_zhang_analysis": [
+      {
+        "name": "System Analysis",
+        "text": "经比对，"
+      },
+      {
+        "name": "System Analysis",
+        "text": "张阿姨的收入主要为现金交易。"
+      },
+      {
+        "name": "System Analysis",
+        "text": "而该 AI 模型的训练数据 99% 采集自线上支付平台（如支付宝/微信/信用卡）。"
+      },
+      {
+        "name": "System Analysis",
+        "text": "由于数据采集阶段的样本筛选机制忽略了‘现金用户群体’，"
+      },
+      {
+        "name": "System Analysis",
+        "text": "导致模型根本‘看不见’张阿姨的经济实力，"
+      },
+      {
+        "name": "System Analysis",
+        "text": "将其误判为无收入的高风险人群。"
+      }
+  ]
+}
