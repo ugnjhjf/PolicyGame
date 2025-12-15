@@ -70,9 +70,7 @@ export default function GamePage() {
       </div>
 
       {/* 顶部城市状态栏 - TBD if needed for RPG mode */}
-      <div className="absolute top-0 w-full z-20">
-         {/* Placeholder for status bar if we keep it, o/w remove later */}
-      </div>
+      <GameStatusBar />
 
       {/* PDA Button */}
       <div className="fixed bottom-8 left-8 z-30">
