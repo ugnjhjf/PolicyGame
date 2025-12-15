@@ -1,0 +1,9 @@
+{
+  "id": "report_aunt_zhang",
+  "question": "Why was the loan rejected?",
+  "region": "Central District",
+  "date": "2050-05-21",
+  "fileId": "REP-2050-001",
+  "content": "Subject lacks digital credit history entirely. Traditional assets (cash) not recognized by current fin-tech algorithms.",
+  "suggestion": "System Update Required: Integrate physical asset verification module."
+}

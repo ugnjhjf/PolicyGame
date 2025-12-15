@@ -1,0 +1,25 @@
+{
+  "id": "report_michael",
+  "question": "AI Prediction result on people with different races",
+  "region": "Mansion District",
+  "date": "2050-05-21",
+  "fileId": "REP-2050-002",
+  "chart": {
+    "title": "Racial Bias Analysis (Actual vs Predicted)",
+    "labels": ["Black", "Yellow", "White","Brown"],
+    "datasets": [
+      {
+        "label": "Actual Crime Rate",
+        "values": [25, 10, 17,12],
+        "style": "solid"
+      },
+      {
+        "label": "Predicted Flag Rate",
+        "values": [45, 15, 8,2],
+        "style": "striped"
+      }
+    ]
+  },
+  "content": "Analysis of Predictive Policing Algorithm v4.2:\n- Black Subjects: 45% Flag Rate (+20% vs actual)\n- Yellow Subjects: 15% Flag Rate (+5% vs actual)\n- White Subjects: 8% Flag Rate (-9% vs actual)\n\nConclusion: Model exhibits severe racial bias.",
+  "suggestion": "Action Required: More data collection and analysis factor needed for variety of racial groups."
+}

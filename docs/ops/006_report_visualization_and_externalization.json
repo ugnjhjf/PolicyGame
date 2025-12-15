@@ -1,0 +1,12 @@
+{
+  "id": "006_report_visualization_and_externalization",
+  "timestamp": "2025-12-15T15:53:00.000Z",
+  "developer": "Rokidna G",
+  "kind": "feature",
+  "title": "Report Visualization & Externalization",
+  "summary": "Externalized report data to JSON, implemented comparative bar charts for racial bias, and refactored report UI to horizontal layout.",
+  "references": [
+    "docs/evolution/005_investigation_mechanics_and_ui_polish.md",
+    "config/data/report/michael.json"
+  ]
+}

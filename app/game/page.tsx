@@ -14,6 +14,7 @@ import { type RPGState, INITIAL_RPG_STATE } from '../../types/rpg'
 import dialogueData from '../../config/data/dialogue'
 import clueData from '../../config/data/journal'
 import conceptData from '../../config/data/encyclopedia'
+import allReportData from '../../config/data/report'
 
 export default function GamePage() {
   // 游戏状态数据
@@ -177,26 +178,13 @@ export default function GamePage() {
             }, 100)
         } else {
              // Step 4: Show Report if done
-             // Load report data based on ID (Should be in JSON, mocking here for now)
+             // Load report data based on ID
              let data: InvestigationReportData | null = null;
+             
              if (eventId === 'aunt_zhang') {
-                 data = {
-                     question: "Why was the loan rejected?",
-                     region: "Central District",
-                     date: "2050-05-21",
-                     fileId: "REP-2050-001",
-                     content: "Subject lacks digital credit history entirely. Traditional assets (cash) not recognized by current fin-tech algorithms.",
-                     suggestion: "System Update Required: Integrate physical asset verification module."
-                 }
+                 data = allReportData.aunt_zhang
              } else if (eventId === 'michael') {
-                 data = {
-                     question: "Basis for High Risk Flag?",
-                     region: "Mansion District",
-                     date: "2050-05-21",
-                     fileId: "REP-2050-002",
-                     content: "Subject behavior (jaywalking) flagged purely on pattern matching. System failed to recognize missing infrastructure (no crosswalks within 2km).",
-                     suggestion: "System Update Required: Context-aware infrastructure mapping."
-                 }
+                 data = allReportData.michael
              }
              
              if (data) {
