@@ -45,6 +45,7 @@ export interface InvestigationReportData {
   content: string
   suggestion: string
   chart?: {
+    type?: 'bar' | 'pie' // Distinguish chart types
     title: string
     labels: string[]
     datasets: {

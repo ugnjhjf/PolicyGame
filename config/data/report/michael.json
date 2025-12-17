@@ -5,6 +5,7 @@
   "date": "2050-05-21",
   "fileId": "REP-2050-002",
   "chart": {
+    "type": "bar",
     "title": "Racial Bias Analysis (Actual vs Predicted)",
     "labels": [
       "Black",
