@@ -196,16 +196,17 @@ export function PDAOverlay({
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="font-medium text-gray-200">{report.fileId}</div>
+                    <div className="font-medium text-gray-200">{report.question}</div>
                   </div>
                   <div className="flex items-center gap-2">
                     {!report.isRead && <Star className="w-4 h-4 text-yellow-400 fill-yellow-400 animate-pulse" />}
                     <span className="text-xs text-green-400 font-mono">COMPLETED</span>
                   </div>
                 </div>
-                <div className="text-xs text-gray-500 mt-1">{report.region} • {report.date}</div>
-                <div className="text-sm text-gray-400 mt-2 truncate w-full opacity-60 group-hover:opacity-100 transition-opacity">
-                  {report.question}
+                <div className="text-s text-gray-300 mt-2 truncate w-full opacity-60 group-hover:opacity-100 transition-opacity">
+                  {report.region}
+                  <div className="text-xs text-gray-500 mt-1">{report.fileId} • {report.date}</div>
+
                 </div>
               </button>
             ))
