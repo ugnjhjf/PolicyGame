@@ -10,12 +10,12 @@ export const metadata: Metadata = {
   generator: 'Next.js',
   keywords: ['AI', 'policing', 'simulation', 'strategy', 'game'],
   authors: [{ name: 'PolicyGame Team' }],
-  themeColor: '#667eea',
 }
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  themeColor: '#667eea',
 }
 
 export default function RootLayout({

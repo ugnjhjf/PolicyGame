@@ -37,6 +37,7 @@ export interface MapEvent {
 
 export interface InvestigationReportData {
   id?: string // Added ID for listing
+  isRead?: boolean // Track unread status
   question: string
   region: string
   date: string
