@@ -9,6 +9,7 @@ export interface PDANotificationProps {
   message: string
   type?: 'success' | 'alert' | 'info' | 'clue'
   onClose?: () => void
+  onClick?: () => void
 }
 
 export function PDANotification({
@@ -16,7 +17,8 @@ export function PDANotification({
   title,
   message,
   type = 'info',
-  onClose
+  onClose,
+  onClick
 }: PDANotificationProps) {
   const [show, setShow] = useState(false)
 
@@ -51,9 +53,10 @@ export function PDANotification({
   }
 
   return (
-    <div className={`fixed top-24 left-1/2 -translate-x-1/2 z-[100] transition-all duration-300 transform ${
-      show ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'
-    }`}>
+    <div
+      onClick={onClick}
+      className={`fixed top-24 left-1/2 -translate-x-1/2 z-[100] transition-all duration-300 transform ${show ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'
+        } ${onClick ? 'cursor-pointer hover:scale-105 active:scale-95' : ''}`}>
       <div className={`
         flex items-start gap-3 min-w-[320px] max-w-md p-4 rounded-lg border backdrop-blur-md shadow-2xl
         ${typeStyles[type]}

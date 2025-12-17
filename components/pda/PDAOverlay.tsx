@@ -12,6 +12,7 @@ interface PDAOverlayProps {
   reports: InvestigationReportData[]
   onReportSelect?: (report: InvestigationReportData) => void
   onMarkAsRead: (type: 'journal' | 'encyclopedia' | 'reports', id: string) => void
+  activeItemId?: string | null
 }
 
 export function PDAOverlay({
@@ -22,7 +23,8 @@ export function PDAOverlay({
   clues,
   reports = [],
   onReportSelect,
-  onMarkAsRead
+  onMarkAsRead,
+  activeItemId
 }: PDAOverlayProps) {
   const [currentTab, setCurrentTab] = useState<'journal' | 'encyclopedia' | 'reports'>(activeTab)
   const [selectedItem, setSelectedItem] = useState<string | null>(null)
@@ -31,9 +33,9 @@ export function PDAOverlay({
   useEffect(() => {
     if (isOpen) {
       setCurrentTab(activeTab)
-      setSelectedItem(null)
+      setSelectedItem(activeItemId || null)
     }
-  }, [isOpen, activeTab])
+  }, [isOpen, activeTab, activeItemId])
 
   if (!isOpen) return null
 

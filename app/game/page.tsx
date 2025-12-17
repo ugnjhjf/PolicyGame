@@ -51,6 +51,7 @@ export default function GamePage() {
     // UI 状态
     const [showPDA, setShowPDA] = useState(false)
     const [pdaTab, setPdaTab] = useState<'journal' | 'encyclopedia' | 'reports'>('journal')
+    const [pdaSelectedId, setPdaSelectedId] = useState<string | null>(null)
     const [showDialogue, setShowDialogue] = useState(false)
     const [dialogueContent, setDialogueContent] = useState<{ name: string; title?: string; traits?: string[]; text: string }>({ name: '', text: '' })
     const [currentEventId, setCurrentEventId] = useState<string | null>(null)
@@ -59,8 +60,8 @@ export default function GamePage() {
     const [notification, setNotification] = useState<Omit<PDANotificationProps, 'isVisible' | 'onClose'> | null>(null)
     const [showNotification, setShowNotification] = useState(false)
 
-    const triggerNotification = (title: string, message: string, type: PDANotificationProps['type'] = 'info') => {
-        setNotification({ title, message, type })
+    const triggerNotification = (title: string, message: string, type: PDANotificationProps['type'] = 'info', onClick?: () => void) => {
+        setNotification({ title, message, type, onClick })
         setShowNotification(true)
     }
 
@@ -155,7 +156,19 @@ export default function GamePage() {
                 }))
 
                 setTimeout(() => {
-                    triggerNotification('New Clue Discovered', newClue.title.split('(')[0].trim(), 'clue')
+                    const handleNotificationClick = () => {
+                        setPdaSelectedId(newClue.id)
+                        setPdaTab('journal')
+                        setShowPDA(true)
+                        setShowNotification(false)
+                    }
+                    triggerNotification(
+                        'New Clue Discovered',
+                        newClue.title.split('(')[0].trim(),
+                        'clue',
+                        handleNotificationClick
+                    )
+                    // Pre-set tab just in case, but rely on click for opening
                     setPdaTab('journal')
                 }, 300)
             }
@@ -393,6 +406,7 @@ export default function GamePage() {
                     setShowPDA(false)
                 }}
                 onMarkAsRead={handleMarkAsRead}
+                activeItemId={pdaSelectedId}
             />
 
             <InvestigationReportOverlay
@@ -409,6 +423,7 @@ export default function GamePage() {
                     message={notification.message}
                     type={notification.type}
                     onClose={() => setShowNotification(false)}
+                    onClick={notification.onClick}
                 />
             )}
 
