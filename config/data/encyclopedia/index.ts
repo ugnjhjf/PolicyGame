@@ -1,13 +1,13 @@
-import annaConcept from './anna.json'
-import auntZhangConcept from './aunt_zhang.json'
-import michaelConcept from './michael.json'
-import officerChanConcept from './officer_chan.json'
+import anna from './round_1/anna.json'
+import auntZhang from './round_1/aunt_zhang.json'
+import michael from './round_1/michael.json'
+import officerChan from './round_1/officer_chan.json'
 
 const concepts = {
-  ...annaConcept,
-  ...auntZhangConcept,
-  ...michaelConcept,
-  ...officerChanConcept
+  ...anna,
+  ...auntZhang,
+  ...michael,
+  ...officerChan
 }
 
 export default concepts

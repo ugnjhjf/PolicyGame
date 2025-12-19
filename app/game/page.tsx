@@ -14,7 +14,7 @@ import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../conf
 import dialogueData from '../../config/data/dialogue'
 import clueData from '../../config/data/journal'
 import conceptData from '../../config/data/encyclopedia'
-import annaConcept from '../../config/data/encyclopedia/anna.json'
+import annaConcept from '../../config/data/encyclopedia/round_1/anna.json'
 import allReportData from '../../config/data/report'
 
 export default function GamePage() {
