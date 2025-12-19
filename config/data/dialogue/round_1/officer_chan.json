@@ -1,0 +1,40 @@
+{
+    "officer_chan_dialogue": [
+        {
+            "name": "Scenario background",
+            "title": "",
+            "traits": [],
+            "text": "Office Chan is patrolling on the street, and he see a man who is trembling all over and always try to take something from the pocket."
+        },
+        {
+            "name": "Officer Chan",
+            "title": "Security Patrol Team Leader",
+            "traits": [
+                "Stubborn",
+                "Experienced",
+                "Confident"
+            ],
+            "text": "Look at this guy! Shifty eyes, trembling all over and always try to take something from the pocket."
+        },
+        {
+            "name": "Officer Chan",
+            "title": "Security Patrol Team Leader",
+            "traits": [
+                "Stubborn",
+                "Experienced",
+                "Confident"
+            ],
+            "text": "My AI glasses identified this guy has 80% is a thief! \n I have been a security patrol team leader for 20 years, I know how to deal with this."
+        },
+        {
+            "name": "Officer Chan",
+            "title": "Security Patrol Team Leader",
+            "traits": [
+                "Stubborn",
+                "Experienced",
+                "Confident"
+            ],
+            "text": "This guy definitely is a theif! I will take this guy down."
+        }
+    ]
+}

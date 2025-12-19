@@ -1,0 +1,31 @@
+{
+  "id": "report_aunt_zhang",
+  "question": "Loan approval mechanism by AI model",
+  "region": "Central District",
+  "date": "2050-05-21",
+  "fileId": "REP-2050-001",
+  "content": "The policy AI model has shared the reputation report with the bank. \nThe reputation level of the customer will take a large part while considering approval from loan.\nTherefore, it is high possible that the loan will be rejected if the applicator with low reputation level or missing reputation data.",
+  "suggestion": "The weighting of the AI model recommendation should be adjusted to ensure the process is fair and transparent.",
+  "chart": {
+    "type": "pie",
+    "title": "Loan Approval Parameters",
+    "labels": [
+      "AI judgement",
+      "Credit History",
+      "Social Graph",
+      "Geolocation"
+    ],
+    "datasets": [
+      {
+        "label": "Weight",
+        "values": [
+          40,
+          25,
+          25,
+          10
+        ],
+        "style": "solid"
+      }
+    ]
+  }
+}

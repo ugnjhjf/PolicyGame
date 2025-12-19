@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import '../styles/global/globals.css'
 import PageTransitionProvider from '../components/PageTransitionProvider'
-import PerformanceMonitor from '../components/PerformanceMonitor'
+
 import { inter, poppins } from '../lib/fonts'
 
 export const metadata: Metadata = {
@@ -10,12 +10,12 @@ export const metadata: Metadata = {
   generator: 'Next.js',
   keywords: ['AI', 'policing', 'simulation', 'strategy', 'game'],
   authors: [{ name: 'PolicyGame Team' }],
-  themeColor: '#667eea',
 }
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  themeColor: '#667eea',
 }
 
 export default function RootLayout({
@@ -31,7 +31,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
       </head>
       <body suppressHydrationWarning={true} className={inter.className}>
-        <PerformanceMonitor />
+
         <PageTransitionProvider>
           {children}
         </PageTransitionProvider>

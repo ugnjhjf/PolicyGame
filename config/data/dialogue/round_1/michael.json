@@ -1,0 +1,34 @@
+{
+  "michael_dialogue": [
+    {
+      "name": "Scenario background",
+      "title": "",
+      "traits": [],
+      "text": "Michael is a senior software engineer who is working in a game company. He always try to avoid the CCTV camera.\nNow he is talking his awful experience when he is walking on the street."
+    },
+    {
+      "name": "Michael",
+      "title": "Senior Software Engineer",
+      "traits": [
+        "Black"
+      ],
+      "text": "I feel so frustrated due to the CCTV camera!"
+    },
+    {
+      "name": "Michael",
+      "title": "Senior Software Engineer",
+      "traits": [
+        "Black"
+      ],
+      "text": "If I crossover at the front of the CCTV camera, \nit is <yellow>high possibility</yellow> that the police will come out and ask me some questions."
+    },
+    {
+      "name": "Michael",
+      "title": "Senior Software Engineer",
+      "traits": [
+        "Black"
+      ],
+      "text": "It is so annoying that I can't even walk on the street normally, even I <b> don't do any illegal action!!!</b>"
+    }
+  ]
+}

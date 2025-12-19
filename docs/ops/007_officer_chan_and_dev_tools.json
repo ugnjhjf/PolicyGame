@@ -1,0 +1,13 @@
+{
+    "id": "007_officer_chan_and_dev_tools",
+    "timestamp": "2025-12-19T13:00:00.000Z",
+    "developer": "Rokidna G",
+    "kind": "feature",
+    "title": "Officer Chan Scenario & Developer Tools",
+    "summary": "Implemented Officer Chan map event with custom chart visualization for Confirmation Bias. Added textual newline support for Encyclopedia. Introduced Developer Mode for instant content unlocking.",
+    "references": [
+        "docs/evolution/006_report_visualization_and_externalization.md",
+        "config/data/report/officer_chan.json",
+        "app/game/page.tsx"
+    ]
+}

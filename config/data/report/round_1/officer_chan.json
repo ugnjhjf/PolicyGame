@@ -1,0 +1,32 @@
+{
+    "id": "report_officer_chan",
+    "question": "Accuracy of Officer Chan's arrests",
+    "region": "Mansion District",
+    "date": "2050-05-21",
+    "fileId": "REP-2050-003",
+    "chart": {
+        "type": "pie",
+        "title": "Arrest Accuracy (Last 3 Months)",
+        "valueSuffix": "",
+        "colors": [
+            "#4ade80",
+            "#ef4444"
+        ],
+        "labels": [
+            "Correct Arrests",
+            "Wrongful Arrests"
+        ],
+        "datasets": [
+            {
+                "label": "Count",
+                "values": [
+                    5,
+                    35
+                ],
+                "style": "solid"
+            }
+        ]
+    },
+    "content": "Analysis of Officer Chan's arrest record over the past 3 months.\n- Total Arrests: 40\n- Successful Convictions: 5\n- Wrongful Arrests: 35\nThis indicates a high rate of false positives, driven by confirmation bias where the officer prioritizes 'intuition' over objective evidence.",
+    "suggestion": "Mandatory double-blind review for all arrests made based on 'intuition' or AI probability alone should implemented"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "004_michael_scenario_and_dialogue_refactor",
+  "timestamp": "2025-12-15T15:05:00.000Z",
+  "developer": "Rokidna G",
+  "kind": "feature",
+  "title": "Michael's Scenario & Dialogue Refactor",
+  "summary": "Implemented the second scenario (Michael/Algorithmic Bias), refactored dialogue system to support rich text/JSON, and improved PDA UX.",
+  "references": [
+    "docs/evolution/003_selection_bias_scenario.md"
+  ]
+}

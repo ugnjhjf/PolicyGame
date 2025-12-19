@@ -22,26 +22,17 @@ export default function GameStatusBar() {
     return () => clearInterval(interval)
   }, [])
 
-  // 检查是否在 Data Center 相关页面
-  const isDataCenterPage = pathname?.startsWith('/ai-dataset') || 
-                           pathname?.startsWith('/ai-training-methods') || 
-                           pathname?.startsWith('/ai-summary') ||
-                           pathname?.startsWith('/deployment-status')
+  // 检查是否在 Game Ending 页面 (Removed)
+  // const isGameEndingPage = pathname?.startsWith('/game-ending')
   
-  // 检查是否在 Police HQ 相关页面
-  const isPoliceHQPage = pathname?.startsWith('/police-hq')
+  // 仅在 Game 页面显示 Header (或者根据需求)
+  // 之前的逻辑是 hide shadow on certain pages. 现在这些页面删除了。
+  // 我们可以简化逻辑，或者直接保留 shadow on all remaining pages if suitable.
+  // 既然只剩下 game, story, home. 
+  // Home usually has its own layout or just big hero.
+  // Game page likely needs the bar.
   
-  // 检查是否在 Government Complex 页面
-  const isGovernmentComplexPage = pathname?.startsWith('/government-complex')
-  
-  // 检查是否在 Game Result 页面
-  const isGameResultPage = pathname?.startsWith('/game-result')
-  
-  // 检查是否在 Game Ending 页面
-  const isGameEndingPage = pathname?.startsWith('/game-ending')
-  
-  // 合并判断：如果是 Data Center、Police HQ、Government Complex、Game Result 或 Game Ending 页面，都不显示阴影
-  const shouldHideShadow = isDataCenterPage || isPoliceHQPage || isGovernmentComplexPage || isGameResultPage || isGameEndingPage
+  const shouldHideShadow = false; // 简化为总是显示阴影，或者根据需要调整
 
   return (
     <div className="fixed top-0 left-0 right-0 z-10" style={{

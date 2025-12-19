@@ -1,0 +1,24 @@
+{
+  "aunt_zhang_analysis": [
+    {
+      "name": "System Analysis",
+      "text": "The only income source of Aunt Zhang is <yellow>cash transactions</yellow>."
+    },
+    {
+      "name": "System Analysis",
+      "text": "However, when analysis the reputation of customers, 85% of the income source data is from online payment platforms (e.g., Alipay/WeChat/Credit Cards)."
+    },
+    {
+      "name": "System Analysis",
+      "text": "The sample data does not contain cash-users data, causing data collection to overlook the 'cash-using population'."
+    },
+    {
+      "name": "System Analysis",
+      "text": "As a result, the model is totally 'blind' to Aunt Zhang's financial stability,"
+    },
+    {
+      "name": "System Analysis",
+      "text": "mistakenly flagging her as a high-risk individual with no income."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "005_investigation_mechanics_and_ui_polish",
+  "timestamp": "2025-12-15T15:20:00.000Z",
+  "developer": "Rokidna G",
+  "kind": "feature",
+  "title": "Investigation Mechanics & UI Polish",
+  "summary": "Implemented investigation progress bars, detailed report system, and character trait badges.",
+  "references": [
+    "docs/evolution/004_michael_scenario_and_dialogue_refactor.md"
+  ]
+}

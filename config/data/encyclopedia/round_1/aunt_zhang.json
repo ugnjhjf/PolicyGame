@@ -1,0 +1,10 @@
+{
+  "concept_selection_bias": {
+    "id": "concept_selection_bias",
+    "title": "Selection Bias",
+    "category": "Data Bias",
+    "description": "Selection bias refers to the bias that occurs when the selected sample cannot represent the entire population. \n\n\nFor example, if the sample only covers digital users, the model will have a systematic cognitive blind spot towards groups that are not included (e.g. the elderly, cash users).",
+    "unlockedAt": "Day 1",
+    "isRead": false
+  }
+}

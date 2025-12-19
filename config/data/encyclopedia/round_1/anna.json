@@ -1,0 +1,26 @@
+{
+    "concept_event": {
+        "id": "concept_event",
+        "title": "Event",
+        "category": "Core interaction",
+        "description": "Event is the direct method to collect evidence and data from the district. It helps you to understand the real problem and opinions in the district, which is very useful to make policy decisions.",
+        "unlockedAt": "Day 1",
+        "isRead": false
+    },
+    "concept_investigate": {
+        "id": "concept_investigate",
+        "title": "Investigate",
+        "category": "Core interaction",
+        "description": "Investigate is to make a distinct reserach by collected evidence and fact, it could analysis the problem in subjective way and understand the cause of the problem.",
+        "unlockedAt": "Day 1",
+        "isRead": false
+    },
+    "concept_action": {
+        "id": "concept_action",
+        "title": "Action",
+        "category": "Core interaction",
+        "description": "Action is the to make improvement of the AI model. You need to derive suitable options through cluse and reported that has been collected.",
+        "unlockedAt": "Day 1",
+        "isRead": false
+    }
+}
