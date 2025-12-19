@@ -163,7 +163,7 @@ export function PDAOverlay({
                 {concepts.find(c => c.id === selectedItem)?.category}
               </span>
               <div className="w-full h-px bg-white/10 mb-4" />
-              <p className="text-gray-300 leading-relaxed">
+              <p className="text-gray-300 leading-relaxed whitespace-pre-wrap">
                 {concepts.find(c => c.id === selectedItem)?.description}
               </p>
             </div>

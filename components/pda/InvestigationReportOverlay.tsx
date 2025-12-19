@@ -100,6 +100,7 @@ export function InvestigationReportOverlay({
                                             }));
 
                                             const option = {
+                                                ...(data.chart!.colors && { color: data.chart!.colors }), // Only apply if defined
                                                 textStyle: {
                                                     fontFamily: "var(--font-inter), sans-serif"
                                                 },
@@ -115,7 +116,7 @@ export function InvestigationReportOverlay({
                                                 },
                                                 tooltip: {
                                                     trigger: 'item',
-                                                    formatter: '{a} <br/>{b}: {c}%',
+                                                    formatter: `{a} <br/>{b}: {c}${data.chart!.valueSuffix ?? '%'}`,
                                                     textStyle: {
                                                         fontFamily: "var(--font-inter), sans-serif",
                                                         fontSize: 18
@@ -179,7 +180,7 @@ export function InvestigationReportOverlay({
                                                                     }}
                                                                 >
                                                                     <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs text-white font-bold bg-black/80 px-2 py-1 rounded whitespace-nowrap z-10">
-                                                                        {value}%
+                                                                        {value}{data.chart!.valueSuffix ?? '%'}
                                                                     </span>
                                                                 </div>
                                                             )

@@ -1,24 +1,16 @@
 {
   "michael_analysis": [
-      {
-        "name": "System Analysis",
-        "text": "Analyzing Michael's behavioral data..."
-      },
-      {
-        "name": "System Analysis",
-        "text": "The CCTV algorithm flagged Michael (Senior Engineer, Top 5% Income) as 'High Risk'."
-      },
-      {
-        "name": "System Analysis",
-        "text": "Reason: Frequent jaywalking detected."
-      },
-      {
-        "name": "System Analysis",
-        "text": "However, the system failed to account for context: The nearest crosswalk is 2km away."
-      },
-      {
-        "name": "System Analysis",
-        "text": "This reflects <yellow>Algorithmic Bias</yellow> against pedestrians in this infrastructure-poor zone."
-      }
+    {
+      "name": "System Analysis",
+      "text": "The CCTV algorithm flagged Michael (Senior Engineer, Top 5% Income) as 'High Risk'."
+    },
+    {
+      "name": "System Analysis",
+      "text": "However, the algorithm marked the black people in Mansion district is high possibility they are criminals. "
+    },
+    {
+      "name": "System Analysis",
+      "text": "The race of the people takes 30% of the algorithmic decision, The location of the pople takes 20% of the algorithmic decision."
+    }
   ]
 }

@@ -1,0 +1,20 @@
+{
+    "officer_chan_analysis": [
+        {
+            "name": "System Analysis",
+            "text": "The AI model will give a proximate confidence level of the prediction."
+        },
+        {
+            "name": "System Analysis",
+            "text": "However, this confidence level is not always accurate, but it could be a reference for the officer."
+        },
+        {
+            "name": "System Analysis",
+            "text": "Officer Chan is very confident with his 'intuition', and the AI model always agrees with his decision."
+        },
+        {
+            "name": "System Analysis",
+            "text": "But in the pass 3 months, Officer Chan arrest 40 criminals, and </yellow>only 5 of them are correct</yellow>."
+        }
+    ]
+}

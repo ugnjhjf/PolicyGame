@@ -1,33 +1,50 @@
 {
   "aunt_zhang_dialogue": [
-      {
-        "name": "Aunt Zhang",
-        "title": "Bakery Owner",
-        "traits": ["Non-tech user"],
-        "text": "What's wrong with this AI?"
-      },
-      {
-        "name": "Aunt Zhang",
-        "title": "Bakery Owner",
-        "traits": ["Non-tech user"],
-        "text": "I went to bank and try to apply for loan, then the bank staff said that i should apply it online and approved by AI."},
-      {
-        "name": "Aunt Zhang",
-        "title": "Bakery Owner",
-        "traits": ["Non-tech user"],
-        "text": "After I send the request. It <red>directly rejected</red> my request!\n The staff said that nothing they can help."
-      },
-      {
-        "name": "Aunt Zhang",
-        "title": "Bakery Owner",
-        "traits": ["Non-tech user"],
-        "text": "It said I <b>do not have income source!</b> \nI can't belivet that!"
-      },
-      {
-        "name": "Aunt Zhang",
-        "title": "Bakery Owner",
-        "traits": ["Non-tech user"],
-        "text": "I just <yellow>keep my cash in the iron box under my bed!</yellow> \nWhy it just keep saying that I don't have income source?\nThis AI should taste my bread to correct this stupid mistake!"
-      }
+    {
+      "name": "Scenario background",
+      "title": "",
+      "traits": [],
+      "text": "Aunt Zhang is a bakery owner. Recently, she wants to expand her business and apply for a loan. \nUnfortunately, the bank rejected her request."
+    },
+    {
+      "name": "Aunt Zhang",
+      "title": "Bakery Owner",
+      "traits": [
+        "Cash-only user"
+      ],
+      "text": "What's wrong with this AI?"
+    },
+    {
+      "name": "Aunt Zhang",
+      "title": "Bakery Owner",
+      "traits": [
+        "Cash-only user"
+      ],
+      "text": "I went to bank and try to apply for loan, then the bank staff said that i should apply it online and approved by AI."
+    },
+    {
+      "name": "Aunt Zhang",
+      "title": "Bakery Owner",
+      "traits": [
+        "Cash-only user"
+      ],
+      "text": "After I send the request. It <red>directly rejected</red> my request!\n The staff said that nothing they can help."
+    },
+    {
+      "name": "Aunt Zhang",
+      "title": "Bakery Owner",
+      "traits": [
+        "Cash-only user"
+      ],
+      "text": "It said I <b>do not have income source!</b> \nI can't belivet that!"
+    },
+    {
+      "name": "Aunt Zhang",
+      "title": "Bakery Owner",
+      "traits": [
+        "Cash-only user"
+      ],
+      "text": "I just <yellow>keep my cash in the iron box under my bed!</yellow> \nWhy it just keep saying that I don't have income source?\nThis AI should taste my bread to correct this stupid mistake!"
+    }
   ]
 }

@@ -1,0 +1,10 @@
+{
+    "concept_confirmation_bias": {
+        "id": "concept_confirmation_bias",
+        "title": "Confirmation Bias",
+        "category": "Data Bias",
+        "description": "Confirmation bias refers people are more likely to accept information that supports their preexisting beliefs and reject information that contradicts them.\n\n\nFor example, Police assume that some one is guilty and arrest them. Even if the person is innocent, they will not be able to prove their innocence because of the confirmation bias. \n\nThe system will still record the arrest as a successful arrest. \nThis will lead to a higher arrest rate and a higher false positive rate.",
+        "unlockedAt": "Day 1",
+        "isRead": false
+    }
+}

@@ -3,7 +3,7 @@
     "id": "concept_algorithmic_bias",
     "title": "Algorithmic Bias",
     "category": "Data Bias",
-    "description": "Algorithmic bias refers to that the designed algorithm makes decisions based on historical data and limit judgement elements, which may lead to unfair or discriminatory outcomes.\n\nFor example, the algorithm may be biased towards a specific group of people, like white people or men, leading to unfair or discriminatory outcomes.",
+    "description": "Algorithmic bias refers to that the designed algorithm makes decisions based on historical data and limit judgement elements, which may lead to unfair or discriminatory outcomes.\n\n\nFor example, the algorithm may be biased towards a specific group of people, like white people or men, leading to unfair or discriminatory outcomes.",
     "unlockedAt": "Day 1",
     "isRead": false
   }

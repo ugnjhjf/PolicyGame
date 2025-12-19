@@ -1,0 +1,10 @@
+{
+    "clue_officer_chan": {
+        "id": "clue_officer_chan_interview_log",
+        "title": "Officer Chan's interview log",
+        "content": "This log contains the interview record of Officer Chan.\nOver the past three months, he arrested 40 people, 35 of whom were later proven innocent and released.\nBut he doesn't remember those 35 wrongful arrests.He only remembers the 5 correct ones. \n\n\n “Last week I caught a wanted criminal using this system — it's very accurate! ",
+        "regionId": "Mansion District",
+        "timestamp": "Day 1",
+        "isRead": false
+    }
+}

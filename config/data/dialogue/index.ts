@@ -3,6 +3,8 @@ import auntZhang from './aunt_zhang.json'
 import auntZhangInvestigate from '../investigate/aunt_zhang.json'
 import michael from './michael.json'
 import michaelInvestigate from '../investigate/michael.json'
+import officerChan from './officer_chan.json'
+import officerChanInvestigate from '../investigate/officer_chan.json'
 
 const dialogues = {
   events: {
@@ -10,7 +12,9 @@ const dialogues = {
     ...auntZhang,
     ...auntZhangInvestigate,
     ...michael,
-    ...michaelInvestigate
+    ...michaelInvestigate,
+    ...officerChan,
+    ...officerChanInvestigate
   }
 }
 

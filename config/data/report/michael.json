@@ -7,6 +7,7 @@
   "chart": {
     "type": "bar",
     "title": "Racial Bias Analysis (Actual vs Predicted)",
+    "valueSuffix": "%",
     "labels": [
       "Black",
       "Yellow",

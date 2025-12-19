@@ -42,6 +42,13 @@ export default function GamePage() {
                         y: 35,
                         label: 'Michael\'s Office',
                         status: 'available'
+                    },
+                    {
+                        id: 'officer_chan',
+                        x: 50,
+                        y: 50,
+                        label: 'Officer Chan\'s Patrol',
+                        status: 'available'
                     }
                 ]
             }
@@ -140,6 +147,7 @@ export default function GamePage() {
             let newClue;
             if (currentEventId === 'aunt_zhang') newClue = clueData.clue_zhang_ledger
             else if (currentEventId === 'michael') newClue = clueData.clue_michael_cctv
+            else if (currentEventId === 'officer_chan') newClue = clueData.clue_officer_chan
 
             if (newClue) {
                 setRpgState(prev => ({
@@ -202,6 +210,7 @@ export default function GamePage() {
             // Step 1: Dialogue
             if (eventId === 'aunt_zhang') startDialogue('aunt_zhang_dialogue')
             else if (eventId === 'michael') startDialogue('michael_dialogue')
+            else if (eventId === 'officer_chan') startDialogue('officer_chan_dialogue')
         } else if (event.status === 'investigating') {
             // Step 3: Investigation Logic
 
@@ -238,6 +247,8 @@ export default function GamePage() {
                     data = allReportData.aunt_zhang as InvestigationReportData
                 } else if (eventId === 'michael') {
                     data = allReportData.michael as InvestigationReportData
+                } else if (eventId === 'officer_chan') {
+                    data = allReportData.officer_chan as InvestigationReportData
                 }
 
                 if (data) {
@@ -274,6 +285,7 @@ export default function GamePage() {
             let newConcept;
             if (currentEventId === 'aunt_zhang') newConcept = conceptData.concept_selection_bias
             else if (currentEventId === 'michael') newConcept = conceptData.concept_algorithmic_bias
+            else if (currentEventId === 'officer_chan') newConcept = conceptData.concept_confirmation_bias
 
             if (newConcept) {
                 setRpgState(prev => ({
