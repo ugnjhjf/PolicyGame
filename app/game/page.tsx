@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { Tablet } from 'lucide-react'
+import { Tablet, Zap } from 'lucide-react'
 import { INITIAL_RPG_STATE, RPGState, Concept, Clue, InvestigationReportData } from '../../types/rpg'
 import { MapInteractiveLayer } from '../../components/map/MapInteractiveLayer'
 import { DialogueOverlay } from '../../components/vn/DialogueOverlay'
@@ -70,6 +70,36 @@ export default function GamePage() {
     const triggerNotification = (title: string, message: string, type: PDANotificationProps['type'] = 'info', onClick?: () => void) => {
         setNotification({ title, message, type, onClick })
         setShowNotification(true)
+    }
+
+    // Developer Mode State
+    const [isDevMode, setIsDevMode] = useState(false)
+
+    // Developer Tool: Unlock All
+    const handleDevUnlockAll = () => {
+        const allClues = Object.values(clueData).map((c: any) => ({ ...c, isRead: true }))
+        const allConcepts = Object.values(conceptData).map((c: any) => ({ ...c, isRead: true }))
+        const allReports = Object.values(allReportData).map((r: any) => ({ ...r, isRead: true }))
+
+        setRpgState(prev => ({
+            ...prev,
+            player: {
+                ...prev.player,
+                inventory: prev.player.inventory, // Keep inventory
+                journal: allClues,
+                encyclopedia: allConcepts,
+                reports: allReports
+            },
+            map: {
+                activeEvents: prev.map.activeEvents.map(e => ({
+                    ...e,
+                    status: 'completed' // Mark all map events as completed
+                }))
+            }
+        }))
+
+        triggerNotification('DEV TOOL', 'All content unlocked!', 'success')
+        setShowPDA(true)
     }
 
     // Dialogue Queue State
@@ -440,10 +470,41 @@ export default function GamePage() {
             )}
 
             {/* Developer Footer */}
-            <div className="fixed bottom-4 right-4 z-10">
+            <div className="fixed bottom-4 right-4 z-10 flex flex-col items-end gap-2">
                 <p className="text-xs text-white/60 font-medium">
                     Developer: Rokidna G
                 </p>
+            </div>
+
+            {/* Developer Tools Toggle */}
+            <div className="fixed top-20 right-4 z-50 flex flex-col items-end gap-2">
+                <button
+                    onClick={() => setIsDevMode(!isDevMode)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider backdrop-blur-md transition-all border ${isDevMode
+                        ? 'bg-red-500/80 text-white border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]'
+                        : 'bg-black/40 text-gray-400 border-white/10 hover:bg-black/60 hover:text-white'
+                        }`}
+                >
+                    {isDevMode ? 'DEV MODE: ON' : 'DEV MODE'}
+                </button>
+
+                {isDevMode && (
+                    <div className="bg-black/80 backdrop-blur-xl border border-white/20 p-4 rounded-xl shadow-2xl animate-in slide-in-from-right-4 fade-in duration-200">
+                        <div className="flex flex-col gap-2">
+                            <h4 className="text-xs text-blue-300 font-bold uppercase mb-1">Debug Controls</h4>
+                            <button
+                                onClick={handleDevUnlockAll}
+                                className="px-4 py-2 bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 border border-blue-500/30 rounded-lg text-xs font-bold transition-all flex items-center justify-between gap-3 group"
+                            >
+                                <span>UNLOCK ALL CONTENT</span>
+                                <Zap className="w-3 h-3 group-hover:text-yellow-400 transition-colors" />
+                            </button>
+                            <div className="text-[10px] text-gray-500 max-w-[150px] leading-tight mt-1">
+                                Unlocks all clues, encyclopedia entries, and reports instantly.
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     )
