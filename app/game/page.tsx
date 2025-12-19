@@ -305,6 +305,9 @@ export default function GamePage() {
 
     const handleReportClose = () => {
         setShowReport(false)
+        // Return to PDA Reports tab
+        setPdaTab('reports')
+        setShowPDA(true)
 
         // Step 5: Unlock Concept after report is read
         if (!currentEventId) return
@@ -337,6 +340,18 @@ export default function GamePage() {
                     setShowPDA(true)
                 }, 500)
             }
+        }
+    }
+
+    const handleReportNavigate = (direction: 'next' | 'prev') => {
+        if (!reportData) return
+        const reports = rpgState.player.reports
+        const currentIndex = reports.findIndex(r => r.fileId === reportData.fileId)
+        if (currentIndex === -1) return
+
+        const newIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1
+        if (newIndex >= 0 && newIndex < reports.length) {
+            setReportData(reports[newIndex])
         }
     }
 
@@ -455,6 +470,10 @@ export default function GamePage() {
                 isOpen={showReport}
                 onClose={handleReportClose}
                 data={reportData}
+                onNext={() => handleReportNavigate('next')}
+                onPrev={() => handleReportNavigate('prev')}
+                hasNext={!!(reportData && rpgState.player.reports.findIndex(r => r.fileId === reportData.fileId) < rpgState.player.reports.length - 1)} // Check if not last
+                hasPrev={!!(reportData && rpgState.player.reports.findIndex(r => r.fileId === reportData.fileId) > 0)} // Check if not first
             />
 
             {/* Notifications */}
