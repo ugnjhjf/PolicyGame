@@ -37,7 +37,17 @@ export function DialogueOverlay({
     <div className="fixed inset-0 z-50 pointer-events-none flex flex-col justify-end pb-8">
       {/* ... (Character Portrait Layer remains same) ... */}
       <div className="absolute inset-0 z-0 flex items-end justify-center pointer-events-none">
-        {/* ... */}
+        {characterImage && (
+          <div className="relative w-[60vh] h-[80vh] mb-[10vh] transition-all duration-500 animate-in fade-in slide-in-from-bottom-10">
+            <Image
+              src={characterImage.startsWith('/') ? characterImage : `/${characterImage}`}
+              alt={characterName}
+              fill
+              className="object-contain object-bottom"
+              priority
+            />
+          </div>
+        )}
       </div>
 
       {/* Dialogue Box */}
@@ -55,7 +65,7 @@ export function DialogueOverlay({
             )}
             {characterTraits && characterTraits.map((trait, index) => (
               <div key={index} className="bg-purple-900/80 px-2 py-1 rounded-md border border-purple-500/30 flex items-center justify-center min-w-[24px]">
-                 <span className="text-purple-200 text-xs font-semibold">{trait}</span>
+                <span className="text-purple-200 text-xs font-semibold">{trait}</span>
               </div>
             ))}
           </div>

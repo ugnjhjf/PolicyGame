@@ -102,7 +102,7 @@ export default function GamePage() {
     const [pdaTab, setPdaTab] = useState<'journal' | 'encyclopedia' | 'reports'>('journal')
     const [pdaSelectedId, setPdaSelectedId] = useState<string | null>(null)
     const [showDialogue, setShowDialogue] = useState(false)
-    const [dialogueContent, setDialogueContent] = useState<{ name: string; title?: string; traits?: string[]; text: string }>({ name: '', text: '' })
+    const [dialogueContent, setDialogueContent] = useState<{ name: string; title?: string; image?: string; traits?: string[]; text: string }>({ name: '', text: '' })
     const [currentEventId, setCurrentEventId] = useState<string | null>(null)
 
     // Notification State
@@ -416,7 +416,7 @@ export default function GamePage() {
             {/* Background Image */}
             <div className="fixed inset-0 z-0">
                 <Image
-                    src="/city_overview.png"
+                    src="/background/city_overview.png"
                     alt="City Overview"
                     fill
                     className="object-cover"
@@ -465,6 +465,7 @@ export default function GamePage() {
                 isOpen={showDialogue}
                 characterName={dialogueContent.name}
                 characterTitle={dialogueContent.title}
+                characterImage={dialogueContent.image}
                 characterTraits={dialogueContent.traits}
                 text={dialogueContent.text}
                 onNext={handleDialogueNext}

@@ -3,12 +3,14 @@
     {
       "name": "Scenario background",
       "title": "",
+      "image": "",
       "traits": [],
       "text": "Michael is a senior software engineer who is working in a game company. He always try to avoid the CCTV camera.\nNow he is talking his awful experience when he is walking on the street."
     },
     {
       "name": "Michael",
       "title": "Senior Software Engineer",
+      "image": "",
       "traits": [
         "Black"
       ],
@@ -17,6 +19,7 @@
     {
       "name": "Michael",
       "title": "Senior Software Engineer",
+      "image": "",
       "traits": [
         "Black"
       ],
@@ -25,6 +28,7 @@
     {
       "name": "Michael",
       "title": "Senior Software Engineer",
+      "image": "",
       "traits": [
         "Black"
       ],
