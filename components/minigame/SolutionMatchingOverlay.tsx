@@ -221,7 +221,7 @@ export function SolutionMatchingOverlay({
 
             {/* Main Game Area */}
             {/* Removed overflow-hidden to allow dragging outside of containers */}
-            <div className="flex-1 flex p-8 gap-8 relative">
+            <div className="flex-1 flex p-8 gap-8 relative overflow-y-auto">
 
                 {/* Left: Problem Slots */}
                 <div className="flex-1 flex flex-col gap-6 max-w-xl">
