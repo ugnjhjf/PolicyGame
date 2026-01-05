@@ -5,7 +5,7 @@ import PageTransitionProvider from '../components/PageTransitionProvider'
 import { inter, poppins } from '../lib/fonts'
 
 export const metadata: Metadata = {
-  title: 'AI Policing Simulation | Rokidna',
+  title: 'AI Policing Strategist | Rokidna',
   description: 'AI-powered policing strategy simulation game',
   generator: 'Next.js',
   keywords: ['AI', 'policing', 'simulation', 'strategy', 'game'],
