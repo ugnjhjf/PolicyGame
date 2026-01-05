@@ -12,7 +12,7 @@
         {
             "name": "Anna",
             "title": "Office Secretary",
-            "image": "character/anna/anna_waving.png",
+            "image": "character/anna/anna_confuse.png",
             "traits": [
                 ""
             ],
@@ -21,7 +21,7 @@
         {
             "name": "Anna",
             "title": "Office Secretary",
-            "image": "character/anna/anna_waving.png",
+            "image": "character/anna/anna_unhappy.png",
             "traits": [
                 ""
             ],
@@ -30,7 +30,7 @@
         {
             "name": "Anna",
             "title": "Office Secretary",
-            "image": "character/anna/anna_waving.png",
+            "image": "character/anna/anna_holding.png",
             "traits": [
                 ""
             ],
@@ -39,7 +39,7 @@
         {
             "name": "Anna",
             "title": "Office Secretary",
-            "image": "character/anna/anna_waving.png",
+            "image": "character/anna/anna_pointing.png",
             "traits": [
                 ""
             ],

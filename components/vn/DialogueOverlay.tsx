@@ -38,7 +38,7 @@ export function DialogueOverlay({
       {/* ... (Character Portrait Layer remains same) ... */}
       <div className="absolute inset-0 z-0 flex items-end justify-center pointer-events-none">
         {characterImage && (
-          <div className="relative w-[60vh] h-[80vh] mb-[10vh] transition-all duration-500 animate-in fade-in slide-in-from-bottom-10">
+          <div className="relative w-[90vh] h-[90vh] mb-[10vh] transition-all duration-500 animate-in fade-in slide-in-from-bottom-10">
             <Image
               src={characterImage.startsWith('/') ? characterImage : `/${characterImage}`}
               alt={characterName}

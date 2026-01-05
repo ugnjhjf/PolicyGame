@@ -3,14 +3,14 @@
     {
       "name": "Scenario background",
       "title": "",
-      "image": "",
+      "image": "character/aunt_zhang/aunt_zhang_happy.png",
       "traits": [],
       "text": "Aunt Zhang is a bakery owner. Recently, she wants to expand her business and apply for a loan. \nUnfortunately, the bank rejected her request."
     },
     {
       "name": "Aunt Zhang",
       "title": "Bakery Owner",
-      "image": "",
+      "image": "character/aunt_zhang/aunt_zhang_confuse.png",
       "traits": [
         "Cash-only user"
       ],
@@ -19,7 +19,7 @@
     {
       "name": "Aunt Zhang",
       "title": "Bakery Owner",
-      "image": "",
+      "image": "character/aunt_zhang/aunt_zhang_confuse.png",
       "traits": [
         "Cash-only user"
       ],
@@ -28,7 +28,7 @@
     {
       "name": "Aunt Zhang",
       "title": "Bakery Owner",
-      "image": "",
+      "image": "character/aunt_zhang/aunt_zhang_confuse.png",
       "traits": [
         "Cash-only user"
       ],
@@ -37,7 +37,7 @@
     {
       "name": "Aunt Zhang",
       "title": "Bakery Owner",
-      "image": "",
+      "image": "character/aunt_zhang/aunt_zhang_angry.png",
       "traits": [
         "Cash-only user"
       ],
@@ -46,7 +46,7 @@
     {
       "name": "Aunt Zhang",
       "title": "Bakery Owner",
-      "image": "",
+      "image": "character/aunt_zhang/aunt_zhang_angry.png",
       "traits": [
         "Cash-only user"
       ],
