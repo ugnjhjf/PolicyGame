@@ -3,14 +3,14 @@
         {
             "name": "Scenario background",
             "title": "",
-            "image": "",
+            "image": "character/officer_chan/officer_chan_normal.png",
             "traits": [],
             "text": "Office Chan is patrolling on the street, and he see a man who is trembling all over and always try to take something from the pocket."
         },
         {
             "name": "Officer Chan",
             "title": "Security Patrol Team Leader",
-            "image": "",
+            "image": "character/officer_chan/officer_chan_normal.png",
             "traits": [
                 "Stubborn",
                 "Experienced",
@@ -21,7 +21,7 @@
         {
             "name": "Officer Chan",
             "title": "Security Patrol Team Leader",
-            "image": "",
+            "image": "character/officer_chan/officer_chan_normal.png",
             "traits": [
                 "Stubborn",
                 "Experienced",
@@ -32,7 +32,7 @@
         {
             "name": "Officer Chan",
             "title": "Security Patrol Team Leader",
-            "image": "",
+            "image": "character/officer_chan/officer_chan_normal.png",
             "traits": [
                 "Stubborn",
                 "Experienced",

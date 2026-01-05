@@ -10,7 +10,10 @@ import { PDAOverlay } from '../../components/pda/PDAOverlay'
 import { PDANotification, type PDANotificationProps } from '../../components/pda/PDANotification'
 import { InvestigationReportOverlay } from '../../components/pda/InvestigationReportOverlay'
 import { SolutionMatchingOverlay } from '../../components/minigame/SolutionMatchingOverlay'
-import { dialogue_intro, dialogue_aunt_zhang_start, dialogue_michael_start, dialogue_officer_chan, dialogue_solution_intro } from '../../config/data/dialogue'
+import { dialogue_intro, dialogue_aunt_zhang_start, dialogue_michael_start, dialogue_officer_chan, dialogue_solution_intro, dialogue_solution_outro } from '../../config/data/dialogue'
+import { ChapterCompletionOverlay } from '../../components/game/ChapterCompletionOverlay'
+import { QuizOverlay } from '../../components/game/QuizOverlay'
+import quizData from '../../config/data/quiz/round_1/quiz.json'
 import { events as mapEvents } from '../../config/data/map'
 import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../config/data'
 import clueData from '../../config/data/journal'
@@ -62,7 +65,20 @@ export default function GamePage() {
     const handleSolutionComplete = () => {
         setIsSolutionComplete(true)
         setShowSolutionGame(false)
-        triggerNotification('POLICY SYNTHESIZED', 'New Framework Established', 'success')
+
+        // Remove Town Hall event
+        setRpgState(prev => ({
+            ...prev,
+            map: {
+                ...prev.map,
+                activeEvents: prev.map.activeEvents.filter(e => e.id !== 'town_hall')
+            }
+        }))
+
+        // Clear current event ID to prevent minigame loop in handleDialogueNext
+        setCurrentEventId(null)
+
+        startDialogue('solution_outro')
     }
 
     // 覆盖初始事件
@@ -104,6 +120,8 @@ export default function GamePage() {
     const [showDialogue, setShowDialogue] = useState(false)
     const [dialogueContent, setDialogueContent] = useState<{ name: string; title?: string; image?: string; traits?: string[]; text: string }>({ name: '', text: '' })
     const [currentEventId, setCurrentEventId] = useState<string | null>(null)
+    const [showChapterCompletion, setShowChapterCompletion] = useState(false)
+    const [showQuiz, setShowQuiz] = useState(false)
 
     // Notification State
     const [notification, setNotification] = useState<Omit<PDANotificationProps, 'isVisible' | 'onClose'> | null>(null)
@@ -157,6 +175,7 @@ export default function GamePage() {
         else if (sequenceKey === 'michael_dialogue') sequence = (dialogue_michael_start as any).michael_dialogue
         else if (sequenceKey === 'officer_chan_dialogue') sequence = (dialogue_officer_chan as any).officer_chan_dialogue
         else if (sequenceKey === 'solution_intro') sequence = (dialogue_solution_intro as any).solution_intro
+        else if (sequenceKey === 'solution_outro') sequence = (dialogue_solution_outro as any).solution_outro
 
         if (sequence && sequence.length > 0) {
             setDialogueQueue(sequence)
@@ -183,8 +202,29 @@ export default function GamePage() {
             return
         }
 
+        // Check if we just finished the solution outro (by checking if town_hall event was just removed or by context)
+        // A robust way: check if we just played a specific sequence. 
+        // We need to track the current sequence key or derive it.
+        // Simplified: If "Policy Centor" (town_hall) is gone AND we just finished a dialogue that wasn't intro...
+        // Actually, we can add a check for the specific sequence content or a state flag.
+        // Let's rely on a state "isOutroPlaying" or similar if needed. 
+        // BUT, we can check if we just finished 'solution_outro'.
+        // Let's modify startDialogue to store current sequence key.
+        // Wait, handleDialogueNext doesn't know the key.
+        // Let's add `currentDialogueKey` state.
+
         if (!currentEventId) {
+            // If we just finished solution_outro (which happens with currentEventId=null)
+            // We need to distinguish between Intro and Outro.
+            // Intro happens at start. Outro happens after minigame.
+            // We can check if isSolutionComplete is true.
+            if (isSolutionComplete) {
+                setShowChapterCompletion(true)
+                return
+            }
+
             // Tutorial End Logic
+            // ... existing tutorial logic ...
             // We assume this is the end of the intro dialogue
             const newConcepts = Object.values(annaConcept).map((c: any) => ({
                 ...c,
@@ -503,6 +543,23 @@ export default function GamePage() {
                 initialPlacements={solutionPlacements}
                 onSaveState={(placements) => setSolutionPlacements(placements)}
                 onComplete={handleSolutionComplete}
+            />
+
+            <ChapterCompletionOverlay
+                isOpen={showChapterCompletion}
+                onNext={() => {
+                    setShowChapterCompletion(false)
+                    setShowQuiz(true)
+                }}
+            />
+
+            <QuizOverlay
+                isOpen={showQuiz}
+                questions={quizData.questions}
+                onComplete={() => {
+                    setShowQuiz(false)
+                    triggerNotification('Chapter 1 Complete', 'You have mastered the basics of bias.', 'success')
+                }}
             />
 
             {/* Notifications */}

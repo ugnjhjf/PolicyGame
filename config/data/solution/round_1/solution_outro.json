@@ -1,0 +1,20 @@
+{
+    "solution_outro": [
+        {
+            "name": "Anna",
+            "title": "Office Secretary",
+            "image": "character/anna/holding.png",
+            "traits": [
+                ""
+            ],
+            "text": "Great. The system need sometime to verify the outcome."
+        },
+        {
+            "name": "Anna",
+            "title": "",
+            "image": "character/anna/holding.png",
+            "traits": [],
+            "text": "I will report back to you later."
+        }
+    ]
+}
