@@ -172,7 +172,7 @@ export function DialogueOverlay({
                 <span className="text-blue-200 text-sm font-medium">{characterTitle}</span>
               </div>
             )}
-            {characterTraits && characterTraits.map((trait, index) => (
+            {characterTraits && characterTraits.filter(t => t && t.trim().length > 0).map((trait, index) => (
               <div key={index} className="bg-purple-900/80 px-2 py-1 rounded-md border border-purple-500/30 flex items-center justify-center min-w-[24px]">
                 <span className="text-purple-200 text-xs font-semibold">{trait}</span>
               </div>

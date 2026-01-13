@@ -3,7 +3,7 @@
         {
             "name": "Anna",
             "title": "Office Secretary",
-            "image": "character/anna/holding.png",
+            "image": "character/anna/anna_pointing.png",
             "traits": [
                 ""
             ],
@@ -12,7 +12,7 @@
         {
             "name": "Anna",
             "title": "",
-            "image": "character/anna/holding.png",
+            "image": "character/anna/anna_stand.png",
             "traits": [],
             "text": "I will report back to you later."
         }

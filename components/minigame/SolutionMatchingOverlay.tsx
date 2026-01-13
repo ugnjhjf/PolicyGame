@@ -114,7 +114,30 @@ export function SolutionMatchingOverlay({
     }
 
     // --- Logic ---
+    const [draggingSource, setDraggingSource] = useState<'left' | 'right' | null>(null)
+    const [hoveredSlotId, setHoveredSlotId] = useState<string | null>(null)
+
+    // --- Logic ---
+    const handleDragStart = (source: 'left' | 'right') => {
+        setDraggingSource(source)
+    }
+
+    const handleDrag = (info: any) => {
+        const point = info.point
+        const elements = document.elementsFromPoint(point.x, point.y)
+        const slotElement = elements.find(el => el.getAttribute('data-slot-id'))
+
+        if (slotElement) {
+            setHoveredSlotId(slotElement.getAttribute('data-slot-id'))
+        } else {
+            setHoveredSlotId(null)
+        }
+    }
+
     const handleDragEnd = (cardId: string, info: any) => {
+        setDraggingSource(null)
+        setHoveredSlotId(null)
+
         // Simple hit detection using elementFromPoint is tricky with framer motion's drag
         // creating a "clone" is better but complex.
         // Let's rely on the pointer event from onDragEnd info? not directly available.
@@ -132,13 +155,34 @@ export function SolutionMatchingOverlay({
 
         if (slotElement) {
             const slotId = slotElement.getAttribute('data-slot-id')!
+
             // Move card to slot
-            setPlacements(prev => ({
-                ...prev,
-                [slotId]: cardId
-            }))
-            // Reset result for this slot on change
-            setResults(prev => ({ ...prev, [slotId]: null }))
+            setPlacements(prev => {
+                const next = { ...prev }
+
+                // Check if card was already placed in another slot and remove it
+                const oldSlotId = Object.keys(next).find(key => next[key] === cardId)
+                if (oldSlotId) {
+                    delete next[oldSlotId]
+                }
+
+                // Assign to new slot (overwriting if something was there)
+                next[slotId] = cardId
+                return next
+            })
+
+            // Reset results
+            setResults(prev => {
+                const next = { ...prev }
+                // Find old slot to clear its result too
+                const oldSlotId = Object.keys(placements).find(key => placements[key] === cardId)
+                if (oldSlotId) {
+                    delete next[oldSlotId] // actually set to null? keys are string.
+                    next[oldSlotId] = null
+                }
+                next[slotId] = null
+                return next
+            })
         } else {
             // Check if dropped back on "Unplaced" area (or just outside any slot)
             // If dropped outside slot, return to pool (remove from placements)
@@ -210,13 +254,7 @@ export function SolutionMatchingOverlay({
                         <p className="text-sm text-gray-400">Match the correct intervention to each identified bias.</p>
                     </div>
                 </div>
-                <button
-                    onClick={handleExit}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors border border-white/5"
-                >
-                    <Save className="w-4 h-4" />
-                    <span>Save & Exit</span>
-                </button>
+
             </div>
 
             {/* Main Game Area */}
@@ -224,38 +262,48 @@ export function SolutionMatchingOverlay({
             <div className="flex-1 flex p-8 gap-8 relative overflow-y-auto">
 
                 {/* Left: Problem Slots */}
-                <div className="flex-1 flex flex-col gap-6 max-w-xl">
+                <div
+                    className="flex-[1.2] flex flex-col gap-6 max-w-2xl relative transition-all duration-200"
+                    style={{ zIndex: draggingSource === 'left' ? 50 : 10 }}
+                >
                     {SLOTS.map(slot => {
                         const filledCardId = placements[slot.id]
                         const filledCard = CARDS.find(c => c.id === filledCardId)
                         const result = results[slot.id]
+                        const isHovered = hoveredSlotId === slot.id
 
                         return (
                             <div
                                 key={slot.id}
                                 data-slot-id={slot.id}
-                                className={`relative p-6 rounded-xl border-2 transition-colors min-h-[160px] flex flex-col justify-center
+                                className={`relative p-6 rounded-xl border-2 transition-all duration-200 min-h-[160px] flex flex-col justify-center
                                     ${result === 'correct' ? 'border-green-500 bg-green-950/20' :
                                         result === 'wrong' ? 'border-red-500 bg-red-950/20' :
-                                            'border-white/10 bg-white/5 hover:border-blue-400/50'}`}
+                                            isHovered ? 'border-yellow-400 bg-yellow-900/10 scale-[1.02] shadow-[0_0_15px_rgba(250,204,21,0.3)]' :
+                                                'border-white/10 bg-white/5 hover:border-blue-400/50'}`}
                             >
                                 {/* Slot Label */}
                                 <div className="absolute top-4 left-4 flex items-center gap-2 opacity-50">
-                                    <span className="text-2xl">{slot.icon}</span>
-                                    <span className="font-bold uppercase tracking-widest text-sm">{slot.title}</span>
+                                    <span className="text-3xl">{slot.icon}</span>
+                                    <span className="font-bold uppercase tracking-widest text-xl">{slot.title}</span>
                                 </div>
-                                <p className="mt-8 text-gray-400 text-sm mb-4">{slot.description}</p>
+                                <p className="mt-8 text-gray-400 text-xl mb-4 leading-relaxed">{slot.description}</p>
 
                                 {/* Drop Zone Content */}
                                 <div className="flex-1 flex items-center justify-center p-2 rounded-lg border border-dashed border-white/20 bg-black/20">
                                     {filledCard ? (
                                         <DraggableCard
+                                            key={filledCard.id}
                                             card={filledCard}
+                                            onDragStart={() => handleDragStart('left')}
+                                            onDrag={handleDrag}
                                             onDragEnd={handleDragEnd}
                                             isPlaced={true}
                                         />
                                     ) : (
-                                        <span className="text-sm text-gray-600 font-mono">DRAG SOLUTION HERE</span>
+                                        <span className={`text-sm font-mono transition-colors ${isHovered ? 'text-yellow-400' : 'text-gray-600'}`}>
+                                            {isHovered ? 'DROP TO ASSIGN' : 'DRAG SOLUTION HERE'}
+                                        </span>
                                     )}
                                 </div>
 
@@ -284,24 +332,36 @@ export function SolutionMatchingOverlay({
                 </div>
 
                 {/* Right: Solution Cards Pool */}
-                <div className="flex-1 bg-black/40 rounded-xl border border-white/10 p-6 flex flex-col">
+                <div
+                    className="flex-1 bg-black/40 rounded-xl border border-white/10 p-6 flex flex-col relative transition-all duration-200"
+                    style={{ zIndex: draggingSource === 'right' ? 50 : 10 }}
+                >
                     <h3 className="text-gray-400 font-bold uppercase tracking-widest mb-6 flex items-center gap-2">
                         <LayoutDashboard className="w-4 h-4" /> Available Interventions
                     </h3>
 
                     {/* Removed overflow-y-auto to prevent clipping during drag */}
-                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 content-start pr-2">
+                    <div className="grid grid-cols-1 gap-4 content-start pr-2">
                         {getUnplacedCards().map(card => (
                             <DraggableCard
                                 key={card.id}
                                 card={card}
+                                onDragStart={() => handleDragStart('right')}
+                                onDrag={handleDrag}
                                 onDragEnd={handleDragEnd}
                             />
                         ))}
                     </div>
 
                     {/* Submit Bar */}
-                    <div className="mt-auto pt-6 border-t border-white/10 flex justify-end">
+                    <div className="mt-auto pt-6 border-t border-white/10 flex items-center justify-end gap-4">
+                        <button
+                            onClick={handleExit}
+                            className="flex items-center gap-2 px-6 py-3 rounded-lg bg-white/10 hover:bg-white/20 transition-colors border border-white/5 text-sm font-medium"
+                        >
+                            <Save className="w-4 h-4" />
+                            <span>Save & Exit</span>
+                        </button>
                         <button
                             onClick={handleSubmit}
                             className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-lg font-bold tracking-wider shadow-lg shadow-blue-900/20 active:scale-95 transition-all w-full md:w-auto"
@@ -317,13 +377,28 @@ export function SolutionMatchingOverlay({
 }
 
 // Separate component for drag logic to keep it clean
-function DraggableCard({ card, onDragEnd, isPlaced = false }: { card: SolutionCard, onDragEnd: (id: string, info: any) => void, isPlaced?: boolean }) {
+function DraggableCard({
+    card,
+    onDragStart,
+    onDrag,
+    onDragEnd,
+    isPlaced = false
+}: {
+    card: SolutionCard,
+    onDragStart?: () => void,
+    onDrag?: (info: any) => void,
+    onDragEnd: (id: string, info: any) => void,
+    isPlaced?: boolean
+}) {
     return (
         <motion.div
             drag
+            dragSnapToOrigin
             dragElastic={0.1}
             dragMomentum={false}
             whileDrag={{ scale: 1.05, zIndex: 100, cursor: 'grabbing' }}
+            onDragStart={onDragStart}
+            onDrag={(e, info) => onDrag && onDrag(info)}
             onDragEnd={(e, info) => onDragEnd(card.id, info)}
             // Reset position on drag end if not dropped? Framer motion handles layoutId animations automatically if we used reorder,
             // but for free drag we rely on React state updates to "snap" it to the new parent div.
@@ -335,9 +410,9 @@ function DraggableCard({ card, onDragEnd, isPlaced = false }: { card: SolutionCa
         >
             <div className="flex items-start gap-3">
                 <div className={`w-2 h-full rounded-full absolute left-0 top-0 bottom-0 ${card.type === 'correct' ? 'bg-blue-500/0 group-hover:bg-blue-500/50' : 'bg-orange-500/0 group-hover:bg-orange-500/50'} transition-colors`} />
-                <div className="flex-1">
-                    <h4 className="font-bold text-blue-100 text-sm mb-1 group-hover:text-blue-400 transition-colors">{card.title}</h4>
-                    <p className="text-xs text-gray-400 leading-relaxed">{card.description}</p>
+                <div className="flex-1 py-1">
+                    <h4 className="font-bold text-blue-100 text-xl mb-2 group-hover:text-blue-400 transition-colors">{card.title}</h4>
+                    <p className="text-lg text-gray-400 leading-relaxed">{card.description}</p>
                 </div>
             </div>
         </motion.div>

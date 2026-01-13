@@ -79,11 +79,7 @@ export const INITIAL_RPG_STATE: RPGState = {
     reports: []
   },
   map: {
-    activeEvents: [
-      { id: 'police-hq', x: 20, y: 70, label: 'Police HQ', status: 'available' },
-      { id: 'gov-complex', x: 50, y: 50, label: 'Government Complex', status: 'available' },
-      { id: 'data-center', x: 80, y: 30, label: 'Data Center', status: 'available' },
-    ]
+    activeEvents: []
   },
   flags: {}
 }

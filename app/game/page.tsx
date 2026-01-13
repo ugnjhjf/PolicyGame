@@ -10,11 +10,11 @@ import { PDAOverlay } from '../../components/pda/PDAOverlay'
 import { PDANotification, type PDANotificationProps } from '../../components/pda/PDANotification'
 import { InvestigationReportOverlay } from '../../components/pda/InvestigationReportOverlay'
 import { SolutionMatchingOverlay } from '../../components/minigame/SolutionMatchingOverlay'
+import GameObjectivePanel from '../../components/GameObjectivePanel'
 import { dialogue_intro, dialogue_aunt_zhang_start, dialogue_michael_start, dialogue_officer_chan, dialogue_solution_intro, dialogue_solution_outro } from '../../config/data/dialogue'
 import { ChapterCompletionOverlay } from '../../components/game/ChapterCompletionOverlay'
 import { QuizOverlay } from '../../components/game/QuizOverlay'
 import quizData from '../../config/data/quiz/round_1/quiz.json'
-import { events as mapEvents } from '../../config/data/map'
 import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../config/data'
 import clueData from '../../config/data/journal'
 import conceptData from '../../config/data/encyclopedia'
@@ -52,7 +52,7 @@ export default function GamePage() {
                                 id: 'town_hall',
                                 x: 50,
                                 y: 20, // Top center
-                                label: 'Policy Center',
+                                label: 'Department of AI',
                                 status: 'available'
                             }
                         ]
@@ -81,36 +81,9 @@ export default function GamePage() {
         startDialogue('solution_outro')
     }
 
-    // 覆盖初始事件
+    // 覆盖初始事件 - Empty now, events spawn after intro
     useEffect(() => {
-        setRpgState(prev => ({
-            ...prev,
-            map: {
-                activeEvents: [
-                    {
-                        id: 'aunt_zhang',
-                        x: 35,
-                        y: 65,
-                        label: 'Aunt Zhang\'s Shop',
-                        status: 'available'
-                    },
-                    {
-                        id: 'michael',
-                        x: 65,
-                        y: 35,
-                        label: 'Michael\'s Office',
-                        status: 'available'
-                    },
-                    {
-                        id: 'officer_chan',
-                        x: 50,
-                        y: 50,
-                        label: 'Officer Chan\'s Patrol',
-                        status: 'available'
-                    }
-                ]
-            }
-        }))
+        // No initial events.
     }, [])
 
     // UI 状态
@@ -164,10 +137,12 @@ export default function GamePage() {
 
     // Dialogue Queue State
     const [dialogueQueue, setDialogueQueue] = useState<any[]>([])
+    const [currentDialogueId, setCurrentDialogueId] = useState<string | null>(null)
 
     // Helper to start a dialogue sequence
     const startDialogue = (sequenceKey: string) => {
         let sequence: any[] = []
+        setCurrentDialogueId(sequenceKey)
 
         // Access dialogue data using correct keys based on JSON structure
         if (sequenceKey === 'anna_dialogue') sequence = (dialogue_intro as any).anna_dialogue
@@ -198,7 +173,41 @@ export default function GamePage() {
         setDialogueQueue([])
 
         if (currentEventId === 'town_hall') {
+            setHasViewedPolicyIntro(true)
             setShowSolutionGame(true)
+            return
+        }
+
+        // Logic for spawning events after Intro
+        if (currentDialogueId === 'anna_dialogue') {
+            setRpgState(prev => ({
+                ...prev,
+                map: {
+                    activeEvents: [
+                        {
+                            id: 'aunt_zhang',
+                            x: 35,
+                            y: 65,
+                            label: 'Aunt Zhang\'s Shop',
+                            status: 'available'
+                        },
+                        {
+                            id: 'michael',
+                            x: 65,
+                            y: 35,
+                            label: 'Michael\'s Office',
+                            status: 'available'
+                        },
+                        {
+                            id: 'officer_chan',
+                            x: 50,
+                            y: 50,
+                            label: 'Officer Chan\'s Patrol',
+                            status: 'available'
+                        }
+                    ]
+                }
+            }))
             return
         }
 
@@ -309,6 +318,9 @@ export default function GamePage() {
     const [showReport, setShowReport] = useState(false)
     const [reportData, setReportData] = useState<InvestigationReportData | null>(null)
 
+    // Policy Intro State
+    const [hasViewedPolicyIntro, setHasViewedPolicyIntro] = useState(false)
+
     // 处理地图事件点击
     const handleMapEvent = (eventId: string) => {
         setCurrentEventId(eventId)
@@ -319,7 +331,13 @@ export default function GamePage() {
             if (eventId === 'aunt_zhang') startDialogue('aunt_zhang_dialogue')
             else if (eventId === 'michael') startDialogue('michael_dialogue')
             else if (eventId === 'officer_chan') startDialogue('officer_chan_dialogue')
-            else if (eventId === 'town_hall') startDialogue('solution_intro')
+            else if (eventId === 'town_hall') {
+                if (hasViewedPolicyIntro) {
+                    setShowSolutionGame(true)
+                } else {
+                    startDialogue('solution_intro')
+                }
+            }
         } else if (event.status === 'investigating') {
             // Scanning Logic
             if (event.progress === undefined || event.progress < 100) {
@@ -482,6 +500,15 @@ export default function GamePage() {
                 Let's assume it is in components/GameStatusBar.tsx 
             */}
             {/* <GameStatusBar /> - Disabling for now as import was missing/erroring in previous checks */}
+
+            <GameObjectivePanel
+                tasks={{
+                    zhangCompleted: rpgState.map.activeEvents.find(e => e.id === 'aunt_zhang')?.status === 'completed',
+                    chanCompleted: rpgState.map.activeEvents.find(e => e.id === 'officer_chan')?.status === 'completed',
+                    michaelCompleted: rpgState.map.activeEvents.find(e => e.id === 'michael')?.status === 'completed'
+                }}
+                onTaskClick={handleMapEvent}
+            />
 
             {/* PDA Button */}
             <div className="fixed bottom-8 left-8 z-30">
