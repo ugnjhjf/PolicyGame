@@ -13,6 +13,8 @@ import { SolutionMatchingOverlay } from '../../components/minigame/SolutionMatch
 import GameObjectivePanel from '../../components/GameObjectivePanel'
 import { dialogue_intro, dialogue_aunt_zhang_start, dialogue_michael_start, dialogue_officer_chan, dialogue_solution_intro, dialogue_solution_outro } from '../../config/data/dialogue'
 import { ChapterCompletionOverlay } from '../../components/game/ChapterCompletionOverlay'
+import { ChapterMasteryOverlay } from '../../components/game/ChapterMasteryOverlay'
+import GameStatusBar from '../../components/GameStatusBar'
 import { QuizOverlay } from '../../components/game/QuizOverlay'
 import quizData from '../../config/data/quiz/round_1/quiz.json'
 import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../config/data'
@@ -50,8 +52,8 @@ export default function GamePage() {
                             ...prev.map.activeEvents,
                             {
                                 id: 'town_hall',
-                                x: 50,
-                                y: 20, // Top center
+                                x: 58,
+                                y: 28,
                                 label: 'Department of AI',
                                 status: 'available'
                             }
@@ -62,12 +64,27 @@ export default function GamePage() {
         }
     }, [rpgState.player.reports.length])
 
-    const handleSolutionComplete = () => {
+    const [challengeStatus, setChallengeStatus] = useState({ aiSpecialist: false, quizHunter: false })
+
+    const handleSolutionComplete = (remainingAttempts: number) => {
         setIsSolutionComplete(true)
         setShowSolutionGame(false)
+        setChallengeStatus(prev => ({ ...prev, aiSpecialist: remainingAttempts === 2 }))
 
         // Remove Town Hall event
         setRpgState(prev => ({
+            // ... (rest of logic unchanged)
+            // We need to match the actual file content to replace it correctly.
+            // Since handleSolutionComplete spans many lines, let's target the definition block.
+            // Wait, I can't just replace the top lines if I don't provide the rest of the function body in ReplacementContent if I target the whole range.
+            // Let's target the state definition and the start of handleSolutionComplete.
+
+            // Strategy: Replace from state def to start of handleSolutionComplete body
+            // And separately replace the QuizOverlay usage.
+
+            // Splitting this into 2 replacements? No, can only do one block with replace_file_content.
+            // I will use multi_replace_file_content.
+
             ...prev,
             map: {
                 ...prev.map,
@@ -95,6 +112,7 @@ export default function GamePage() {
     const [currentEventId, setCurrentEventId] = useState<string | null>(null)
     const [showChapterCompletion, setShowChapterCompletion] = useState(false)
     const [showQuiz, setShowQuiz] = useState(false)
+    const [showMasteryOverlay, setShowMasteryOverlay] = useState(false)
 
     // Notification State
     const [notification, setNotification] = useState<Omit<PDANotificationProps, 'isVisible' | 'onClose'> | null>(null)
@@ -110,28 +128,46 @@ export default function GamePage() {
 
     // Developer Tool: Unlock All
     const handleDevUnlockAll = () => {
+        // Stop any active dialogue and clear queue
+        setShowDialogue(false)
+        setDialogueQueue([])
+        // Mark Policy Intro as viewed so we don't get stuck there either
+        setHasViewedPolicyIntro(true)
+
         const allClues = Object.values(clueData).map((c: any) => ({ ...c, isRead: true }))
         const allConcepts = Object.values(conceptData).map((c: any) => ({ ...c, isRead: true }))
         const allReports = Object.values(allReportData).map((r: any) => ({ ...r, isRead: true }))
 
-        setRpgState(prev => ({
-            ...prev,
-            player: {
-                ...prev.player,
-                inventory: prev.player.inventory, // Keep inventory
-                journal: allClues,
-                encyclopedia: allConcepts,
-                reports: allReports
-            },
-            map: {
-                activeEvents: prev.map.activeEvents.map(e => ({
-                    ...e,
-                    status: 'completed' // Mark all map events as completed
-                }))
-            }
-        }))
+        setRpgState(prev => {
+            // If activeEvents is empty (Intro state), spawn them so we have something to show
+            const eventsToUse = prev.map.activeEvents.length > 0
+                ? prev.map.activeEvents
+                : [
+                    { id: 'aunt_zhang', x: 48, y: 85, label: 'Aunt Zhang\'s Shop', status: 'available' },
+                    { id: 'michael', x: 65, y: 35, label: 'Michael\'s Office', status: 'available' },
+                    { id: 'officer_chan', x: 58, y: 60, label: 'Officer Chan\'s Patrol', status: 'available' }
+                ] as any[]
 
-        triggerNotification('DEV TOOL', 'All content unlocked!', 'success')
+            return {
+                ...prev,
+                player: {
+                    ...prev.player,
+                    inventory: prev.player.inventory, // Keep inventory
+                    journal: allClues,
+                    encyclopedia: allConcepts,
+                    reports: allReports
+                },
+                map: {
+                    // Mark all events as completed
+                    activeEvents: eventsToUse.map(e => ({
+                        ...e,
+                        status: 'completed'
+                    }))
+                }
+            }
+        })
+
+        triggerNotification('DEV TOOL', 'All content unlocked & Intro Skipped!', 'success')
         setShowPDA(true)
     }
 
@@ -180,43 +216,65 @@ export default function GamePage() {
 
         // Logic for spawning events after Intro
         if (currentDialogueId === 'anna_dialogue') {
-            setRpgState(prev => ({
-                ...prev,
-                map: {
-                    activeEvents: [
-                        {
-                            id: 'aunt_zhang',
-                            x: 35,
-                            y: 65,
-                            label: 'Aunt Zhang\'s Shop',
-                            status: 'available'
-                        },
-                        {
-                            id: 'michael',
-                            x: 65,
-                            y: 35,
-                            label: 'Michael\'s Office',
-                            status: 'available'
-                        },
-                        {
-                            id: 'officer_chan',
-                            x: 50,
-                            y: 50,
-                            label: 'Officer Chan\'s Patrol',
-                            status: 'available'
-                        }
-                    ]
-                }
+            // Unlock Anna Concept (Tutorial Manual)
+            const newConcepts = Object.values(annaConcept).map((c: any) => ({
+                ...c,
+                isRead: false
             }))
+
+            setRpgState(prev => {
+                const existingIds = new Set(prev.player.encyclopedia.map(c => c.id))
+                const uniqueNewConcepts = newConcepts.filter((c: any) => !existingIds.has(c.id))
+
+                return {
+                    ...prev,
+                    player: {
+                        ...prev.player,
+                        encyclopedia: [...prev.player.encyclopedia, ...uniqueNewConcepts]
+                    },
+                    map: {
+                        activeEvents: [
+                            {
+                                id: 'aunt_zhang',
+                                x: 48,
+                                y: 85,
+                                label: 'Aunt Zhang\'s Shop',
+                                status: 'available'
+                            },
+                            {
+                                id: 'michael',
+                                x: 65,
+                                y: 35,
+                                label: 'Michael\'s Office',
+                                status: 'available'
+                            },
+                            {
+                                id: 'officer_chan',
+                                x: 58,
+                                y: 60,
+                                label: 'Officer Chan\'s Patrol',
+                                status: 'available'
+                            }
+                        ]
+                    }
+                }
+            })
+
+            // Open PDA to Encyclopedia
+            setTimeout(() => {
+                triggerNotification('Tutorial Complete', 'PDA Encyclopedia Updated', 'info')
+                setPdaTab('encyclopedia')
+                setShowPDA(true)
+            }, 500)
             return
         }
 
         // Check if we just finished the solution outro (by checking if town_hall event was just removed or by context)
-        // A robust way: check if we just played a specific sequence. 
+        // A robust way: check if we just played a specific sequence.
         // We need to track the current sequence key or derive it.
         // Simplified: If "Policy Centor" (town_hall) is gone AND we just finished a dialogue that wasn't intro...
         // Actually, we can add a check for the specific sequence content or a state flag.
-        // Let's rely on a state "isOutroPlaying" or similar if needed. 
+        // Let's rely on a state "isOutroPlaying" or similar if needed.
         // BUT, we can check if we just finished 'solution_outro'.
         // Let's modify startDialogue to store current sequence key.
         // Wait, handleDialogueNext doesn't know the key.
@@ -482,7 +540,7 @@ export default function GamePage() {
                     quality={75}
                     sizes="100vw"
                     placeholder="blur"
-                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxAxAPwCdABmX/9k="
                     unoptimized
                 />
                 <div className="absolute inset-0 bg-black/20"></div>
@@ -493,13 +551,8 @@ export default function GamePage() {
                 />
             </div>
 
-            {/* Top Status Bar - assuming GameStatusBar is a valid component but was missing in imports. 
-                Wait, previous file had <GameStatusBar /> but no import! 
-                I need to re-add import if it exists, or likely it was removed or I missed it in view_file.
-                Line 424 had <GameStatusBar />.
-                Let's assume it is in components/GameStatusBar.tsx 
-            */}
-            {/* <GameStatusBar /> - Disabling for now as import was missing/erroring in previous checks */}
+            {/* Top Status Bar */}
+            <GameStatusBar />
 
             <GameObjectivePanel
                 tasks={{
@@ -583,10 +636,17 @@ export default function GamePage() {
             <QuizOverlay
                 isOpen={showQuiz}
                 questions={quizData.questions}
-                onComplete={() => {
+                onComplete={(score, total) => {
                     setShowQuiz(false)
-                    triggerNotification('Chapter 1 Complete', 'You have mastered the basics of bias.', 'success')
+                    setChallengeStatus(prev => ({ ...prev, quizHunter: score === total }))
+                    setShowMasteryOverlay(true)
                 }}
+            />
+
+            <ChapterMasteryOverlay
+                isOpen={showMasteryOverlay}
+                onClose={() => setShowMasteryOverlay(false)}
+                challenges={challengeStatus}
             />
 
             {/* Notifications */}

@@ -4,7 +4,7 @@ import { Check, X, AlertCircle, HelpCircle, ArrowRight } from 'lucide-react'
 
 export interface QuizOverlayProps {
     isOpen: boolean
-    onComplete: () => void
+    onComplete: (score: number, total: number) => void
     questions: Question[]
 }
 
@@ -37,7 +37,7 @@ export function QuizOverlay({ isOpen, onComplete, questions }: QuizOverlayProps)
     const handleNext = () => {
         setShowFeedback(false)
         if (isLastQuestion) {
-            onComplete()
+            onComplete(score + (isCorrect ? 1 : 0), questions.length)
         } else {
             setCurrentQuestionIndex(i => i + 1)
         }

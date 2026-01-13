@@ -88,7 +88,7 @@ interface SolutionMatchingOverlayProps {
     onClose: () => void
     initialPlacements?: Record<string, string> // slotId -> cardId
     onSaveState: (placements: Record<string, string>) => void
-    onComplete: () => void
+    onComplete: (remainingAttempts: number) => void
 }
 
 export function SolutionMatchingOverlay({
@@ -117,6 +117,10 @@ export function SolutionMatchingOverlay({
     const [draggingSource, setDraggingSource] = useState<'left' | 'right' | null>(null)
     const [hoveredSlotId, setHoveredSlotId] = useState<string | null>(null)
 
+    // Attempts Counter (User Request: Max 3, Green/Yellow/Red)
+    const [attempts, setAttempts] = useState(3)
+    const [showDecrease, setShowDecrease] = useState(false)
+
     // --- Logic ---
     const handleDragStart = (source: 'left' | 'right') => {
         setDraggingSource(source)
@@ -138,59 +142,29 @@ export function SolutionMatchingOverlay({
         setDraggingSource(null)
         setHoveredSlotId(null)
 
-        // Simple hit detection using elementFromPoint is tricky with framer motion's drag
-        // creating a "clone" is better but complex.
-        // Let's rely on the pointer event from onDragEnd info? not directly available.
-        // Alternative: MouseUp event listener globally?
-
-        // We will use a simpler approach:
-        // We detect if the point (info.point) is inside a slot rect.
         const point = info.point
-
-        // We need refs to valid drop targets.
-        // Since we are continuously re-rendering, let's just use document.elementsFromPoint
-        // Check for 'data-slot-id'
         const elements = document.elementsFromPoint(point.x, point.y)
         const slotElement = elements.find(el => el.getAttribute('data-slot-id'))
 
         if (slotElement) {
             const slotId = slotElement.getAttribute('data-slot-id')!
 
-            // Move card to slot
             setPlacements(prev => {
                 const next = { ...prev }
-
-                // Check if card was already placed in another slot and remove it
                 const oldSlotId = Object.keys(next).find(key => next[key] === cardId)
-                if (oldSlotId) {
-                    delete next[oldSlotId]
-                }
-
-                // Assign to new slot (overwriting if something was there)
+                if (oldSlotId) delete next[oldSlotId]
                 next[slotId] = cardId
                 return next
             })
 
-            // Reset results
             setResults(prev => {
                 const next = { ...prev }
-                // Find old slot to clear its result too
                 const oldSlotId = Object.keys(placements).find(key => placements[key] === cardId)
-                if (oldSlotId) {
-                    delete next[oldSlotId] // actually set to null? keys are string.
-                    next[oldSlotId] = null
-                }
+                if (oldSlotId) next[oldSlotId] = null
                 next[slotId] = null
                 return next
             })
         } else {
-            // Check if dropped back on "Unplaced" area (or just outside any slot)
-            // If dropped outside slot, return to pool (remove from placements)
-            // But we need to identify WHICH placement was removed if it was already placed?
-            // Actually this handleDragEnd logic handles moving FROM pool and FROM slot.
-
-            // If card was in a slot (is in placements), remove it logic:
-            // Find if cardId was in placements
             const currentSlot = Object.keys(placements).find(key => placements[key] === cardId)
             if (currentSlot) {
                 setPlacements(prev => {
@@ -204,9 +178,19 @@ export function SolutionMatchingOverlay({
     }
 
     const handleSubmit = () => {
+        if (attempts <= 0) return
+
+        // Trigger animation
+        setShowDecrease(true)
+        setTimeout(() => setShowDecrease(false), 1000)
+
         const newResults: Record<string, 'correct' | 'wrong'> = {}
         let allCorrect = true
         let hasErrors = false
+
+        // Decrement attempts
+        const newAttempts = attempts - 1
+        setAttempts(newAttempts)
 
         SLOTS.forEach(slot => {
             const cardId = placements[slot.id]
@@ -231,8 +215,11 @@ export function SolutionMatchingOverlay({
         if (allCorrect) {
             // Success!
             setTimeout(() => {
-                onComplete()
+                onComplete(newAttempts)
             }, 1000)
+        } else if (newAttempts <= 0) {
+            // Game Over / Fail State (Optional: Disable button effectively)
+            // For now just stay on screen with 0 attempts.
         }
     }
 
@@ -255,6 +242,32 @@ export function SolutionMatchingOverlay({
                     </div>
                 </div>
 
+
+                {/* Attempts Counter */}
+                <div className="flex items-center gap-3 bg-black/40 px-4 py-2 rounded-full border border-white/10 relative">
+                    <span className="text-sm text-gray-400 uppercase tracking-wider font-bold">Attempts Remaining</span>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-lg shadow-lg transition-all duration-300
+                        ${attempts >= 3 ? 'bg-green-500 text-black shadow-green-500/20' :
+                            attempts === 2 ? 'bg-yellow-500 text-black shadow-yellow-500/20' :
+                                'bg-red-500 text-white shadow-red-500/20 animate-pulse'}`}>
+                        {attempts}
+                    </div>
+
+                    {/* Floating -1 Animation */}
+                    <AnimatePresence>
+                        {showDecrease && (
+                            <motion.div
+                                initial={{ opacity: 1, y: 0, scale: 1 }}
+                                animate={{ opacity: 0, y: 30, scale: 1.5 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 1 }}
+                                className="absolute right-0 top-10 font-bold text-red-500 text-2xl z-50 pointer-events-none"
+                            >
+                                -1
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
             </div>
 
             {/* Main Game Area */}
