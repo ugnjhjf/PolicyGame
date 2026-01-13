@@ -35,7 +35,8 @@ export function DialogueOverlay({
   // Parsed segments structure: { type: 'normal' | 'red' | 'yellow' | 'bold', content: string }
   const [parsedSegments, setParsedSegments] = useState<{ type: string; content: string }[]>([])
   const [totalLength, setTotalLength] = useState(0)
-  
+  const [speed, setSpeed] = useState(1.0) // 1.0x to 1.5x
+
   // Parse text whenever it changes
   useEffect(() => {
     if (!text) {
@@ -68,6 +69,9 @@ export function DialogueOverlay({
   useEffect(() => {
     if (visibleChars >= totalLength) return
 
+    const baseDelay = 30
+    const delay = baseDelay / speed
+
     const timer = setInterval(() => {
       setVisibleChars(prev => {
         if (prev >= totalLength) {
@@ -76,10 +80,10 @@ export function DialogueOverlay({
         }
         return prev + 1
       })
-    }, 30) // Speed: 30ms per char
+    }, delay)
 
     return () => clearInterval(timer)
-  }, [visibleChars, totalLength])
+  }, [visibleChars, totalLength, speed])
 
   // Handle "force finish" or "next"
   const handleInteraction = () => {
@@ -100,30 +104,30 @@ export function DialogueOverlay({
     const elements = []
 
     for (let i = 0; i < parsedSegments.length; i++) {
-        const segment = parsedSegments[i]
-        const remainingBudget = visibleChars - currentCount
-        
-        if (remainingBudget <= 0) break
+      const segment = parsedSegments[i]
+      const remainingBudget = visibleChars - currentCount
 
-        let contentToShow = segment.content
-        if (remainingBudget < segment.content.length) {
-            contentToShow = segment.content.slice(0, remainingBudget)
-        }
+      if (remainingBudget <= 0) break
 
-        const key = i
-        if (segment.type === 'red') {
-            elements.push(<span key={key} className="text-red-500">{contentToShow}</span>)
-        } else if (segment.type === 'yellow') {
-            elements.push(<span key={key} className="text-yellow-400">{contentToShow}</span>)
-        } else if (segment.type === 'bold') {
-            elements.push(<span key={key} className="font-bold text-white">{contentToShow}</span>)
-        } else {
-            elements.push(<span key={key}>{contentToShow}</span>)
-        }
+      let contentToShow = segment.content
+      if (remainingBudget < segment.content.length) {
+        contentToShow = segment.content.slice(0, remainingBudget)
+      }
 
-        currentCount += segment.content.length
+      const key = i
+      if (segment.type === 'red') {
+        elements.push(<span key={key} className="text-red-500">{contentToShow}</span>)
+      } else if (segment.type === 'yellow') {
+        elements.push(<span key={key} className="text-yellow-400">{contentToShow}</span>)
+      } else if (segment.type === 'bold') {
+        elements.push(<span key={key} className="font-bold text-white">{contentToShow}</span>)
+      } else {
+        elements.push(<span key={key}>{contentToShow}</span>)
+      }
+
+      currentCount += segment.content.length
     }
-    
+
     return elements
   }
 
@@ -148,15 +152,15 @@ export function DialogueOverlay({
 
       {/* Dialogue Box */}
       <div className="relative z-10 w-full max-w-4xl mx-auto px-4 pointer-events-auto">
-        <div 
-            className="bg-black/80 backdrop-blur-md border border-white/10 rounded-xl p-6 shadow-2xl cursor-pointer"
-            onClick={(e) => {
-                // Determine if we should handle click here or if it was a button click
-                // Actually creating a clickable area for "fast forward" is good
-                // But we don't want to block button clicks
-                if ((e.target as HTMLElement).tagName === 'BUTTON') return
-                handleInteraction()
-            }}
+        <div
+          className="bg-black/80 backdrop-blur-md border border-white/10 rounded-xl p-6 shadow-2xl cursor-pointer relative"
+          onClick={(e) => {
+            // Determine if we should handle click here or if it was a button click
+            // Actually creating a clickable area for "fast forward" is good
+            // But we don't want to block button clicks or slider
+            if ((e.target as HTMLElement).tagName === 'BUTTON' || (e.target as HTMLElement).tagName === 'INPUT') return
+            handleInteraction()
+          }}
         >
           {/* Name Tag */}
           <div className="absolute -top-4 left-8 flex items-center gap-2">
@@ -175,8 +179,26 @@ export function DialogueOverlay({
             ))}
           </div>
 
+          {/* Speed Control Slider - Top Right */}
+          <div className="absolute top-4 right-4 flex items-center gap-2 bg-black/40 px-3 py-1.5 rounded-full border border-white/10 group hover:bg-black/60 transition-colors" onClick={(e) => e.stopPropagation()}>
+            <span className="text-xs text-gray-400 font-medium">Speed</span>
+            <input
+              type="range"
+              min="1"
+              max="1.5"
+              step="0.1"
+              value={speed}
+              onChange={(e) => setSpeed(parseFloat(e.target.value))}
+              className="w-20 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-blue-500"
+            />
+            <span className="text-xs text-blue-300 w-8 text-right font-mono">{speed.toFixed(1)}x</span>
+          </div>
+
           {/* Text Content */}
-          <div className="min-h-[80px] text-lg text-gray-100 font-medium leading-relaxed mt-2 whitespace-pre-wrap">
+          <div
+            className="min-h-[80px] text-lg text-gray-100 font-medium leading-relaxed mt-2 whitespace-pre-wrap"
+            style={{ maxWidth: '30em' }}
+          >
             {renderText()}
             {!isTypingComplete && <span className="animate-pulse ml-1">_</span>}
           </div>
@@ -189,8 +211,8 @@ export function DialogueOverlay({
                   <button
                     key={choice.id}
                     onClick={(e) => {
-                        e.stopPropagation()
-                        choice.action()
+                      e.stopPropagation()
+                      choice.action()
                     }}
                     className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors border border-white/20 hover:border-white/50"
                   >
@@ -199,15 +221,15 @@ export function DialogueOverlay({
                 ))}
               </div>
             ) : (
-             <button
+              <button
                 onClick={(e) => {
-                    e.stopPropagation()
-                    handleInteraction()
+                  e.stopPropagation()
+                  handleInteraction()
                 }}
                 className="group flex items-center gap-2 px-4 py-2 hover:bg-white/5 rounded-lg transition-colors text-blue-400 hover:text-blue-300"
               >
                 <span className="text-sm font-semibold uppercase tracking-wider">
-                    {isTypingComplete ? 'Next' : 'Skip'}
+                  {isTypingComplete ? 'Next' : 'Skip'}
                 </span>
                 <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
