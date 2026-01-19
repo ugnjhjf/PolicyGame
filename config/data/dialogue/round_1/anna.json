@@ -16,7 +16,7 @@
             "traits": [
                 ""
             ],
-            "text": "Our AI model has deployed at different locations in the city to solve the manpower shortage problem."
+            "text": "Our AI model has been used to solve the manpower shortage problem."
         },
         {
             "name": "Anna",
@@ -25,7 +25,7 @@
             "traits": [
                 ""
             ],
-            "text": "As you can see, there still has lots of problem need to solved. \nSo, we should find out what problem need to be solved."
+            "text": "There still has lots of problems need solved."
         },
         {
             "name": "Anna",
@@ -34,7 +34,7 @@
             "traits": [
                 ""
             ],
-            "text": "I will help your to find out the problems. \nLet's start from collecting some evidences."
+            "text": "Let's start from collecting some evidences."
         },
         {
             "name": "Anna",
@@ -43,7 +43,7 @@
             "traits": [
                 ""
             ],
-            "text": "Talk with the local residence (By clicking the icon on the map) is a good method to investigate the problems."
+            "text": "Talk with the locals is a good starting point."
         }
     ]
 }

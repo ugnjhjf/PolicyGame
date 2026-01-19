@@ -1,11 +1,18 @@
 {
   "aunt_zhang_dialogue": [
     {
-      "name": "Scenario background",
+      "name": "Background",
       "title": "",
       "image": "character/aunt_zhang/aunt_zhang_happy.png",
       "traits": [],
-      "text": "Aunt Zhang is a bakery owner. Recently, she wants to expand her business and apply for a loan. \nUnfortunately, the bank rejected her request."
+      "text": "Aunt Zhang is a bakery owner. \nShe wants to expand her business and apply for a loan. "
+    },
+    {
+      "name": "Background",
+      "title": "",
+      "image": "character/aunt_zhang/aunt_zhang_happy.png",
+      "traits": [],
+      "text": "Unfortunately, the bank rejected her request."
     },
     {
       "name": "Aunt Zhang",
@@ -23,7 +30,7 @@
       "traits": [
         "Cash-only user"
       ],
-      "text": "I went to bank and try to apply for loan, then the bank staff said that i should apply it online and approved by AI."
+      "text": "I went to bank and try to apply for loan,  the bank staff said that i should apply it online and approved by AI."
     },
     {
       "name": "Aunt Zhang",
@@ -32,7 +39,7 @@
       "traits": [
         "Cash-only user"
       ],
-      "text": "After I send the request. It <red>directly rejected</red> my request!\n The staff said that nothing they can help."
+      "text": "It <red>directly rejected</red> my request!"
     },
     {
       "name": "Aunt Zhang",
@@ -41,7 +48,7 @@
       "traits": [
         "Cash-only user"
       ],
-      "text": "It said I <b>do not have income source!</b> \nI can't belivet that!"
+      "text": "It said I <b>do not have income source!</b> "
     },
     {
       "name": "Aunt Zhang",
@@ -50,7 +57,7 @@
       "traits": [
         "Cash-only user"
       ],
-      "text": "I just <yellow>keep my cash in the iron box under my bed!</yellow> \nWhy it just keep saying that I don't have income source?\nThis AI should taste my bread to correct this stupid mistake!"
+      "text": "I just <yellow>keep my cash in the iron box under my bed!</yellow>"
     }
   ]
 }
