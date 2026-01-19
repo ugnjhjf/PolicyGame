@@ -262,9 +262,9 @@ export default function GamePage() {
 
             // Open PDA to Encyclopedia
             setTimeout(() => {
-                triggerNotification('Tutorial Complete', 'PDA Encyclopedia Updated', 'info')
-                setPdaTab('encyclopedia')
-                setShowPDA(true)
+                // triggerNotification('Tutorial Complete', 'PDA Encyclopedia Updated', 'info')
+                // setPdaTab('encyclopedia')
+                // setShowPDA(true)
             }, 500)
             return
         }
@@ -313,9 +313,9 @@ export default function GamePage() {
                 })
 
                 setTimeout(() => {
-                    triggerNotification('Tutorial Complete', 'PDA Encyclopedia Updated', 'info')
-                    setPdaTab('encyclopedia')
-                    setShowPDA(true)
+                    // triggerNotification('Tutorial Complete', 'PDA Encyclopedia Updated', 'info')
+                    // setPdaTab('encyclopedia')
+                    // setShowPDA(true)
                 }, 500)
             }
             return
@@ -446,7 +446,7 @@ export default function GamePage() {
     const handleReportClose = () => {
         setShowReport(false)
         setPdaTab('reports')
-        setShowPDA(true)
+        // setShowPDA(true)
 
         if (!currentEventId) return
         const event = rpgState.map.activeEvents.find(e => e.id === currentEventId)
@@ -471,9 +471,9 @@ export default function GamePage() {
                 }))
 
                 setTimeout(() => {
-                    triggerNotification('PDA Encyclopedia Updated', `Unlocked: ${newConcept.title.split('(')[0].trim()}`, 'info')
-                    setPdaTab('encyclopedia')
-                    setShowPDA(true)
+                    // triggerNotification('PDA Encyclopedia Updated', `Unlocked: ${newConcept.title.split('(')[0].trim()}`, 'info')
+                    // setPdaTab('encyclopedia')
+                    // setShowPDA(true)
                 }, 500)
             }
         }
@@ -528,7 +528,7 @@ export default function GamePage() {
     }
 
     return (
-        <div className="min-h-screen relative pt-12">
+        <div className="min-h-screen relative pt-0">
             {/* Background Image */}
             <div className="fixed inset-0 z-0">
                 <Image
@@ -552,7 +552,7 @@ export default function GamePage() {
             </div>
 
             {/* Top Status Bar */}
-            <GameStatusBar />
+            {/* <GameStatusBar /> */}
 
             <GameObjectivePanel
                 tasks={{
@@ -561,6 +561,7 @@ export default function GamePage() {
                     michaelCompleted: rpgState.map.activeEvents.find(e => e.id === 'michael')?.status === 'completed'
                 }}
                 onTaskClick={handleMapEvent}
+                isVisible={rpgState.map.activeEvents.length > 0}
             />
 
             {/* PDA Button */}

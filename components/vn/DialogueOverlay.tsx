@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronRight } from 'lucide-react'
 
 export interface DialogueOption {
@@ -134,79 +135,72 @@ export function DialogueOverlay({
   const isTypingComplete = visibleChars >= totalLength
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none flex flex-col justify-end pb-8">
+    <div className="fixed inset-0 z-50 pointer-events-none flex flex-col justify-end pb-12 overflow-hidden">
       {/* ... (Character Portrait Layer remains same) ... */}
       <div className="absolute inset-0 z-0 flex items-end justify-center pointer-events-none">
-        {characterImage && (
-          <div className="relative w-[90vh] h-[90vh] mb-[10vh] transition-all duration-500 animate-in fade-in slide-in-from-bottom-10">
-            <Image
-              src={characterImage.startsWith('/') ? characterImage : `/${characterImage}`}
-              alt={characterName}
-              fill
-              className="object-contain object-bottom"
-              priority
-            />
-          </div>
-        )}
+        <AnimatePresence mode="popLayout">
+          {characterImage && (
+            <motion.div
+              key={characterImage}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="relative w-[110vh] h-[110vh] mb-[-15vh]"
+            >
+              <Image
+                src={characterImage.startsWith('/') ? characterImage : `/${characterImage}`}
+                alt={characterName}
+                fill
+                className="object-contain object-bottom"
+                priority
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      {/* Dialogue Box */}
-      <div className="relative z-10 w-full max-w-4xl mx-auto px-4 pointer-events-auto">
+      {/* Subtitle Area */}
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 pointer-events-auto flex flex-col items-center">
+
+        {/* Speed Control - Subtle (Opacity on hover) */}
+        <div className="mb-2 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center gap-2 bg-black/40 px-3 py-1 rounded-full backdrop-blur-sm">
+          <span className="text-[10px] text-gray-300 uppercase tracking-widest">Speed</span>
+          <input
+            type="range"
+            min="1"
+            max="1.5"
+            step="0.1"
+            value={speed}
+            onChange={(e) => setSpeed(parseFloat(e.target.value))}
+            className="w-16 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-yellow-500"
+          />
+        </div>
+
         <div
-          className="bg-black/80 backdrop-blur-md border border-white/10 rounded-xl p-6 shadow-2xl cursor-pointer relative"
+          className="w-full text-center cursor-pointer select-none"
           onClick={(e) => {
-            // Determine if we should handle click here or if it was a button click
-            // Actually creating a clickable area for "fast forward" is good
-            // But we don't want to block button clicks or slider
-            if ((e.target as HTMLElement).tagName === 'BUTTON' || (e.target as HTMLElement).tagName === 'INPUT') return
+            if ((e.target as HTMLElement).tagName === 'BUTTON') return
             handleInteraction()
           }}
         >
-          {/* Name Tag */}
-          <div className="absolute -top-4 left-8 flex items-center gap-2">
-            <div className="bg-blue-600 px-4 py-1 rounded-md shadow-lg border border-blue-400/50">
-              <span className="text-white font-bold tracking-wide uppercase">{characterName}</span>
-            </div>
-            {characterTitle && (
-              <div className="bg-gray-900 px-3 py-1 rounded-md border border-white/20">
-                <span className="text-blue-200 text-sm font-medium">{characterTitle}</span>
-              </div>
-            )}
-            {characterTraits && characterTraits.filter(t => t && t.trim().length > 0).map((trait, index) => (
-              <div key={index} className="bg-purple-900/80 px-2 py-1 rounded-md border border-purple-500/30 flex items-center justify-center min-w-[24px]">
-                <span className="text-purple-200 text-xs font-semibold">{trait}</span>
-              </div>
-            ))}
+          {/* Subtitle Text */}
+          <div className="text-2xl md:text-3xl font-bold leading-relaxed drop-shadow-md" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
+            <span className="text-blue-400 mr-2 uppercase tracking-wide">{characterName}:</span>
+            <span className="text-white">
+              {renderText()}
+              {!isTypingComplete && <span className="animate-pulse ml-1 opacity-80">_</span>}
+            </span>
           </div>
 
-          {/* Speed Control Slider - Top Right */}
-          <div className="absolute top-4 right-4 flex items-center gap-2 bg-black/40 px-3 py-1.5 rounded-full border border-white/10 group hover:bg-black/60 transition-colors" onClick={(e) => e.stopPropagation()}>
-            <span className="text-xs text-gray-400 font-medium">Speed</span>
-            <input
-              type="range"
-              min="1"
-              max="1.5"
-              step="0.1"
-              value={speed}
-              onChange={(e) => setSpeed(parseFloat(e.target.value))}
-              className="w-20 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-blue-500"
-            />
-            <span className="text-xs text-blue-300 w-8 text-right font-mono">{speed.toFixed(1)}x</span>
-          </div>
+          {/* Extra Info (Title/Traits) - Optional, small below or adjacent. Ignoring for pure CoD style unless critical? 
+              User asked for "Name: (Content)", so skipping traits/title for now to keep it clean.
+          */}
 
-          {/* Text Content */}
-          <div
-            className="min-h-[80px] text-lg text-gray-100 font-medium leading-relaxed mt-2 whitespace-pre-wrap"
-            style={{ maxWidth: '30em' }}
-          >
-            {renderText()}
-            {!isTypingComplete && <span className="animate-pulse ml-1">_</span>}
-          </div>
-
-          {/* Action Area */}
-          <div className="mt-4 flex justify-end items-center gap-4">
+          {/* Action / Choices */}
+          <div className="mt-6 flex justify-center items-center gap-4">
             {choices && choices.length > 0 && isTypingComplete ? (
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2 w-full max-w-md">
                 {choices.map((choice) => (
                   <button
                     key={choice.id}
@@ -214,25 +208,19 @@ export function DialogueOverlay({
                       e.stopPropagation()
                       choice.action()
                     }}
-                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors border border-white/20 hover:border-white/50"
+                    className="w-full px-6 py-3 bg-black/60 hover:bg-yellow-500/80 hover:text-black text-white text-lg font-medium rounded border-l-4 border-yellow-500 transition-all text-left"
                   >
                     {choice.text}
                   </button>
                 ))}
               </div>
             ) : (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  handleInteraction()
-                }}
-                className="group flex items-center gap-2 px-4 py-2 hover:bg-white/5 rounded-lg transition-colors text-blue-400 hover:text-blue-300"
-              >
-                <span className="text-sm font-semibold uppercase tracking-wider">
-                  {isTypingComplete ? 'Next' : 'Skip'}
-                </span>
-                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
+              // Invisible click area is main interaction, but visual cue is helpful
+              isTypingComplete && (
+                <div className="animate-bounce text-yellow-500/80 mt-2">
+                  <ChevronRight className="w-8 h-8" />
+                </div>
+              )
             )}
           </div>
         </div>
