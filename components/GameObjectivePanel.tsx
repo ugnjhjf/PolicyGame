@@ -49,61 +49,7 @@ export default function GameObjectivePanel({ className = '', tasks, onTaskClick 
 
   return (
     <div className={`fixed left-6 top-20 z-20 flex flex-col gap-4 ${className}`}>
-      {/* Game Objective 方块 */}
-      <div style={{
-        backdropFilter: 'blur(4px) saturate(100%)',
-        background: 'rgba(39, 39, 42, 0.75)',
-        border: '1px solid rgba(255,255,255,0.05)',
-        borderRadius: '8px',
-        padding: '16px',
-        minWidth: '280px',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-      }}>
-        <h3 className="text-sm font-semibold mb-4" style={{ color: '#E4E4E7' }}>
-          Game Objective
-        </h3>
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            {isCrimeRateMet ? (
-              <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-            ) : (
-              <Circle className="w-5 h-5 text-gray-400 flex-shrink-0" />
-            )}
-            <span className="text-xs font-medium" style={{ color: '#A1A1AA' }}>
-              Objective 1:
-            </span>
-            <div className="text-xs" style={{ color: '#E4E4E7' }}>
-              Crime rate: &lt; 30%
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            {isAccuracyMet ? (
-              <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-            ) : (
-              <Circle className="w-5 h-5 text-gray-400 flex-shrink-0" />
-            )}
-            <span className="text-xs font-medium" style={{ color: '#A1A1AA' }}>
-              Objective 2:
-            </span>
-            <div className="text-xs" style={{ color: '#E4E4E7' }}>
-              Accurate rate: &gt; 60%
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            {isTrustMet ? (
-              <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-            ) : (
-              <Circle className="w-5 h-5 text-gray-400 flex-shrink-0" />
-            )}
-            <span className="text-xs font-medium" style={{ color: '#A1A1AA' }}>
-              Objective 3:
-            </span>
-            <div className="text-xs" style={{ color: '#E4E4E7' }}>
-              Trust rate: &gt; 40%
-            </div>
-          </div>
-        </div>
-      </div>
+
 
       {/* Progress 方块 */}
       <div style={{
