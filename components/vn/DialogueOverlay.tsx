@@ -86,6 +86,19 @@ export function DialogueOverlay({
     return () => clearInterval(timer)
   }, [visibleChars, totalLength, speed])
 
+  const isTypingComplete = visibleChars >= totalLength
+
+  // Auto-advance logic
+  useEffect(() => {
+    if (isTypingComplete && (!choices || choices.length === 0)) {
+      const timer = setTimeout(() => {
+        if (onNext) onNext()
+      }, 2000) // 2 seconds delay
+
+      return () => clearTimeout(timer)
+    }
+  }, [isTypingComplete, choices, onNext])
+
   // Handle "force finish" or "next"
   const handleInteraction = () => {
     if (visibleChars < totalLength) {
@@ -132,7 +145,7 @@ export function DialogueOverlay({
     return elements
   }
 
-  const isTypingComplete = visibleChars >= totalLength
+
 
   return (
     <div className="fixed inset-0 z-50 pointer-events-none flex flex-col justify-end pb-12 overflow-hidden">

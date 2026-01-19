@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
+import { motion } from 'framer-motion'
 import { Tablet, Zap } from 'lucide-react'
 import { INITIAL_RPG_STATE, RPGState, Concept, Clue, InvestigationReportData } from '@/types/rpg'
 import { MapInteractiveLayer } from '../../components/map/MapInteractiveLayer'
@@ -216,7 +217,7 @@ export default function GamePage() {
 
         // Logic for spawning events after Intro
         if (currentDialogueId === 'anna_dialogue') {
-            // Unlock Anna Concept (Tutorial Manual)
+            // Unlock Anna Concept (Tutorial Manual)ƒ
             const newConcepts = Object.values(annaConcept).map((c: any) => ({
                 ...c,
                 isRead: false
@@ -527,6 +528,10 @@ export default function GamePage() {
         })
     }
 
+    const handleNotificationClose = useCallback(() => {
+        setShowNotification(false)
+    }, [])
+
     return (
         <div className="min-h-screen relative pt-0">
             {/* Background Image */}
@@ -543,7 +548,12 @@ export default function GamePage() {
                     blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxAxAPwCdABmX/9k="
                     unoptimized
                 />
-                <div className="absolute inset-0 bg-black/20"></div>
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: showDialogue ? 1 : 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="absolute inset-0 bg-black/20 backdrop-blur-sm pointer-events-none"
+                />
 
                 <MapInteractiveLayer
                     events={rpgState.map.activeEvents}
@@ -657,7 +667,7 @@ export default function GamePage() {
                     title={notification.title}
                     message={notification.message}
                     type={notification.type}
-                    onClose={() => setShowNotification(false)}
+                    onClose={handleNotificationClose}
                     onClick={notification.onClick}
                 />
             )}

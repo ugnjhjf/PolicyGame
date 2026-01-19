@@ -11,13 +11,19 @@ interface MapInteractiveLayerProps {
 
 export function MapInteractiveLayer({ events, onEventSelect }: MapInteractiveLayerProps) {
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null)
+  const [confirmedEvents, setConfirmedEvents] = useState<Set<string>>(new Set())
 
   const handleEventClick = (eventId: string) => {
-    setSelectedEventId(eventId)
+    if (confirmedEvents.has(eventId)) {
+      onEventSelect(eventId)
+    } else {
+      setSelectedEventId(eventId)
+    }
   }
 
   const handleConfirm = () => {
     if (selectedEventId) {
+      setConfirmedEvents(prev => new Set(prev).add(selectedEventId))
       onEventSelect(selectedEventId)
       setSelectedEventId(null)
     }

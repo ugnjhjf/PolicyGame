@@ -28,7 +28,7 @@ export function PDANotification({
       const timer = setTimeout(() => {
         setShow(false)
         if (onClose) setTimeout(onClose, 300) // Wait for animation
-      }, 4000)
+      }, 3000)
       return () => clearTimeout(timer)
     } else {
       setShow(false)
