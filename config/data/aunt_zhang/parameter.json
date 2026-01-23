@@ -1,0 +1,50 @@
+[
+    {
+        "id": "income",
+        "title": "Annual Income",
+        "reliable_level": "high",
+        "description": "The total amount of money earned per year."
+    },
+    {
+        "id": "credit_score",
+        "title": "Credit Score",
+        "reliable_level": "high",
+        "description": "A numerical expression based on a level analysis of a person's credit files."
+    },
+    {
+        "id": "postal_code",
+        "title": "Postal Code",
+        "reliable_level": "low",
+        "description": "The geographic location of the applicant's residence."
+    },
+    {
+        "id": "gender",
+        "title": "Gender",
+        "reliable_level": "low",
+        "description": "The applicant's gender identity."
+    },
+    {
+        "id": "employment_history",
+        "title": "Employment Duration",
+        "reliable_level": "high",
+        "description": "How long the applicant has been with their current employer."
+    },
+    {
+        "id": "age",
+        "title": "Age",
+        "reliable_level": "low",
+        "description": "The age of the applicant."
+    },
+    {
+        "id": "debt_ratio",
+        "title": "Debt-to-Income",
+        "reliable_level": "high",
+        "description": "The percentage of gross monthly income that goes towards paying debts."
+    },
+    {
+        "id": "marital_status",
+        "title": "Marital Status",
+        "reliable_level": "low",
+        "description": "Whether the applicant is married, single, or divorced."
+    }
+]

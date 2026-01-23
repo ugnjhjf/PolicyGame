@@ -1,0 +1,68 @@
+{
+    "criteria": [
+        {
+            "id": "income",
+            "label": "Annual Income",
+            "description": "The total amount of money earned per year.",
+            "category": "Financial",
+            "is_valid": true,
+            "bias_type": null
+        },
+        {
+            "id": "credit_score",
+            "label": "Credit Score",
+            "description": "A numerical expression based on a level analysis of a person's credit files.",
+            "category": "Financial",
+            "is_valid": true,
+            "bias_type": null
+        },
+        {
+            "id": "postal_code",
+            "label": "Postal Code",
+            "description": "The geographic location of the applicant's residence.",
+            "category": "Demographic",
+            "is_valid": false,
+            "bias_type": "Location Bias (Redlining)"
+        },
+        {
+            "id": "gender",
+            "label": "Gender",
+            "description": "The applicant's gender identity.",
+            "category": "Demographic",
+            "is_valid": false,
+            "bias_type": "Gender Bias"
+        },
+        {
+            "id": "employment_history",
+            "label": "Employment Duration",
+            "description": "How long the applicant has been with their current employer.",
+            "category": "Professional",
+            "is_valid": true,
+            "bias_type": null
+        },
+        {
+            "id": "age",
+            "label": "Age",
+            "description": "The age of the applicant.",
+            "category": "Demographic",
+            "is_valid": false,
+            "bias_type": "Age Bias"
+        },
+        {
+            "id": "debt_ratio",
+            "label": "Debt-to-Income",
+            "description": "The percentage of gross monthly income that goes towards paying debts.",
+            "category": "Financial",
+            "is_valid": true,
+            "bias_type": null
+        },
+        {
+            "id": "marital_status",
+            "label": "Marital Status",
+            "description": "Whether the applicant is married, single, or divorced.",
+            "category": "Demographic",
+            "is_valid": false,
+            "bias_type": "Marital Status Bias"
+        }
+    ]
+}

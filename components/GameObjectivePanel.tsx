@@ -56,7 +56,10 @@ export default function GameObjectivePanel({ className = '', tasks, onTaskClick,
           initial={{ opacity: 0, x: -50 }}
           animate={{
             opacity: 1,
-            x: 0
+            x: 0,
+            scale: 1.15,
+            originX: 0,
+            originY: 0
           }}
           exit={{ opacity: 0, x: -50 }}
           transition={{

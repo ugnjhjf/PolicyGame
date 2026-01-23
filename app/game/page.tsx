@@ -22,6 +22,7 @@ import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../../conf
 import clueData from '../../config/data/journal'
 import conceptData from '../../config/data/encyclopedia'
 import annaConcept from '../../config/data/encyclopedia/round_1/anna.json'
+import { LoanApprovalGameOverlay } from '../../components/minigame/LoanApprovalGameOverlay'
 import allReportData from '../../config/data/report'
 
 // Need to define PDANotification component locally if not exported or use the one from imports if available.
@@ -39,6 +40,34 @@ export default function GamePage() {
     const [showSolutionGame, setShowSolutionGame] = useState(false)
     const [solutionPlacements, setSolutionPlacements] = useState<Record<string, string>>({})
     const [isSolutionComplete, setIsSolutionComplete] = useState(false)
+
+    // Loan Mini-game State
+    const [showLoanGame, setShowLoanGame] = useState(false)
+
+    const handleLoanGameComplete = (success: boolean) => {
+        if (success) {
+            setShowLoanGame(false)
+            setRpgState(prev => ({
+                ...prev,
+                map: {
+                    ...prev.map,
+                    activeEvents: prev.map.activeEvents.map(e =>
+                        e.id === 'collect_data_zhang' ? { ...e, status: 'completed' } : e
+                    )
+                }
+            }))
+
+            // Trigger a success notification or reward
+            setTimeout(() => {
+                triggerNotification('Data Collected', 'Loan Approval Database Updated', 'success')
+            }, 500)
+
+            // Optionally add a new report or clue here
+        } else {
+            // Failed or closed without success
+            setShowLoanGame(false)
+        }
+    }
 
     // Check for Final Event Unlock
     useEffect(() => {
@@ -145,6 +174,7 @@ export default function GamePage() {
                 ? prev.map.activeEvents
                 : [
                     { id: 'aunt_zhang', x: 48, y: 85, label: 'Aunt Zhang\'s Shop', status: 'available' },
+                    { id: 'collect_data_zhang', x: 55, y: 80, label: 'Data Collection', status: 'available' },
                     { id: 'michael', x: 65, y: 35, label: 'Michael\'s Office', status: 'available' },
                     { id: 'officer_chan', x: 58, y: 60, label: 'Officer Chan\'s Patrol', status: 'available' }
                 ] as any[]
@@ -240,6 +270,13 @@ export default function GamePage() {
                                 x: 48,
                                 y: 85,
                                 label: 'Aunt Zhang\'s Shop',
+                                status: 'available'
+                            },
+                            {
+                                id: 'collect_data_zhang',
+                                x: 55,
+                                y: 80,
+                                label: 'Data Collection',
                                 status: 'available'
                             },
                             {
@@ -396,6 +433,8 @@ export default function GamePage() {
                 } else {
                     startDialogue('solution_intro')
                 }
+            } else if (eventId === 'collect_data_zhang') {
+                setShowLoanGame(true)
             }
         } else if (event.status === 'investigating') {
             // Scanning Logic
@@ -634,6 +673,12 @@ export default function GamePage() {
                 initialPlacements={solutionPlacements}
                 onSaveState={(placements) => setSolutionPlacements(placements)}
                 onComplete={handleSolutionComplete}
+            />
+
+            <LoanApprovalGameOverlay
+                isOpen={showLoanGame}
+                onClose={() => setShowLoanGame(false)}
+                onComplete={handleLoanGameComplete}
             />
 
             <ChapterCompletionOverlay
