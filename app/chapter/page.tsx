@@ -14,7 +14,7 @@ export default function ChapterPage() {
             id: 1,
             title: "Chapter 1",
             subtitle: "Bias",
-            description: "Identify and mitigate algorithmic bias in predictive policing systems.",
+            description: "Identify and mitigate algorithmic bias.",
             icon: Database,
             status: "active",
             link: "/game",
@@ -24,7 +24,7 @@ export default function ChapterPage() {
             id: 2,
             title: "Chapter 2",
             subtitle: "Privacy",
-            description: "Balance surveillance capabilities with individual privacy rights.",
+            description: "Balance surveillance capabilities.",
             icon: Shield,
             status: "locked",
             link: "#",
@@ -34,7 +34,7 @@ export default function ChapterPage() {
             id: 3,
             title: "Chapter 3",
             subtitle: "Transparency",
-            description: "Ensure algorithmic accountability and public explainability.",
+            description: "Ensure algorithmic accountability.",
             icon: Eye,
             status: "locked",
             link: "#",
@@ -84,13 +84,13 @@ export default function ChapterPage() {
                     transition={{ duration: 0.5 }}
                     className="text-center mb-16"
                 >
-                    <h1 className="text-4xl md:text-6xl font-black tracking-tighter mb-4">
-                        <span className="font-serif text-3xl text-white max-w-3xl leading-relaxed font-light">
+                    <h1 className="text-4xl md:text-6xl font-black mb-4">
+                        <span className="font-serif text-3xl text-white font-light">
                             SELECT CHAPTER
                         </span>
                     </h1>
-                    <p className="text-blue-200/50 font-mono text-sm tracking-widest uppercase">
-                        Choose your simulation scenario
+                    <p className="text-blue-200/50 font-mono text-sm">
+                        Select 1 to start
                     </p>
                 </motion.div>
 
@@ -142,13 +142,13 @@ export default function ChapterPage() {
 
                                     {/* Content */}
                                     <div className="mb-auto">
-                                        <h3 className={`text-2xl font-bold mb-2 ${chapter.status === 'active' ? 'text-white' : 'text-gray-500'}`}>
+                                        <h3 className={`text-xl font-bold mb-2 ${chapter.status === 'active' ? 'text-white' : 'text-gray-500'}`}>
                                             {chapter.title}
                                         </h3>
-                                        <div className={`text-3xl font-black mb-6 uppercase tracking-tight ${chapter.status === 'active' ? `text-${chapter.color}-400` : 'text-gray-600'}`}>
+                                        <div className={`font-serif text-4xl font-black mb-6  ${chapter.status === 'active' ? `text-${chapter.color}-400` : 'text-gray-600'}`}>
                                             {chapter.subtitle}
                                         </div>
-                                        <p className="text-lg text-white leading-relaxed font-light">
+                                        <p className="text-roboto text-xl text-white leading-relaxed font-light">
                                             {chapter.description}
                                         </p>
                                     </div>
@@ -157,12 +157,12 @@ export default function ChapterPage() {
                                     <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
                                         {chapter.status === 'active' ? (
                                             <>
-                                                <span className="text-xs font-mono text-blue-300">INITIALIZE</span>
+                                                <span className="text-l font-mono text-blue-300">PLAY</span>
                                                 <Play className={`w-4 h-4 text-blue-400 transition-transform duration-300 ${hoveredChapter === chapter.id ? 'translate-x-1' : ''}`} />
                                             </>
                                         ) : (
                                             <>
-                                                <span className="text-xs font-mono text-gray-600">COMING SOON</span>
+                                                <span className="text-l font-mono text-gray-600">COMING SOON</span>
                                                 <Lock className="w-3 h-3 text-gray-600" />
                                             </>
                                         )}
