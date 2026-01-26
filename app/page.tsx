@@ -21,8 +21,8 @@ export default function Page() {
           priority
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/90 pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/50 to-black/50 pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_10%,_black_100%)] pointer-events-none" />
       </div>
 
       <div className="relative z-10 container mx-auto px-4 min-h-screen flex flex-col justify-center items-center lg:items-start lg:px-20">
@@ -36,17 +36,17 @@ export default function Page() {
         >
 
           {/* Title */}
-          <h1 className="text-3xl leading-none">
+          <h1 className="text-xl leading-none">
             <span className="block text-transparentbg-gradient-to-r from-white via-blue-100 to-slate-400">
               AI Policy Strategist
             </span>
           </h1>
 
           {/* Divider */}
-          <div className="h-1 w-32 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-full" />
+          <div className="h-1 w-20 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-full" />
           {/* Description */}
           <p className="text-6xl text-white max-w-3xl leading-relaxed font-light">
-            <span className='text-blue-300'>Explore</span> <span>the AI literacy</span>
+            <span className='text-blue-300 font-serif'>Explore</span> <span className='font-serif'>the AI literacy</span>
           </p>
 
           {/* Features Grid */}
@@ -74,7 +74,7 @@ export default function Page() {
             ))}
           </div>
 
-          {/* CTA Button */}
+          {/* START Button */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -83,35 +83,38 @@ export default function Page() {
           >
             <Link href="/story" legacyBehavior>
               <a
-                className="group relative inline-flex items-center gap-3 px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold text-lg rounded-none clip-path-polygon transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_20px_rgba(37,99,235,0.5)]"
+                className="group relative inline-flex items-center gap-3 px-8 py-4 bg-blue-600 hover:bg-green-600 text-white font-bold text-lg rounded-none clip-path-polygon transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_20px_rgba(37,99,235,0.5)]"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 style={{ clipPath: "polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)" }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer" />
                 <Terminal className="w-5 h-5" />
-                <span>INITIALIZE SIMULATION</span>
+                <span>START</span>
                 <ChevronRight className={`w-5 h-5 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
               </a>
             </Link>
           </motion.div>
 
           {/* Footer Metadata */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2, duration: 0.6 }}
-            className="pt-12 flex items-center gap-6 text-xs text-white/20 font-mono"
-          >
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-500/50 animate-pulse"></div>
-              <span>SERVER: ONLINE</span>
-            </div>
-            <div>PC_B1.0.0_f4a5acc</div>
-          </motion.div>
 
         </motion.div>
       </div>
+
+
+      {/* Footer Metadata */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.6 }}
+        className="absolute bottom-10 right-10 flex items-center gap-6 text-xs text-white/50 font-mono z-20"
+      >
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-green-500/50 animate-pulse"></div>
+          <span>SERVER: ONLINE</span>
+        </div>
+        <div>PC_B1.0.0_f4a5acc</div>
+      </motion.div>
 
       {/* Decorative Elements */}
       <div className="absolute top-10 right-10 flex flex-col items-end gap-1 opacity-20 pointer-events-none">

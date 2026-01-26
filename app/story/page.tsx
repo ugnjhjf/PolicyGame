@@ -4,33 +4,25 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowLeft, BookOpen, User, MapPin, ChevronRight, Target, Briefcase, Activity } from 'lucide-react'
+import { ArrowLeft, BookOpen, User, MapPin, ChevronRight, Target, Briefcase, Activity, Search } from 'lucide-react'
 
 export default function StoryPage() {
   const [isHovered, setIsHovered] = useState(false)
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden font-sans selection:bg-blue-500/30">
-      {/* Background with Overlay */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/background/Introduction.png"
-          alt="Cyberpunk City Background"
-          fill
-          className="object-cover opacity-40"
-          priority
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90 pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_transparent_0%,_black_100%)] pointer-events-none" />
-      </div>
-
-      {/* Grid Pattern Overlay */}
-      <div className="absolute inset-0 z-0 opacity-10 pointer-events-none"
-        style={{ backgroundImage: 'linear-gradient(#3b82f6 1px, transparent 1px), linear-gradient(90deg, #3b82f6 1px, transparent 1px)', backgroundSize: '40px 40px' }}
+    <div className="absolute inset-0 z-0">
+      <Image
+        src="/background/Introduction.png"
+        alt="Cyberpunk City Background"
+        fill
+        className="object-cover opacity-60"
+        priority
+        sizes="100vw"
       />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/50 to-black/50 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_10%,_black_100%)] pointer-events-none" />
 
-      <div className="relative z-10 container mx-auto px-4 py-8 max-w-6xl">
+      <div className="relative z-10 container mx-auto px-4 min-h-screen flex flex-col justify-center items-center lg:items-start lg:px-20">
 
         {/* Navigation & Header */}
         <motion.div
@@ -42,10 +34,6 @@ export default function StoryPage() {
             <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
             <span className="font-mono text-sm tracking-wider uppercase">Return to Main</span>
           </Link>
-          <div className="hidden md:flex items-center gap-2 text-xs font-mono text-blue-500/50">
-            <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-            <span>SIMULATION MODULE: BRIEFING</span>
-          </div>
         </motion.div>
 
         {/* Main Title */}
@@ -55,13 +43,12 @@ export default function StoryPage() {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-6xl font-black tracking-tighter mb-4">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-white to-blue-400">
-              Background
-            </span>
-          </h1>
-          <div className="h-0.5 w-24 bg-gradient-to-r from-transparent via-blue-500 to-transparent mx-auto" />
-        </motion.div>
+          <p className="font-serif text-3xl text-white max-w-3xl leading-relaxed font-light">
+            <span>Background</span>
+          </p>
+
+          {/* Divider */}
+          <div className="h-1 w-30 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-full" />        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 
@@ -76,23 +63,14 @@ export default function StoryPage() {
               <div className="p-2 bg-blue-500/20 border border-blue-500/50 rounded-lg">
                 <MapPin className="w-6 h-6 text-blue-400" />
               </div>
-              <h2 className="text-2xl font-bold tracking-tight text-white">City Status</h2>
+              <h2 className="text-2xl font-serif font-bold text-white">Identity</h2>
             </div>
 
             <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 md:p-10 space-y-6 text-white leading-relaxed font-light shadow-2xl relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-4 opacity-50">
-                <div className="text-xs font-mono text-orange-400/50">LOC: NEW EDEN</div>
-              </div>
+              <p className="text-2xl font-roboto">
+                You are <strong className="text-white">head of department of AI Security</strong>, the city mayor requires your to balance the use of AI Safety & AI accuracy.
+              </p>
 
-              <p className="text-xl">
-                <strong className="text-orange-400">In 2050.</strong> Artificial intelligence has become the backbone of urban security. The city has recoginze that AI can be a powerful tool, but it also has its limitations.
-              </p>
-              <p className="text-xl">
-                As the <strong className="text-white font-medium">chief officer of department of AI Security</strong>, the city mayor requires your to balance the use of AI Safety & AI accuracy.
-              </p>
-              <p className="text-xl">
-                Your mandate is clear but contradictory: <span className="text-orange-400 italic">Collect data. Analyze data. Optimize the AI model.</span> Every decision you made will siginificant affect the city.
-              </p>
             </div>
           </motion.div>
 
@@ -107,22 +85,25 @@ export default function StoryPage() {
               <div className="p-2 bg-cyan-500/20 border border-cyan-500/50 rounded-lg">
                 <User className="w-6 h-6 text-cyan-400" />
               </div>
-              <h2 className="text-2xl font-bold tracking-tight text-white">Your roles</h2>
+              <h2 className="text-2xl font-serif font-bold text-white">Your Tasks</h2>
             </div>
-
-            <div className="grid gap-6">
+            <div className="font-roboto grid gap-4">
               {[
                 {
-                  label: "Role",
-                  value: "Chief Officer, Department of AI Security ",
-                  icon: Briefcase,
+                  label: "Step 1",
+                  value: "Collect data",
+                  icon: Search,
                   color: "blue"
-                },
-                {
-                  label: "PRIMARY OBJECTIVE",
-                  value: "Balance the AI Safety & AI accuracy",
+                }, {
+                  label: "Step 2",
+                  value: "Analyze data",
                   icon: Target,
-                  color: "green"
+                  color: "blue"
+                }, {
+                  label: "Step 3",
+                  value: "Optimize the AI model",
+                  icon: Activity,
+                  color: "blue"
                 }
               ].map((item, idx) => (
                 <div key={idx} className="bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-xl flex items-center gap-5 hover:bg-white/10 transition-colors">
@@ -130,8 +111,8 @@ export default function StoryPage() {
                     <item.icon className={`w-6 h-6 text-${item.color}-400`} />
                   </div>
                   <div>
-                    <div className="text-sm font-mono text-gray-400 uppercase tracking-wider mb-1">{item.label}</div>
-                    <div className="text-white font-medium text-lg leading-tight">{item.value}</div>
+                    <div className="text-l font-mono text-gray-400 uppercase tracking-wider mb-1">{item.label}</div>
+                    <div className="text-xl text-white font-medium">{item.value}</div>
                   </div>
                 </div>
               ))}
@@ -158,7 +139,7 @@ export default function StoryPage() {
               style={{ clipPath: "polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)" }}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer" />
-              <span>COMMENCE OPERATION</span>
+              <span>CONTINUE</span>
               <ChevronRight className={`w-6 h-6 transition-transform duration-300 ${isHovered ? 'translate-x-2' : ''}`} />
             </a>
           </Link>
