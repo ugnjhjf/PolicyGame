@@ -85,7 +85,7 @@ export default function ChapterPage() {
                     className="text-center mb-16"
                 >
                     <h1 className="text-4xl md:text-6xl font-black tracking-tighter mb-4">
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-white to-blue-400">
+                        <span className="font-serif text-3xl text-white max-w-3xl leading-relaxed font-light">
                             SELECT CHAPTER
                         </span>
                     </h1>
