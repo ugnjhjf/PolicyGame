@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import '../styles/global/globals.css'
 import PageTransitionProvider from '../components/PageTransitionProvider'
+import ClickFeedback from '../components/ClickSound'
 
 import { inter, poppins } from '../lib/fonts'
 
@@ -32,7 +33,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"></link>
       </head>
       <body suppressHydrationWarning={true} className={inter.className}>
-
+        <ClickFeedback />
         <PageTransitionProvider>
           {children}
         </PageTransitionProvider>

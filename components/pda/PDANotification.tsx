@@ -1,7 +1,7 @@
 'use client'
 
 import { Map, Zap, CheckCircle, Database, Book } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export interface PDANotificationProps {
   isVisible: boolean
@@ -21,9 +21,20 @@ export function PDANotification({
   onClick
 }: PDANotificationProps) {
   const [show, setShow] = useState(false)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    audioRef.current = new Audio('/sound/new_notes.wav')
+    audioRef.current.volume = 0.7
+  }, [])
 
   useEffect(() => {
     if (isVisible) {
+      // Play sound for clue notifications
+      if (type === 'clue' && audioRef.current) {
+        audioRef.current.currentTime = 0
+        audioRef.current.play().catch(() => {})
+      }
       setShow(true)
       const timer = setTimeout(() => {
         setShow(false)
@@ -33,7 +44,7 @@ export function PDANotification({
     } else {
       setShow(false)
     }
-  }, [isVisible, onClose])
+  }, [isVisible, onClose, type])
 
   if (!isVisible && !show) return null
 

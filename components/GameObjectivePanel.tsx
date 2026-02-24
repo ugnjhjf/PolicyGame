@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle, Circle } from 'lucide-react'
 import { GameStateManager, type GameState, GAME_CONFIG } from '../config/data'
@@ -18,6 +18,21 @@ interface ObjectivePanelProps {
 
 export default function GameObjectivePanel({ className = '', tasks, onTaskClick, isVisible = true }: ObjectivePanelProps) {
   const [gameState, setGameState] = useState<GameState | null>(null)
+  const popSoundRef = useRef<HTMLAudioElement | null>(null)
+  const hasPlayedRef = useRef(false)
+
+  useEffect(() => {
+    popSoundRef.current = new Audio('/sound/new_notes.wav')
+    popSoundRef.current.volume = 0.7
+  }, [])
+
+  // Play once when the panel first becomes visible
+  useEffect(() => {
+    if (isVisible && !hasPlayedRef.current) {
+      hasPlayedRef.current = true
+      popSoundRef.current?.play().catch(() => {})
+    }
+  }, [isVisible])
 
   useEffect(() => {
     // 初始化游戏状态
