@@ -81,7 +81,7 @@ export function MapInteractiveLayer({ events, onEventSelect }: MapInteractiveLay
 
                 {/* Status Indicators Overlay */}
                 {event.status === 'investigating' && (
-                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-black/30 rounded-full flex items-center justify-center">
                     <Search className={`w-6 h-6 ${event.progress === 100 ? 'text-green-400' : 'text-white'} drop-shadow-lg`} />
                     {(event.progress !== undefined && event.progress < 100) && (
                       <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-10 h-1.5 bg-gray-700/80 rounded-full overflow-hidden border border-white/20">
