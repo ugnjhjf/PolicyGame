@@ -88,9 +88,6 @@ export function LoanApprovalGameOverlay({ isOpen, onClose, onComplete }: LoanApp
         // Success condition: All selected must be High reliability
         const isSuccess = score.correct === 3 && score.wrong === 0
         onComplete(isSuccess)
-        if (!isSuccess) {
-            onClose()
-        }
     }
 
     const getReliabilityColor = (level: string) => {
@@ -114,43 +111,32 @@ export function LoanApprovalGameOverlay({ isOpen, onClose, onComplete }: LoanApp
     if (!isOpen) return null
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md">
             <motion.div
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.95, opacity: 0 }}
-                className="w-full max-w-5xl aspect-[16/9] bg-slate-900 border border-slate-700 rounded-3xl overflow-hidden shadow-2xl flex flex-col relative"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="w-full h-full flex flex-col relative overflow-hidden"
             >
                 {/* Header */}
-                <div className="absolute top-6 left-6 z-20">
-                    <h2 className="text-2xl font-bold text-white flex items-center gap-3">
-                        <div className="p-2 bg-gradient-to-br from-purple-500 to-blue-600 rounded-lg shadow-lg">
-                            <Shield className="w-6 h-6 text-white" />
-                        </div>
-                        Model Training
+                <div className="absolute top-12 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
+                    <h2 className="text-3xl font-bold text-white flex items-center gap-3">
+                        Dataset Selection
                     </h2>
-                    <p className="text-slate-400 text-sm mt-1 ml-1">
-                        Select <span className="text-purple-400 font-bold">3 reliable data points</span> for the AI model.
+                    <p className=" text-base mt-3 text-center">
+                        Select <span className="text-purple-400 font-bold">3 reliable data parameters</span> for the AI model.
                     </p>
-                </div>
-
-                <div className="absolute top-6 right-6 z-20">
-                    {!showResultOverlay && (
-                        <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors text-slate-400 hover:text-white">
-                            <X className="w-8 h-8" />
-                        </button>
-                    )}
                 </div>
 
                 {/* Main Content Area - Split Layout */}
                 <div className="flex-1 flex flex-col relative">
 
                     {/* TOP HALF: Slots */}
-                    <div className="flex-1 bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center relative overflow-visible">
+                    <div className="flex-1 flex items-center justify-center relative overflow-visible">
                         <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5 pointer-events-none" />
 
                         {/* Slots */}
-                        <div className="flex items-center gap-8 relative z-10 px-12">
+                        <div className="flex items-center gap-12 relative z-10 px-12 mt-16">
                             {slots.map((slotId, index) => {
                                 const item = criteria.find(c => c.id === slotId)
                                 const isFilled = !!item
@@ -180,16 +166,16 @@ export function LoanApprovalGameOverlay({ isOpen, onClose, onComplete }: LoanApp
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
                                             onClick={() => isFilled && handleRemoveFromSlot(index)}
-                                            className={`w-40 h-56 rounded-2xl border-2 border-dashed ${borderColor} bg-slate-900/50 backdrop-blur-sm flex flex-col items-center justify-center cursor-pointer transition-all duration-300 relative overflow-visible`}
+                                            className={`w-40 h-56 rounded-2xl border-2 border-dashed ${borderColor} bg-transparent flex flex-col items-center justify-center cursor-pointer transition-all duration-300 relative overflow-visible`}
                                         >
                                             {isFilled ? (
                                                 <>
-                                                    <div className={`w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center mb-4 ${iconColor} border border-white/10`}>
+                                                    <div className={`w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4 ${iconColor} border border-slate-200`}>
                                                         <Database className="w-8 h-8" />
                                                     </div>
                                                     <div className="text-center px-2">
-                                                        <span className="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-1">Data Point</span>
-                                                        <span className={`text-sm font-bold text-white leading-tight block ${hasSubmitted ? 'opacity-40' : ''}`}>{item.title}</span>
+                                                        <span className="text-xs font-bold uppercase tracking-wider text-slate-300 block mb-1">Dataset</span>
+                                                        <span className={`text-[18px] font-bold text-white leading-tight block ${hasSubmitted ? 'opacity-40' : ''}`}>{item.title}</span>
                                                     </div>
 
                                                     {/* RESULT BANNER */}
@@ -208,23 +194,41 @@ export function LoanApprovalGameOverlay({ isOpen, onClose, onComplete }: LoanApp
                                                 </>
                                             ) : (
                                                 <>
-                                                    <span className="text-slate-600 font-bold text-lg mb-2">Slot {index + 1}</span>
-                                                    <span className="text-slate-700 text-xs uppercase tracking-widest">Empty</span>
+                                                    <span className="text-slate-400 font-bold text-lg mb-2">Slot {index + 1}</span>
+                                                    <span className="text-slate-500 text-xs uppercase tracking-widest">Empty</span>
                                                 </>
                                             )}
                                         </motion.button>
                                     </div>
                                 )
                             })}
+
+                            {/* Submit Button */}
+                            {!showResultOverlay && (
+                                <motion.button
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    onClick={slots.every(s => s !== null) ? handleSubmit : undefined}
+                                    disabled={!slots.every(s => s !== null)}
+                                    className={`absolute -bottom-28 left-1/3 -translate-x-1/2 px-10 py-4 rounded-full text-xl font-bold transition-all flex items-center gap-3 z-50 ${
+                                        slots.every(s => s !== null)
+                                            ? 'bg-blue-600 text-white hover:bg-blue-500 shadow-2xl shadow-blue-500/30 hover:scale-105 active:scale-95 cursor-pointer'
+                                            : 'bg-slate-300 text-slate-500 shadow-md cursor-not-allowed opacity-80'
+                                    }`}
+                                >
+                                    Start Training
+                                    <Zap className={`w-6 h-6 ${slots.every(s => s !== null) ? 'fill-white' : 'fill-slate-500'}`} />
+                                </motion.button>
+                            )}
                         </div>
                     </div>
 
                     {/* BOTTOM HALF: Inventory Dock */}
-                    <div className="h-48 bg-slate-950 border-t border-slate-800 flex flex-col items-center justify-center relative shadow-[0_-10px_40px_rgba(0,0,0,0.5)] z-20">
+                    <div className="h-56 flex flex-col items-center justify-center relative z-20 pb-8 w-full">
 
                         {/* Items Row */}
                         {!showResultOverlay && (
-                            <div className="flex items-center gap-4 px-8 py-4 w-full justify-center">
+                            <div className="flex items-center justify-center gap-8 px-12 py-4 w-full flex-wrap">
                                 {availableItems.map((item) => (
                                     <div key={item.id} className="relative">
                                         <AnimatePresence>
@@ -233,15 +237,15 @@ export function LoanApprovalGameOverlay({ isOpen, onClose, onComplete }: LoanApp
                                                     initial={{ opacity: 0, y: 10, scale: 0.9 }}
                                                     animate={{ opacity: 1, y: 0, scale: 1 }}
                                                     exit={{ opacity: 0, y: 10, scale: 0.9 }}
-                                                    className="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 bg-white text-slate-900 p-6 rounded-2xl shadow-2xl w-80 pointer-events-none z-50 flex flex-col gap-2"
+                                                    className="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 bg-white  p-6 rounded-2xl shadow-2xl w-80 pointer-events-none z-50 flex flex-col gap-2"
                                                 >
                                                     <div className="flex items-center gap-3 mb-1">
                                                         <div className="p-2 bg-slate-100 rounded-lg">
                                                             <FileText className="w-5 h-5 text-slate-700" />
                                                         </div>
                                                         <div>
-                                                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">About This Data</span>
-                                                            <h4 className="font-bold text-lg leading-none">{item.title}</h4>
+                                                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Dataset</span>
+                                                            <h4 className="font-bold text-lg leading-none text-slate-900">{item.title}</h4>
                                                         </div>
                                                     </div>
                                                     <p className="text-sm text-slate-600 leading-relaxed">
@@ -257,33 +261,20 @@ export function LoanApprovalGameOverlay({ isOpen, onClose, onComplete }: LoanApp
                                             onMouseEnter={() => setHoveredId(item.id)}
                                             onMouseLeave={() => setHoveredId(null)}
                                             onClick={() => handleSelectFromInventory(item.id)}
-                                            whileHover={{ scale: 1.1, y: -10 }}
+                                            whileHover={{ scale: 1.05, y: -10 }}
                                             whileTap={{ scale: 0.95 }}
-                                            className="w-20 h-28 bg-slate-800 border border-slate-600 rounded-xl flex flex-col items-center justify-center gap-2 group hover:border-purple-400 hover:bg-slate-700 hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-200 flex-shrink-0"
+                                            className="w-40 h-48 bg-white border border-slate-200 shadow-md rounded-2xl flex flex-col items-center justify-center gap-4 group hover:border-purple-400 hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-200 flex-shrink-0"
                                         >
-                                            <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center group-hover:bg-purple-500/20 transition-colors">
-                                                <FileText className="w-5 h-5 text-slate-400 group-hover:text-purple-300" />
+                                            <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-purple-100 transition-colors">
+                                                <FileText className="w-6 h-6 text-slate-400 group-hover:text-purple-600" />
                                             </div>
-                                            <span className="text-[10px] font-bold text-slate-400 text-center px-1 leading-tight group-hover:text-white">
+                                            <span className="text-[24px] font-bold text-slate-800 text-center px-2 leading-tight group-hover:text-purple-700">
                                                 {item.title}
                                             </span>
                                         </motion.button>
                                     </div>
                                 ))}
                             </div>
-                        )}
-
-                        {/* Submit Button */}
-                        {slots.every(s => s !== null) && !showResultOverlay && (
-                            <motion.button
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                onClick={handleSubmit}
-                                className="absolute bottom-6 left-1/2 -translate-x-1/2 px-8 py-3 bg-white text-slate-900 hover:bg-slate-200 rounded-full font-bold shadow-xl shadow-white/10 transition-all flex items-center gap-2 z-30"
-                            >
-                                Start Training
-                                <Zap className="w-5 h-5 fill-slate-900" />
-                            </motion.button>
                         )}
 
                     </div>
@@ -310,10 +301,10 @@ export function LoanApprovalGameOverlay({ isOpen, onClose, onComplete }: LoanApp
                                     <div>
                                         <div className="flex items-start justify-between">
                                             <div className="p-3 bg-slate-700/50 rounded-2xl border border-slate-600">
-                                                <Zap className={`w-8 h-8 ${score.accuracy > 80 ? 'text-yellow-400' : 'text-slate-400'}`} />
+                                                <Zap className={`w-8 h-8 ${score.accuracy > 80 ? 'text-yellow-400' : ''}`} />
                                             </div>
                                             <div className="text-right">
-                                                <span className="text-slate-400 text-sm font-bold tracking-wider uppercase">Model Confidence</span>
+                                                <span className=" text-sm font-bold tracking-wider uppercase">Model Confidence</span>
                                             </div>
                                         </div>
 
@@ -321,14 +312,14 @@ export function LoanApprovalGameOverlay({ isOpen, onClose, onComplete }: LoanApp
                                             <h3 className="text-7xl font-bold text-white tracking-tighter">
                                                 {score.accuracy}%
                                             </h3>
-                                            <p className="text-slate-400 font-medium text-lg mt-2">Accuracy Rate</p>
+                                            <p className=" font-medium text-lg mt-2">Accuracy Rate</p>
                                         </div>
                                     </div>
 
                                     <div className="space-y-2">
-                                        <div className="flex justify-between text-xs font-bold text-slate-500 uppercase tracking-widest">
+                                        <div className="flex justify-between text-xs font-bold  uppercase tracking-widest">
                                             <span>Accuracy</span>
-                                            <span>Target: 95%</span>
+                                            <span>Target: 85%</span>
                                         </div>
                                         <div className="h-4 bg-slate-800 rounded-full overflow-hidden border border-slate-700">
                                             <motion.div
@@ -408,7 +399,7 @@ export function LoanApprovalGameOverlay({ isOpen, onClose, onComplete }: LoanApp
                                                             className="w-full bg-red-500/80 hover:bg-red-400 transition-colors"
                                                         />
                                                     </div>
-                                                    <span className="text-[10px] font-bold text-slate-500 uppercase">
+                                                    <span className="text-[10px] font-bold  uppercase">
                                                         Grp {String.fromCharCode(65 + index)}
                                                     </span>
                                                 </div>

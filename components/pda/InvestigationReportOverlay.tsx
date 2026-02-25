@@ -96,18 +96,8 @@ export function InvestigationReportOverlay({
                                 {/* Findings */}
                                 <div>
                                     <h3 className="text-sm text-gray-400 uppercase font-bold mb-2">Analysis Findings</h3>
-                                    <div className="bg-gray-800/50 p-4 rounded-lg text-gray-200 leading-relaxed whitespace-pre-wrap">
+                                    <div className="bg-gray-800/50 p-4 text-xl rounded-lg text-gray-200 leading-relaxed whitespace-pre-wrap">
                                         {data.content}
-                                    </div>
-                                </div>
-
-                                {/* Suggestion */}
-                                <div>
-                                    <h3 className="text-sm text-yellow-500 uppercase font-bold mb-2 flex items-center gap-2">
-                                        <AlertTriangle className="w-4 h-4" /> System Recommendation
-                                    </h3>
-                                    <div className="bg-yellow-900/20 border border-yellow-500/30 p-4 rounded-lg text-yellow-100 font-medium">
-                                        {data.suggestion}
                                     </div>
                                 </div>
                             </div>
@@ -165,7 +155,7 @@ export function InvestigationReportOverlay({
                                                             label: {
                                                                 color: '#ffffff',
                                                                 fontFamily: "var(--font-inter), sans-serif",
-                                                                fontSize: 15
+                                                                fontSize: 20
                                                             },
                                                             emphasis: {
                                                                 itemStyle: {

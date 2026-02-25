@@ -50,9 +50,7 @@ export function MapInteractiveLayer({ events, onEventSelect }: MapInteractiveLay
               <button
                 onClick={() => handleEventClick(event.id)}
                 className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-125 hover:z-50 transition-all duration-300 cursor-pointer overflow-hidden border-2 
-                  ${event.id === 'collect_data_zhang'
-                    ? 'bg-slate-900 border-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.5)]'
-                    : isInvestigating
+                  ${isInvestigating
                       ? 'bg-blue-500 border-blue-300'
                       : 'bg-yellow-500 border-yellow-300'
                   }`}
@@ -73,8 +71,6 @@ export function MapInteractiveLayer({ events, onEventSelect }: MapInteractiveLay
                       sizes="56px"
                     />
                   </div>
-                ) : event.id === 'collect_data_zhang' ? (
-                  <Database className="w-8 h-8 text-purple-300 group-hover:text-purple-100 transition-colors" />
                 ) : (
                   <AlertCircle className="w-8 h-8 text-white" />
                 )}
@@ -98,10 +94,7 @@ export function MapInteractiveLayer({ events, onEventSelect }: MapInteractiveLay
               {/* Tooltip Removed */}
 
               {/* Character Name Label (Static) */}
-              <div className={`absolute top-full mt-2 px-3 py-1 text-xs font-bold rounded-full border shadow-lg whitespace-nowrap pointer-events-none ${event.id === 'collect_data_zhang'
-                ? 'bg-slate-900/80 text-purple-200 border-purple-500/30'
-                : 'bg-black/60 backdrop-blur-sm text-white border-white/20'
-                }`}>
+              <div className="absolute top-full mt-2 px-3 py-1 text-xs font-bold rounded-full border shadow-lg whitespace-nowrap pointer-events-none bg-black/60 backdrop-blur-sm text-white border-white/20">
                 {event.label}
               </div>
             </div>

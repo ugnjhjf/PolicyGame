@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
 import { INITIAL_RPG_STATE, RPGState, InvestigationReportData } from '@/types/rpg'
-import { GameStateManager, INITIAL_GAME_STATE, type GameState } from '../config/data'
 import { dialogue_intro, dialogue_aunt_zhang_start, dialogue_michael_start, dialogue_officer_chan, dialogue_solution_intro, dialogue_solution_outro } from '../config/data/dialogue'
 import clueData from '../config/data/journal'
 import conceptData from '../config/data/encyclopedia'
@@ -10,7 +9,6 @@ import type { PDANotificationProps } from '../components/pda/PDANotification'
 
 export function useGameState() {
     // Game and RPG States
-    const [gameState, setGameState] = useState<GameState>(INITIAL_GAME_STATE)
     const [rpgState, setRpgState] = useState<RPGState>(INITIAL_RPG_STATE)
     
     // Minigame States
@@ -49,8 +47,6 @@ export function useGameState() {
 
     // Initialization
     useEffect(() => {
-        const currentState = GameStateManager.getCurrentState()
-        setGameState(currentState)
         startDialogue('anna_dialogue')
     }, [])
 
@@ -71,6 +67,16 @@ export function useGameState() {
             })
         }
     }, [rpgState.player.reports.length])
+
+    // Soft-lock prevention for Loan Game
+    useEffect(() => {
+        const auntZhang = rpgState.map.activeEvents.find(e => e.id === 'aunt_zhang')
+        const hasOfficerChan = rpgState.map.activeEvents.some(e => e.id === 'officer_chan')
+        
+        if (auntZhang?.status === 'completed' && !hasOfficerChan && !showLoanGame) {
+            setShowLoanGame(true)
+        }
+    }, [rpgState.map.activeEvents, showLoanGame])
 
     // Action Handlers
     const triggerNotification = (title: string, message: string, type: PDANotificationProps['type'] = 'info', onClick?: () => void) => {
@@ -131,10 +137,7 @@ export function useGameState() {
                     },
                     map: {
                         activeEvents: [
-                            { id: 'aunt_zhang', x: 48, y: 85, label: 'Aunt Zhang\'s Shop', status: 'available' as const },
-                            { id: 'collect_data_zhang', x: 55, y: 80, label: 'Data Collection', status: 'available' as const },
-                            { id: 'michael', x: 65, y: 35, label: 'Michael\'s Office', status: 'available' as const },
-                            { id: 'officer_chan', x: 58, y: 60, label: 'Officer Chan\'s Patrol', status: 'available' as const }
+                            { id: 'aunt_zhang', x: 48, y: 85, label: 'Aunt Zhang\'s Shop', status: 'available' as const }
                         ]
                     }
                 }
@@ -265,13 +268,14 @@ export function useGameState() {
                 ...prev,
                 map: {
                     ...prev.map,
-                    activeEvents: prev.map.activeEvents.map(e =>
-                        e.id === 'collect_data_zhang' ? { ...e, status: 'completed' as const } : e
-                    )
+                    activeEvents: [
+                        ...prev.map.activeEvents.filter(e => e.id !== 'collect_data_zhang'), // Ensure data collection is gone if it was there
+                        { id: 'officer_chan', x: 58, y: 60, label: 'Officer Chan\'s Patrol', status: 'available' as const }
+                    ]
                 }
             }))
             setTimeout(() => {
-                triggerNotification('Data Collected', 'Loan Approval Database Updated', 'success')
+                triggerNotification('Milestone Unlocked', 'Data Collection Problem Solved')
             }, 500)
         } else {
             setShowLoanGame(false)
@@ -307,18 +311,29 @@ export function useGameState() {
             else if (currentEventId === 'officer_chan') newConcept = conceptData.concept_confirmation_bias
 
             if (newConcept) {
-                setRpgState(prev => ({
+                setRpgState(prev => {
+                    const nextEvents = prev.map.activeEvents.map(e =>
+                        e.id === currentEventId ? { ...e, status: 'completed' as const } : e
+                    )
+                    
+                    if (currentEventId === 'officer_chan') {
+                        nextEvents.push({ id: 'michael', x: 65, y: 35, label: 'Michael\'s Office', status: 'available' as const })
+                    }
+                    
+                    return {
                     ...prev,
                     player: {
                         ...prev.player,
                         encyclopedia: [...prev.player.encyclopedia, newConcept]
                     },
                     map: {
-                        activeEvents: prev.map.activeEvents.map(e =>
-                            e.id === currentEventId ? { ...e, status: 'completed' as const } : e
-                        )
+                        activeEvents: nextEvents
                     }
-                }))
+                }})
+            }
+
+            if (currentEventId === 'aunt_zhang') {
+                setShowLoanGame(true)
             }
         }
     }
@@ -362,9 +377,8 @@ export function useGameState() {
                 ? prev.map.activeEvents
                 : [
                     { id: 'aunt_zhang', x: 48, y: 85, label: 'Aunt Zhang\'s Shop', status: 'available' as const },
-                    { id: 'collect_data_zhang', x: 55, y: 80, label: 'Data Collection', status: 'available' as const },
-                    { id: 'michael', x: 65, y: 35, label: 'Michael\'s Office', status: 'available' as const },
-                    { id: 'officer_chan', x: 58, y: 60, label: 'Officer Chan\'s Patrol', status: 'available' as const }
+                    { id: 'officer_chan', x: 58, y: 60, label: 'Officer Chan\'s Patrol', status: 'available' as const },
+                    { id: 'michael', x: 65, y: 35, label: 'Michael\'s Office', status: 'available' as const }
                 ] as any[]
 
             return {
@@ -386,7 +400,7 @@ export function useGameState() {
 
     return {
         // State
-        gameState, rpgState, showSolutionGame, solutionPlacements, showLoanGame,
+        rpgState, showSolutionGame, solutionPlacements, showLoanGame,
         challengeStatus, showPDA, pdaTab, pdaSelectedId, currentEventId,
         showChapterCompletion, showQuiz, showMasteryOverlay, showReport, reportData,
         showDialogue, dialogueContent, notification, showNotification, isDevMode,

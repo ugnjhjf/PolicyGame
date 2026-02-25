@@ -27,6 +27,5 @@
             }
         ]
     },
-    "content": "Analysis of Officer Chan's arrest record over the past 3 months.\n- Total Arrests: 40\n- Successful Convictions: 5\n- Wrongful Arrests: 35\nThis indicates a high rate of false positives, driven by confirmation bias where the officer prioritizes 'intuition' over objective evidence.",
-    "suggestion": "Mandatory double-blind review for all arrests made based on 'intuition' or AI probability alone should implemented"
+    "content": "Analysis of Officer Chan's arrest record over the past 3 months.\n\n\nThis indicates a high rate of false positives, driven by confirmation bias where the officer prioritizes 'intuition' over objective evidence."
 }

@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle, Circle } from 'lucide-react'
-import { GameStateManager, type GameState, GAME_CONFIG } from '../config/data'
 
 interface ObjectivePanelProps {
   className?: string
@@ -17,7 +16,6 @@ interface ObjectivePanelProps {
 }
 
 export default function GameObjectivePanel({ className = '', tasks, onTaskClick, isVisible = true }: ObjectivePanelProps) {
-  const [gameState, setGameState] = useState<GameState | null>(null)
   const popSoundRef = useRef<HTMLAudioElement | null>(null)
   const hasPlayedRef = useRef(false)
 
@@ -33,28 +31,6 @@ export default function GameObjectivePanel({ className = '', tasks, onTaskClick,
       popSoundRef.current?.play().catch(() => {})
     }
   }, [isVisible])
-
-  useEffect(() => {
-    // 初始化游戏状态
-    setGameState(GameStateManager.getCurrentState())
-
-    // 定期检查状态更新（每500ms）
-    const interval = setInterval(() => {
-      const currentState = GameStateManager.getCurrentState()
-      setGameState(currentState)
-    }, 500)
-
-    return () => {
-      clearInterval(interval)
-    }
-  }, [])
-
-  if (!gameState) return null
-
-  // 检查目标是否完成
-  const isCrimeRateMet = gameState.crimeRate < 30
-  const isAccuracyMet = gameState.arrestAccuracy > 60
-  const isTrustMet = gameState.communityTrust > 40
 
   const { zhangCompleted, chanCompleted, michaelCompleted } = tasks || { zhangCompleted: false, chanCompleted: false, michaelCompleted: false }
 

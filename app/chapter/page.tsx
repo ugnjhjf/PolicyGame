@@ -89,9 +89,7 @@ export default function ChapterPage() {
                             SELECT CHAPTER
                         </span>
                     </h1>
-                    <p className="text-blue-200/50 font-mono text-sm">
-                        Select 1 to start
-                    </p>
+
                 </motion.div>
 
                 {/* Chapters Grid */}
@@ -154,17 +152,24 @@ export default function ChapterPage() {
                                     </div>
 
                                     {/* Footer Action */}
-                                    <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
+                                    <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-center">
                                         {chapter.status === 'active' ? (
-                                            <>
-                                                <span className="text-l font-mono text-blue-300">PLAY</span>
-                                                <Play className={`w-4 h-4 text-blue-400 transition-transform duration-300 ${hoveredChapter === chapter.id ? 'translate-x-1' : ''}`} />
-                                            </>
+                                            <div
+                                                className="w-full relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-blue-600 group-hover:bg-green-600 text-white font-bold text-lg rounded-none transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-[0_0_20px_rgba(37,99,235,0.5)]"
+                                                style={{ clipPath: "polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)" }}
+                                            >
+                                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer" />
+                                                <Play className={`w-5 h-5 fill-current transition-transform duration-300 ${hoveredChapter === chapter.id ? 'translate-x-1' : ''}`} />
+                                                <span>PLAY</span>
+                                            </div>
                                         ) : (
-                                            <>
-                                                <span className="text-l font-mono text-gray-600">COMING SOON</span>
-                                                <Lock className="w-3 h-3 text-gray-600" />
-                                            </>
+                                            <div
+                                                className="w-full relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-gray-800 text-gray-500 font-bold text-lg rounded-none transition-all"
+                                                style={{ clipPath: "polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)" }}
+                                            >
+                                                <Lock className="w-5 h-5" />
+                                                <span>COMING SOON</span>
+                                            </div>
                                         )}
                                     </div>
 
