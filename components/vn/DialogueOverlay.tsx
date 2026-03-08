@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useMemo } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronRight } from 'lucide-react'
@@ -13,37 +13,24 @@ export interface DialogueProps {
   isOpen: boolean
   characterName: string
   characterImage?: string // URL to image
-  characterTitle?: string
-  characterTraits?: string[]
   text: string
   choices?: DialogueOption[]
   onNext?: () => void
-  isTyping?: boolean
 }
 
 export function DialogueOverlay({
   isOpen,
   characterName,
-  characterTitle,
-  characterTraits,
   characterImage,
   text,
   choices,
-  onNext,
-  isTyping: externalIsTyping = false
+  onNext
 }: DialogueProps) {
   // Parsed segments structure: { type: 'normal' | 'red' | 'yellow' | 'bold', content: string }
-  const [parsedSegments, setParsedSegments] = useState<{ type: string; content: string }[]>([])
-
-  // Parse text whenever it changes
-  useEffect(() => {
-    if (!text) {
-      setParsedSegments([])
-      return
-    }
-
+  const parsedSegments = useMemo(() => {
+    if (!text) return []
     const parts = text.split(/(<red>.*?<\/red>|<yellow>.*?<\/yellow>|<b>.*?<\/b>)/g)
-    const segments = parts.map(part => {
+    return parts.map(part => {
       if (part.startsWith('<red>') && part.endsWith('</red>')) {
         return { type: 'red', content: part.replace(/<\/?red>/g, '') }
       }
@@ -54,39 +41,21 @@ export function DialogueOverlay({
         return { type: 'bold', content: part.replace(/<\/?b>/g, '') }
       }
       return { type: 'normal', content: part }
-    }).filter(s => s.content.length > 0) // Filter out empty strings from split
-
-    setParsedSegments(segments)
+    }).filter(s => s.content.length > 0)
   }, [text])
-
-  // Handle "next"
-  const handleInteraction = () => {
-    if (onNext) onNext()
-  }
 
   if (!isOpen) return null
 
   // Render text fully
   const renderText = () => {
-    const elements = []
-
-    for (let i = 0; i < parsedSegments.length; i++) {
-      const segment = parsedSegments[i]
-      const contentToShow = segment.content
-      const key = i
-
-      if (segment.type === 'red') {
-        elements.push(<span key={key} className="text-red-500">{contentToShow}</span>)
-      } else if (segment.type === 'yellow') {
-        elements.push(<span key={key} className="text-yellow-400">{contentToShow}</span>)
-      } else if (segment.type === 'bold') {
-        elements.push(<span key={key} className="font-bold text-white">{contentToShow}</span>)
-      } else {
-        elements.push(<span key={key}>{contentToShow}</span>)
+    return parsedSegments.map((segment, i) => {
+      switch (segment.type) {
+        case 'red': return <span key={i} className="text-red-500">{segment.content}</span>
+        case 'yellow': return <span key={i} className="text-yellow-400">{segment.content}</span>
+        case 'bold': return <span key={i} className="font-bold text-white">{segment.content}</span>
+        default: return <span key={i}>{segment.content}</span>
       }
-    }
-
-    return elements
+    })
   }
 
   return (
@@ -120,7 +89,7 @@ export function DialogueOverlay({
           className="w-full text-center cursor-pointer select-none"
           onClick={(e) => {
             if ((e.target as HTMLElement).tagName === 'BUTTON') return
-            handleInteraction()
+            onNext?.()
           }}
         >
           {/* Subtitle Text with Fade-in/Fade-out transition */}

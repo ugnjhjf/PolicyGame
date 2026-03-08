@@ -5,7 +5,7 @@ import { InvestigationReportOverlay } from '../pda/InvestigationReportOverlay'
 import { SolutionMatchingOverlay } from '../minigame/SolutionMatchingOverlay'
 import { LoanApprovalGameOverlay } from '../minigame/LoanApprovalGameOverlay'
 import { ChapterCompletionOverlay, ChapterMasteryOverlay, QuizOverlay } from '../game'
-import quizData from '../../config/data/quiz/round_1/quiz.json'
+import quizData from '../../config/data/quiz/quiz.json'
 import type { InvestigationReportData } from '@/types/rpg'
 
 interface GameOverlaysProps {
@@ -40,9 +40,7 @@ export function GameOverlays({
       <DialogueOverlay
         isOpen={showDialogue}
         characterName={dialogueContent.name}
-        characterTitle={dialogueContent.title}
         characterImage={dialogueContent.image}
-        characterTraits={dialogueContent.traits}
         text={dialogueContent.text}
         onNext={handleDialogueNext}
       />

@@ -43,7 +43,6 @@ export function useGameState() {
 
     // Tutorial / Intro Statess
     const [hasViewedPolicyIntro, setHasViewedPolicyIntro] = useState(false)
-    const [isDevMode, setIsDevMode] = useState(false)
 
     // Initialization
     useEffect(() => {
@@ -363,55 +362,20 @@ export function useGameState() {
         })
     }
 
-    const handleDevUnlockAll = () => {
-        setShowDialogue(false)
-        setDialogueQueue([])
-        setHasViewedPolicyIntro(true)
-
-        const allClues = Object.values(clueData).map((c: any) => ({ ...c, isRead: true }))
-        const allConcepts = Object.values(conceptData).map((c: any) => ({ ...c, isRead: true }))
-        const allReports = Object.values(allReportData).map((r: any) => ({ ...r, isRead: true }))
-
-        setRpgState(prev => {
-            const eventsToUse = prev.map.activeEvents.length > 0
-                ? prev.map.activeEvents
-                : [
-                    { id: 'aunt_zhang', x: 48, y: 85, label: 'Aunt Zhang\'s Shop', status: 'available' as const },
-                    { id: 'officer_chan', x: 58, y: 60, label: 'Officer Chan\'s Patrol', status: 'available' as const },
-                    { id: 'michael', x: 65, y: 35, label: 'Michael\'s Office', status: 'available' as const }
-                ] as any[]
-
-            return {
-                ...prev,
-                player: {
-                    ...prev.player,
-                    inventory: prev.player.inventory,
-                    journal: allClues,
-                    encyclopedia: allConcepts,
-                    reports: allReports
-                },
-                map: { activeEvents: eventsToUse.map(e => ({ ...e, status: 'completed' })) }
-            }
-        })
-
-        triggerNotification('DEV TOOL', 'All content unlocked & Intro Skipped!', 'success')
-        setShowPDA(true)
-    }
-
     return {
         // State
         rpgState, showSolutionGame, solutionPlacements, showLoanGame,
         challengeStatus, showPDA, pdaTab, pdaSelectedId, currentEventId,
         showChapterCompletion, showQuiz, showMasteryOverlay, showReport, reportData,
-        showDialogue, dialogueContent, notification, showNotification, isDevMode,
+        showDialogue, dialogueContent, notification, showNotification,
         
         // State setters (only the necessary ones)
         setSolutionPlacements, setPdaTab, setShowPDA, setShowQuiz,
-        setChallengeStatus, setShowChapterCompletion, setShowMasteryOverlay, setIsDevMode,
+        setChallengeStatus, setShowChapterCompletion, setShowMasteryOverlay,
+        setReportData, setShowReport, setPdaSelectedId,
         
         // Handlers
         handleMapEvent, handleDialogueNext, handleLoanGameComplete, handleSolutionComplete,
-        handleReportClose, handleReportNavigate, handleMarkAsRead, handleNotificationClose,
-        handleDevUnlockAll
+        handleReportClose, handleReportNavigate, handleMarkAsRead, handleNotificationClose
     }
 }

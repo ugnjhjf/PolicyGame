@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Check, Shield, FileText, Database, RotateCcw, Zap } from 'lucide-react'
-import parameterData from '../../config/data/aunt_zhang/parameter.json'
+import parameterData from '../../config/data/quiz/LoanApprovalGameParameter.json'
 
 interface Criteria {
     id: string

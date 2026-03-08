@@ -79,11 +79,7 @@ export default function GamePage() {
             />
 
             {/* Dev Tools Footer & Panel */}
-            <DevToolsPanel 
-                isDevMode={state.isDevMode} 
-                setIsDevMode={state.setIsDevMode} 
-                onUnlockAll={state.handleDevUnlockAll} 
-            />
+            <DevToolsPanel />
         </div>
     )
 }
