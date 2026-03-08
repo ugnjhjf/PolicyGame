@@ -6,8 +6,6 @@ export function DevToolsPanel() {
           Developer: Rokidna G
         </p>
       </div>
-
-
     </>
   )
 }

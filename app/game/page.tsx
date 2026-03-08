@@ -70,13 +70,7 @@ export default function GamePage() {
             </div>
 
             {/* All Popups and Overlays */}
-            <GameOverlays 
-                state={state} 
-                setReportData={state.setReportData as any} 
-                setShowReport={state.setShowReport as any} 
-                setShowPDA={state.setShowPDA as any} 
-                setPdaSelectedId={state.setPdaSelectedId as any} 
-            />
+            <GameOverlays state={state} />
 
             {/* Dev Tools Footer & Panel */}
             <DevToolsPanel />

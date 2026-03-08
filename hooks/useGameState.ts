@@ -372,7 +372,7 @@ export function useGameState() {
         // State setters (only the necessary ones)
         setSolutionPlacements, setPdaTab, setShowPDA, setShowQuiz,
         setChallengeStatus, setShowChapterCompletion, setShowMasteryOverlay,
-        setReportData, setShowReport, setPdaSelectedId,
+        setReportData, setShowReport, setPdaSelectedId, setShowSolutionGame, setShowLoanGame,
         
         // Handlers
         handleMapEvent, handleDialogueNext, handleLoanGameComplete, handleSolutionComplete,

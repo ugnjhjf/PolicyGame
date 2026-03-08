@@ -98,110 +98,21 @@ export default function GameObjectivePanel({ className = '', tasks, onTaskClick,
             </h3>
             <hr className="border-white/10 mb-4" />
             <div className="space-y-3">
-              {/* Aunt Zhang */}
-              <div
-                onClick={() => handleTaskClick('aunt_zhang')}
-                className="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-1 rounded transition-colors"
-              >
-                <div className="relative flex items-center justify-center w-5 h-5 flex-shrink-0">
-                  <AnimatePresence mode="wait">
-                    {zhangCompleted ? (
-                      <motion.div
-                        key="connected"
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 1, scale: [0.5, 1.2, 1] }}
-                        exit={{ opacity: 0, scale: 0.5 }}
-                        transition={{ duration: 0.4, ease: "backOut" }}
-                      >
-                        <CheckCircle className="w-5 h-5 text-green-600" />
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="disconnected"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <Circle className="w-5 h-5 text-gray-400" />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-                <span className="text-sm" style={{ color: '#E4E4E7' }}>
-                  Talk to Aunt Zhang
-                </span>
-              </div>
-
-              {/* Officer Chan */}
-              <div
-                onClick={() => handleTaskClick('officer_chan')}
-                className="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-1 rounded transition-colors"
-              >
-                <div className="relative flex items-center justify-center w-5 h-5 flex-shrink-0">
-                  <AnimatePresence mode="wait">
-                    {chanCompleted ? (
-                      <motion.div
-                        key="connected"
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 1, scale: [0.5, 1.2, 1] }}
-                        exit={{ opacity: 0, scale: 0.5 }}
-                        transition={{ duration: 0.4, ease: "backOut" }}
-                      >
-                        <CheckCircle className="w-5 h-5 text-green-600" />
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="disconnected"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <Circle className="w-5 h-5 text-gray-400" />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-                <span className="text-sm" style={{ color: '#E4E4E7' }}>
-                  Talk to Officer Chan
-                </span>
-              </div>
-
-              {/* Michael */}
-              <div
-                onClick={() => handleTaskClick('michael')}
-                className="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-1 rounded transition-colors"
-              >
-                <div className="relative flex items-center justify-center w-5 h-5 flex-shrink-0">
-                  <AnimatePresence mode="wait">
-                    {michaelCompleted ? (
-                      <motion.div
-                        key="connected"
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 1, scale: [0.5, 1.2, 1] }}
-                        exit={{ opacity: 0, scale: 0.5 }}
-                        transition={{ duration: 0.4, ease: "backOut" }}
-                      >
-                        <CheckCircle className="w-5 h-5 text-green-600" />
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="disconnected"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <Circle className="w-5 h-5 text-gray-400" />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-                <span className="text-sm" style={{ color: '#E4E4E7' }}>
-                  Talk to Michael
-                </span>
-              </div>
+              <TaskItem 
+                completed={zhangCompleted} 
+                label="Talk to Aunt Zhang" 
+                onClick={() => handleTaskClick('aunt_zhang')} 
+              />
+              <TaskItem 
+                completed={chanCompleted} 
+                label="Talk to Officer Chan" 
+                onClick={() => handleTaskClick('officer_chan')} 
+              />
+              <TaskItem 
+                completed={michaelCompleted} 
+                label="Talk to Michael" 
+                onClick={() => handleTaskClick('michael')} 
+              />
             </div>
           </motion.div>
         </motion.div>
@@ -210,3 +121,48 @@ export default function GameObjectivePanel({ className = '', tasks, onTaskClick,
   )
 }
 
+function TaskItem({ 
+  completed, 
+  label, 
+  onClick 
+}: { 
+  completed: boolean
+  label: string
+  onClick: () => void 
+}) {
+  return (
+    <div
+      onClick={onClick}
+      className="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-1 rounded transition-colors"
+    >
+      <div className="relative flex items-center justify-center w-5 h-5 flex-shrink-0">
+        <AnimatePresence mode="wait">
+          {completed ? (
+            <motion.div
+              key="connected"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: [0.5, 1.2, 1] }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={{ duration: 0.4, ease: "backOut" }}
+            >
+              <CheckCircle className="w-5 h-5 text-green-600" />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="disconnected"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Circle className="w-5 h-5 text-gray-400" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+      <span className="text-sm text-zinc-200">
+        {label}
+      </span>
+    </div>
+  )
+}
