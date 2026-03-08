@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { Tablet } from 'lucide-react'
 import { MapInteractiveLayer } from '../../components/map/MapInteractiveLayer'
 import GameObjectivePanel from '../../components/GameObjectivePanel'
-import { GameOverlays, DevToolsPanel } from '../../components/game'
+import { GameOverlays, DevToolsPanel } from '../../components/system'
 import { useGameState } from '../../hooks/useGameState'
 
 export default function GamePage() {

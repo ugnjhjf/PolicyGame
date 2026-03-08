@@ -4,7 +4,7 @@ import { PDANotification } from '../pda/PDANotification'
 import { InvestigationReportOverlay } from '../pda/InvestigationReportOverlay'
 import { SolutionMatchingOverlay } from '../minigame/SolutionMatchingOverlay'
 import { LoanApprovalGameOverlay } from '../minigame/LoanApprovalGameOverlay'
-import { ChapterCompletionOverlay, ChapterMasteryOverlay, QuizOverlay } from '../game'
+import { ChapterCompletionOverlay, ChapterMasteryOverlay, QuizOverlay } from './'
 import quizData from '../../config/data/quiz/quiz.json'
 import { useGameState } from '../../hooks/useGameState'
 import type { InvestigationReportData } from '@/types/rpg'
@@ -88,7 +88,7 @@ export function GameOverlays({ state }: GameOverlaysProps) {
       <QuizOverlay
         isOpen={showQuiz}
         questions={quizData.questions}
-        onComplete={(score, total) => {
+        onComplete={(score: number, total: number) => {
           setShowQuiz(false)
           setChallengeStatus((prev: any) => ({ ...prev, quizHunter: score === total }))
           setShowMasteryOverlay(true)
