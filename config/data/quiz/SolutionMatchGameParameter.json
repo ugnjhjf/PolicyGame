@@ -1,0 +1,64 @@
+{
+  "CARDS": [
+    {
+      "id": "card_blind_review",
+      "title": "Blind Review Protocol",
+      "description": "Force initial judgment based on objective evidence before seeing AI score.",
+      "correctFor": "bias_confirmation",
+      "feedback": "Incorrect! Breaking the loop of 'finding evidence to support the AI'.",
+      "type": "correct"
+    },
+    {
+      "id": "card_multi_source",
+      "title": "Multi-source Sampling",
+      "description": "Collect offline records and paper trails to supplement digital data.",
+      "correctFor": "bias_selection",
+      "feedback": "Incorrect! Bringing the 'forgotten' population back into the dataset.",
+      "type": "correct"
+    },
+    {
+      "id": "card_fairness_constraints",
+      "title": "Fairness Constraints",
+      "description": "Mathematically constrain the model to cap False Positive Rates.",
+      "correctFor": "bias_algorithmic",
+      "feedback": "Incorrect! Modifying the objective function to value fairness over pure profit.",
+      "type": "correct"
+    },
+    {
+      "id": "card_delete_labels",
+      "title": "Remove \"Race\" Label",
+      "description": "Simply delete sensitive columns like race or gender from the dataset.",
+      "correctFor": null,
+      "feedback": "Incorrect. AI will use 'Proxy Variables' (like zip code) to reconstruct the bias.",
+      "type": "distractor"
+    },
+    {
+      "id": "card_more_compute",
+      "title": "Increase Computing Power",
+      "description": "Use larger supercomputers to process data faster.",
+      "correctFor": null,
+      "feedback": "Incorrect. Faster processing just means executing the bias more efficiently.",
+      "type": "distractor"
+    }
+  ],
+  "SLOTS": [
+    {
+      "id": "bias_confirmation",
+      "title": "Confirmation Bias",
+      "description": "Officer Chan: \"AI said bad, so I look for bad.\"",
+      "icon": "🔍"
+    },
+    {
+      "id": "bias_selection",
+      "title": "Selection Bias",
+      "description": "Aunt Zhang: \"I pay cash, so I don't exist.\"",
+      "icon": "📊"
+    },
+    {
+      "id": "bias_algorithmic",
+      "title": "Algorithmic Bias",
+      "description": "Dr. Chen: \"Profits up, who cares if we wrongly flag a few?\"",
+      "icon": "⚖️"
+    }
+  ]
+}

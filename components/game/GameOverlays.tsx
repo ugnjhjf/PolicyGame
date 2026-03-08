@@ -6,23 +6,14 @@ import { SolutionMatchingOverlay } from '../minigame/SolutionMatchingOverlay'
 import { LoanApprovalGameOverlay } from '../minigame/LoanApprovalGameOverlay'
 import { ChapterCompletionOverlay, ChapterMasteryOverlay, QuizOverlay } from '../game'
 import quizData from '../../config/data/quiz/quiz.json'
+import { useGameState } from '../../hooks/useGameState'
 import type { InvestigationReportData } from '@/types/rpg'
 
 interface GameOverlaysProps {
-  state: any
-  setReportData: (data: InvestigationReportData | null) => void
-  setShowReport: (val: boolean) => void
-  setShowPDA: (val: boolean) => void
-  setPdaSelectedId?: (id: string | null) => void
+  state: ReturnType<typeof useGameState>
 }
 
-export function GameOverlays({
-  state,
-  setReportData,
-  setShowReport,
-  setShowPDA,
-  setPdaSelectedId
-}: GameOverlaysProps) {
+export function GameOverlays({ state }: GameOverlaysProps) {
   const {
     showDialogue, dialogueContent, handleDialogueNext,
     showPDA, pdaTab, pdaSelectedId, rpgState, handleMarkAsRead,
@@ -32,7 +23,8 @@ export function GameOverlays({
     showChapterCompletion, setShowChapterCompletion, setShowQuiz,
     showQuiz, setChallengeStatus, setShowMasteryOverlay,
     showMasteryOverlay, challengeStatus,
-    notification, showNotification, handleNotificationClose
+    notification, showNotification, handleNotificationClose,
+    setReportData, setShowReport, setShowPDA, setPdaSelectedId
   } = state
 
   return (

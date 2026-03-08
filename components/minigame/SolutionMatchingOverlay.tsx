@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence, Reorder } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle, XCircle, AlertTriangle, ArrowRight, Save, LayoutDashboard } from 'lucide-react'
+import parameterData from '../../config/data/quiz/SolutionMatchGameParameter.json'
 
 // --- Types ---
 interface SolutionCard {
@@ -19,69 +20,8 @@ interface Slot {
     icon: string
 }
 
-const CARDS: SolutionCard[] = [
-    {
-        id: 'card_blind_review',
-        title: 'Blind Review Protocol',
-        description: 'Force initial judgment based on objective evidence before seeing AI score.',
-        correctFor: 'bias_confirmation',
-        feedback: "Incorrect! Breaking the loop of 'finding evidence to support the AI'.",
-        type: 'correct'
-    },
-    {
-        id: 'card_multi_source',
-        title: 'Multi-source Sampling',
-        description: 'Collect offline records and paper trails to supplement digital data.',
-        correctFor: 'bias_selection',
-        feedback: "Incorrect! Bringing the 'forgotten' population back into the dataset.",
-        type: 'correct'
-    },
-    {
-        id: 'card_fairness_constraints',
-        title: 'Fairness Constraints',
-        description: 'Mathematically constrain the model to cap False Positive Rates.',
-        correctFor: 'bias_algorithmic',
-        feedback: "Incorrect! Modifying the objective function to value fairness over pure profit.",
-        type: 'correct'
-    },
-    {
-        id: 'card_delete_labels',
-        title: 'Remove "Race" Label',
-        description: 'Simply delete sensitive columns like race or gender from the dataset.',
-        correctFor: null,
-        feedback: "Incorrect. AI will use 'Proxy Variables' (like zip code) to reconstruct the bias.",
-        type: 'distractor'
-    },
-    {
-        id: 'card_more_compute',
-        title: 'Increase Computing Power',
-        description: 'Use larger supercomputers to process data faster.',
-        correctFor: null,
-        feedback: "Incorrect. Faster processing just means executing the bias more efficiently.",
-        type: 'distractor'
-    }
-]
-
-const SLOTS: Slot[] = [
-    {
-        id: 'bias_confirmation',
-        title: 'Confirmation Bias',
-        description: 'Officer Chan: "AI said bad, so I look for bad."',
-        icon: '🔍'
-    },
-    {
-        id: 'bias_selection',
-        title: 'Selection Bias',
-        description: 'Aunt Zhang: "I pay cash, so I don\'t exist."',
-        icon: '📊'
-    },
-    {
-        id: 'bias_algorithmic',
-        title: 'Algorithmic Bias',
-        description: 'Dr. Chen: "Profits up, who cares if we wrongly flag a few?"',
-        icon: '⚖️'
-    }
-]
+const CARDS: SolutionCard[] = parameterData.CARDS as SolutionCard[]
+const SLOTS: Slot[] = parameterData.SLOTS as Slot[]
 
 interface SolutionMatchingOverlayProps {
     isOpen: boolean
@@ -101,13 +41,6 @@ export function SolutionMatchingOverlay({
     // --- State ---
     const [placements, setPlacements] = useState<Record<string, string>>(initialPlacements)
     const [results, setResults] = useState<Record<string, 'correct' | 'wrong' | null>>({})
-    // Available cards are those NOT in any placement
-    // BUT we want to show all cards on the right initially? 
-    // Actually, normally items move FROM list TO slot.
-    // To simplify: We render "Unplaced Cards" on the right.
-
-    // We need to keep track of where each card is.
-    // Helper to get unplaced cards
     const getUnplacedCards = () => {
         const placedCardIds = Object.values(placements)
         return CARDS.filter(c => !placedCardIds.includes(c.id))
@@ -116,10 +49,6 @@ export function SolutionMatchingOverlay({
     // --- Logic ---
     const [draggingSource, setDraggingSource] = useState<'left' | 'right' | null>(null)
     const [hoveredSlotId, setHoveredSlotId] = useState<string | null>(null)
-
-    // Attempts Counter (User Request: Max 3, Green/Yellow/Red)
-    const [attempts, setAttempts] = useState(3)
-    const [showDecrease, setShowDecrease] = useState(false)
 
     // --- Logic ---
     const handleDragStart = (source: 'left' | 'right') => {
@@ -178,19 +107,9 @@ export function SolutionMatchingOverlay({
     }
 
     const handleSubmit = () => {
-        if (attempts <= 0) return
-
-        // Trigger animation
-        setShowDecrease(true)
-        setTimeout(() => setShowDecrease(false), 1000)
-
         const newResults: Record<string, 'correct' | 'wrong'> = {}
         let allCorrect = true
         let hasErrors = false
-
-        // Decrement attempts
-        const newAttempts = attempts - 1
-        setAttempts(newAttempts)
 
         SLOTS.forEach(slot => {
             const cardId = placements[slot.id]
@@ -215,11 +134,8 @@ export function SolutionMatchingOverlay({
         if (allCorrect) {
             // Success!
             setTimeout(() => {
-                onComplete(newAttempts)
+                onComplete(1)
             }, 1000)
-        } else if (newAttempts <= 0) {
-            // Game Over / Fail State (Optional: Disable button effectively)
-            // For now just stay on screen with 0 attempts.
         }
     }
 
@@ -241,33 +157,6 @@ export function SolutionMatchingOverlay({
                         <p className="text-sm text-gray-400">Match the correct intervention to each identified bias.</p>
                     </div>
                 </div>
-
-
-                {/* Attempts Counter */}
-                <div className="flex items-center gap-3 bg-black/40 px-4 py-2 rounded-full border border-white/10 relative">
-                    <span className="text-sm text-gray-400 uppercase tracking-wider font-bold">Attempts Remaining</span>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-lg shadow-lg transition-all duration-300
-                        ${attempts >= 3 ? 'bg-green-500 text-black shadow-green-500/20' :
-                            attempts === 2 ? 'bg-yellow-500 text-black shadow-yellow-500/20' :
-                                'bg-red-500 text-white shadow-red-500/20 animate-pulse'}`}>
-                        {attempts}
-                    </div>
-
-                    {/* Floating -1 Animation */}
-                    <AnimatePresence>
-                        {showDecrease && (
-                            <motion.div
-                                initial={{ opacity: 1, y: 0, scale: 1 }}
-                                animate={{ opacity: 0, y: 30, scale: 1.5 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 1 }}
-                                className="absolute right-0 top-10 font-bold text-red-500 text-2xl z-50 pointer-events-none"
-                            >
-                                -1
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
             </div>
 
             {/* Main Game Area */}
@@ -286,55 +175,16 @@ export function SolutionMatchingOverlay({
                         const isHovered = hoveredSlotId === slot.id
 
                         return (
-                            <div
+                            <ProblemSlotItem
                                 key={slot.id}
-                                data-slot-id={slot.id}
-                                className={`relative p-6 rounded-xl border-2 transition-all duration-200 min-h-[160px] flex flex-col justify-center
-                                    ${result === 'correct' ? 'border-green-500 bg-green-950/20' :
-                                        result === 'wrong' ? 'border-red-500 bg-red-950/20' :
-                                            isHovered ? 'border-yellow-400 bg-yellow-900/10 scale-[1.02] shadow-[0_0_15px_rgba(250,204,21,0.3)]' :
-                                                'border-white/10 bg-white/5 hover:border-blue-400/50'}`}
-                            >
-                                {/* Slot Label */}
-                                <div className="absolute top-4 left-4 flex items-center gap-2 opacity-50">
-                                    <span className="text-3xl">{slot.icon}</span>
-                                    <span className="font-bold uppercase tracking-widest text-xl">{slot.title}</span>
-                                </div>
-                                <p className="mt-8 text-gray-400 text-xl mb-4 leading-relaxed">{slot.description}</p>
-
-                                {/* Drop Zone Content */}
-                                <div className="flex-1 flex items-center justify-center p-2 rounded-lg border border-dashed border-white/20 bg-black/20">
-                                    {filledCard ? (
-                                        <DraggableCard
-                                            key={filledCard.id}
-                                            card={filledCard}
-                                            onDragStart={() => handleDragStart('left')}
-                                            onDrag={handleDrag}
-                                            onDragEnd={handleDragEnd}
-                                            isPlaced={true}
-                                        />
-                                    ) : (
-                                        <span className={`text-sm font-mono transition-colors ${isHovered ? 'text-yellow-400' : 'text-gray-600'}`}>
-                                            {isHovered ? 'DROP TO ASSIGN' : 'DRAG SOLUTION HERE'}
-                                        </span>
-                                    )}
-                                </div>
-
-                                {/* Feedback Overlay */}
-                                {result && (
-                                    <div className={`absolute top-4 right-4 flex items-center gap-2 
-                                        ${result === 'correct' ? 'text-green-400' : 'text-red-400'}`}>
-                                        {result === 'correct' ? <CheckCircle className="w-6 h-6" /> : <XCircle className="w-6 h-6" />}
-                                    </div>
-                                )}
-
-                                {result === 'wrong' && filledCard && (
-                                    <div className="absolute -bottom-2 translate-y-full left-0 right-0 bg-red-900/90 text-white text-xs p-2 rounded mt-2 border border-red-500 z-10 shadow-xl">
-                                        <div className="font-bold flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Error Analysis:</div>
-                                        {filledCard.feedback}
-                                    </div>
-                                )}
-                            </div>
+                                slot={slot}
+                                filledCard={filledCard}
+                                result={result}
+                                isHovered={isHovered}
+                                handleDragStart={handleDragStart}
+                                handleDrag={handleDrag}
+                                handleDragEnd={handleDragEnd}
+                            />
                         )
                     })}
                 </div>
@@ -389,7 +239,7 @@ export function SolutionMatchingOverlay({
     )
 }
 
-// Separate component for drag logic to keep it clean
+
 function DraggableCard({
     card,
     onDragStart,
@@ -413,9 +263,7 @@ function DraggableCard({
             onDragStart={onDragStart}
             onDrag={(e, info) => onDrag && onDrag(info)}
             onDragEnd={(e, info) => onDragEnd(card.id, info)}
-            // Reset position on drag end if not dropped? Framer motion handles layoutId animations automatically if we used reorder,
-            // but for free drag we rely on React state updates to "snap" it to the new parent div.
-            // layout prop makes it animate from old position to new position.
+            // Reset position on drag end if not dropped
             layoutId={card.id}
             initial={false}
             className={`cursor-grab active:cursor-grabbing bg-gray-800 hover:bg-gray-750 border border-white/10 p-4 rounded-lg shadow-lg group relative w-full
@@ -429,5 +277,56 @@ function DraggableCard({
                 </div>
             </div>
         </motion.div>
+    )
+}
+
+// Sub-components 
+
+function ProblemSlotItem({ slot, filledCard, result, isHovered, handleDragStart, handleDrag, handleDragEnd }: any) {
+    return (
+        <div
+            data-slot-id={slot.id}
+            className={`relative p-6 rounded-xl border-2 transition-all duration-200 min-h-[160px] flex flex-col justify-center
+                ${result === 'correct' ? 'border-green-500 bg-green-950/20' :
+                    result === 'wrong' ? 'border-red-500 bg-red-950/20' :
+                        isHovered ? 'border-yellow-400 bg-yellow-900/10 scale-[1.02] shadow-[0_0_15px_rgba(250,204,21,0.3)]' :
+                            'border-white/10 bg-white/5 hover:border-blue-400/50'}`}
+        >
+            <div className="absolute top-4 left-4 flex items-center gap-2 opacity-50">
+                <span className="text-3xl">{slot.icon}</span>
+                <span className="font-bold uppercase tracking-widest text-xl">{slot.title}</span>
+            </div>
+            <p className="mt-8 text-gray-400 text-xl mb-4 leading-relaxed">{slot.description}</p>
+
+            <div className="flex-1 flex items-center justify-center p-2 rounded-lg border border-dashed border-white/20 bg-black/20">
+                {filledCard ? (
+                    <DraggableCard
+                        card={filledCard}
+                        onDragStart={() => handleDragStart('left')}
+                        onDrag={handleDrag}
+                        onDragEnd={handleDragEnd}
+                        isPlaced={true}
+                    />
+                ) : (
+                    <span className={`text-sm font-mono transition-colors ${isHovered ? 'text-yellow-400' : 'text-gray-600'}`}>
+                        {isHovered ? 'DROP TO ASSIGN' : 'DRAG SOLUTION HERE'}
+                    </span>
+                )}
+            </div>
+
+            {result && (
+                <div className={`absolute top-4 right-4 flex items-center gap-2 
+                    ${result === 'correct' ? 'text-green-400' : 'text-red-400'}`}>
+                    {result === 'correct' ? <CheckCircle className="w-6 h-6" /> : <XCircle className="w-6 h-6" />}
+                </div>
+            )}
+
+            {result === 'wrong' && filledCard && (
+                <div className="absolute -bottom-2 translate-y-full left-0 right-0 bg-red-900/90 text-white text-xs p-2 rounded mt-2 border border-red-500 z-10 shadow-xl">
+                    <div className="font-bold flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Error Analysis:</div>
+                    {filledCard.feedback}
+                </div>
+            )}
+        </div>
     )
 }
