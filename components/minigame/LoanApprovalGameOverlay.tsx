@@ -135,8 +135,53 @@ export function LoanApprovalGameOverlay({ isOpen, onClose, onComplete }: LoanApp
                     <div className="flex-1 flex items-center justify-center relative overflow-visible">
                         <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5 pointer-events-none" />
 
+                        {/* Fixed Info Panel on the right */}
+                        <div className="absolute right-12 top-1/2 -translate-y-1/2 w-[400px] min-h-[300px] bg-white rounded-2xl shadow-2xl p-8 flex flex-col z-20 border border-slate-200">
+                            <AnimatePresence mode="wait">
+                                {hoveredId ? (() => {
+                                    const item = criteria.find(i => i.id === hoveredId)
+                                    if (!item) return null
+                                    return (
+                                        <motion.div
+                                            key={item.id}
+                                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                                            transition={{ duration: 0.2 }}
+                                            className="h-full flex flex-col"
+                                        >
+                                            <div className="flex items-center gap-4 mb-6">
+                                                <div className="p-4 bg-slate-100 rounded-xl">
+                                                    <FileText className="w-8 h-8 text-slate-700" />
+                                                </div>
+                                                <div>
+                                                    <span className="text-xs font-bold uppercase tracking-widest text-slate-500 block mb-1">Dataset</span>
+                                                    <h4 className="font-bold text-2xl leading-tight text-slate-900">{item.title}</h4>
+                                                </div>
+                                            </div>
+                                            <div className="h-px bg-slate-200 w-full mb-6" />
+                                            <p className="text-lg text-slate-600 leading-relaxed flex-1">
+                                                {item.description}
+                                            </p>
+                                        </motion.div>
+                                    )
+                                })() : (
+                                    <motion.div
+                                        key="empty"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className="h-full flex flex-col items-center justify-center text-slate-400 opacity-60 flex-1 py-12"
+                                    >
+                                        <Database className="w-16 h-16 mb-4" />
+                                        <p className="font-semibold text-lg text-center">Hover over a dataset<br />to view details</p>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+
                         {/* Slots */}
-                        <div className="flex items-center gap-12 relative z-10 px-12 mt-16">
+                        <div className="flex items-center gap-12 relative z-10 px-12 mt-16 pr-[200px]">
                             {slots.map((slotId, index) => {
                                 const item = criteria.find(c => c.id === slotId)
                                 const isFilled = !!item
@@ -165,6 +210,8 @@ export function LoanApprovalGameOverlay({ isOpen, onClose, onComplete }: LoanApp
                                         <motion.button
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
+                                            onMouseEnter={() => { if (isFilled && slotId) setHoveredId(slotId) }}
+                                            onMouseLeave={() => setHoveredId(null)}
                                             onClick={() => isFilled && handleRemoveFromSlot(index)}
                                             className={`w-40 h-56 rounded-2xl border-2 border-dashed ${borderColor} bg-transparent flex flex-col items-center justify-center cursor-pointer transition-all duration-300 relative overflow-visible`}
                                         >
@@ -231,31 +278,6 @@ export function LoanApprovalGameOverlay({ isOpen, onClose, onComplete }: LoanApp
                             <div className="flex items-center justify-center gap-8 px-12 py-4 w-full flex-wrap">
                                 {availableItems.map((item) => (
                                     <div key={item.id} className="relative">
-                                        <AnimatePresence>
-                                            {hoveredId === item.id && (
-                                                <motion.div
-                                                    initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                                                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                                                    exit={{ opacity: 0, y: 10, scale: 0.9 }}
-                                                    className="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 bg-white  p-6 rounded-2xl shadow-2xl w-80 pointer-events-none z-50 flex flex-col gap-2"
-                                                >
-                                                    <div className="flex items-center gap-3 mb-1">
-                                                        <div className="p-2 bg-slate-100 rounded-lg">
-                                                            <FileText className="w-5 h-5 text-slate-700" />
-                                                        </div>
-                                                        <div>
-                                                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Dataset</span>
-                                                            <h4 className="font-bold text-lg leading-none text-slate-900">{item.title}</h4>
-                                                        </div>
-                                                    </div>
-                                                    <p className="text-sm text-slate-600 leading-relaxed">
-                                                        {item.description}
-                                                    </p>
-                                                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45 transform" />
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-
                                         <motion.button
                                             layoutId={item.id}
                                             onMouseEnter={() => setHoveredId(item.id)}

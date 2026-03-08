@@ -3,21 +3,21 @@
         {
             "id": 1,
             "title": "Selection Bias",
-            "text": "Selection bias occurs when the data sample perfectly creates a representative model of the entire population.",
-            "correctAnswer": false,
+            "text": "Selection bias occurs when the data sample can only represent a part of the entire population.",
+            "correctAnswer": true,
             "explanation": "Selection bias happens when the sample CANNOT represent the entire population (e.g., excluding elderly people by only surveying digital users)."
         },
         {
             "id": 2,
             "title": "Algorithmic Bias",
-            "text": "Algorithmic bias only occurs when the developers explicitly program prejudice into the system.",
+            "text": "Algorithmic bias only occurs when the developers only use limited judgement elements to train the system.",
             "correctAnswer": false,
             "explanation": "Algorithmic bias often happen by the insatisfaction of historical data and limited judgement elements."
         },
         {
             "id": 3,
             "title": "Confirmation Bias",
-            "text": "Confirmation bias is the tendency to search for and interpret information in a way that confirms one's preexisting beliefs.",
+            "text": "Confirmation bias is the about people are tent to make decisions based on their own beliefs.",
             "correctAnswer": true,
             "explanation": "Confirmation bias is people tend to accept information that supports their views and reject contradictions."
         }
