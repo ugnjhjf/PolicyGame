@@ -88,11 +88,10 @@ export function OfficerChanQuizOverlay({ isOpen, questions, onComplete }: Office
             <motion.div
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
-              className={`absolute top-5 right-6 text-sm font-semibold px-3 py-1 rounded-full border ${
-                isCorrect
-                  ? 'text-green-600 border-green-300 bg-green-50'
-                  : 'text-red-500 border-red-300 bg-red-50'
-              }`}
+              className={`absolute top-5 right-6 text-sm font-semibold px-3 py-1 rounded-full border ${isCorrect
+                ? 'text-green-600 border-green-300 bg-green-50'
+                : 'text-red-500 border-red-300 bg-red-50'
+                }`}
             >
               {feedbackLabel}
             </motion.div>
@@ -104,12 +103,12 @@ export function OfficerChanQuizOverlay({ isOpen, questions, onComplete }: Office
           </p>
 
           {/* Question title */}
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">
+          <h2 className="text-xl font-bold text-gray-900 mb-3">
             {question.title}
           </h2>
 
           {/* Question text */}
-          <p className="text-sm text-gray-700 leading-relaxed mb-5">
+          <p className="text-xl text-gray-700 leading-relaxed mb-5">
             {question.text}
           </p>
 
@@ -172,11 +171,10 @@ export function OfficerChanQuizOverlay({ isOpen, questions, onComplete }: Office
         <button
           onClick={handleContinue}
           disabled={!hasAnswered}
-          className={`px-6 py-2.5 rounded-full font-bold text-sm transition-all duration-200 ${
-            hasAnswered
-              ? 'bg-gray-800 text-white hover:bg-gray-700 shadow-lg'
-              : 'bg-gray-300 text-gray-400 cursor-not-allowed'
-          }`}
+          className={`px-6 py-2.5 rounded-full font-bold text-sm transition-all duration-200 ${hasAnswered
+            ? 'bg-gray-800 text-white hover:bg-gray-700 shadow-lg'
+            : 'bg-gray-300 text-gray-400 cursor-not-allowed'
+            }`}
         >
           Continue
         </button>

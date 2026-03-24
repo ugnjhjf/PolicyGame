@@ -109,12 +109,10 @@ export function SolutionMatchingOverlay({
     const handleSubmit = () => {
         const newResults: Record<string, 'correct' | 'wrong'> = {}
         let allCorrect = true
-        let hasErrors = false
 
         SLOTS.forEach(slot => {
             const cardId = placements[slot.id]
             if (!cardId) {
-                // Empty slot
                 allCorrect = false
                 return
             }
@@ -125,14 +123,12 @@ export function SolutionMatchingOverlay({
             } else {
                 newResults[slot.id] = 'wrong'
                 allCorrect = false
-                hasErrors = true
             }
         })
 
         setResults(newResults)
 
         if (allCorrect) {
-            // Success!
             setTimeout(() => {
                 onComplete(1)
             }, 1000)
@@ -147,21 +143,25 @@ export function SolutionMatchingOverlay({
     if (!isOpen) return null
 
     return (
-        <div className="fixed inset-0 z-[70] bg-gray-950/95 backdrop-blur-md text-white flex flex-col animate-in fade-in duration-300">
-            {/* Header */}
-            <div className="flex items-center justify-between px-8 py-4 bg-gray-900 border-b border-white/10 shrink-0">
+        // White background, full-screen but light
+        <div className="fixed inset-0 z-[70] bg-white/95 backdrop-blur-sm text-gray-900 flex flex-col animate-in fade-in duration-300">
+
+            {/* Header — white with subtle bottom border */}
+            <div className="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200 shrink-0 shadow-sm">
                 <div className="flex items-center gap-4">
-                    <LayoutDashboard className="w-8 h-8 text-blue-400" />
+                    <div className="p-2 bg-purple-100 rounded-xl">
+                        <LayoutDashboard className="w-6 h-6 text-purple-500" />
+                    </div>
                     <div>
-                        <h2 className="text-2xl font-bold tracking-wider">POLICY SYNTHESIS BOARD</h2>
-                        <p className="text-sm text-gray-400">Match the correct intervention to each identified bias.</p>
+                        <p className="text-xs font-bold tracking-widest text-gray-400 uppercase mb-0.5">Policy Game</p>
+                        <h2 className="text-xl font-bold text-gray-900">Policy Synthesis Board</h2>
                     </div>
                 </div>
+                <p className="text-sm text-gray-400">Match the correct intervention to each identified bias.</p>
             </div>
 
             {/* Main Game Area */}
-            {/* Removed overflow-hidden to allow dragging outside of containers */}
-            <div className="flex-1 flex p-8 gap-8 relative overflow-y-auto">
+            <div className="flex-1 flex p-8 gap-8 relative overflow-y-auto bg-gray-50">
 
                 {/* Left: Problem Slots */}
                 <div
@@ -189,21 +189,20 @@ export function SolutionMatchingOverlay({
                     })}
                 </div>
 
-                {/* Center: Action */}
+                {/* Center: Arrow */}
                 <div className="w-24 flex flex-col items-center justify-center gap-4">
-                    <ArrowRight className="w-8 h-8 text-gray-700 animate-pulse" />
+                    <ArrowRight className="w-8 h-8 text-gray-300 animate-pulse" />
                 </div>
 
                 {/* Right: Solution Cards Pool */}
                 <div
-                    className="flex-1 bg-black/40 rounded-xl border border-white/10 p-6 flex flex-col relative transition-all duration-200"
+                    className="flex-1 bg-white rounded-2xl border border-gray-200 p-6 flex flex-col relative transition-all duration-200 shadow-sm"
                     style={{ zIndex: draggingSource === 'right' ? 50 : 10 }}
                 >
-                    <h3 className="text-gray-400 font-bold uppercase tracking-widest mb-6 flex items-center gap-2">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6 flex items-center gap-2">
                         <LayoutDashboard className="w-4 h-4" /> Available Interventions
                     </h3>
 
-                    {/* Removed overflow-y-auto to prevent clipping during drag */}
                     <div className="grid grid-cols-1 gap-4 content-start pr-2">
                         {getUnplacedCards().map(card => (
                             <DraggableCard
@@ -217,19 +216,19 @@ export function SolutionMatchingOverlay({
                     </div>
 
                     {/* Submit Bar */}
-                    <div className="mt-auto pt-6 border-t border-white/10 flex items-center justify-end gap-4">
+                    <div className="mt-auto pt-6 border-t border-gray-100 flex items-center justify-end gap-4">
                         <button
                             onClick={handleExit}
-                            className="flex items-center gap-2 px-6 py-3 rounded-lg bg-white/10 hover:bg-white/20 transition-colors border border-white/5 text-sm font-medium"
+                            className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 bg-white hover:bg-gray-50 transition-colors text-sm font-medium text-gray-600"
                         >
                             <Save className="w-4 h-4" />
                             <span>Save & Exit</span>
                         </button>
                         <button
                             onClick={handleSubmit}
-                            className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-lg font-bold tracking-wider shadow-lg shadow-blue-900/20 active:scale-95 transition-all w-full md:w-auto"
+                            className="px-7 py-2.5 rounded-full bg-gray-900 hover:bg-gray-700 text-white font-bold text-sm tracking-wide shadow transition-all active:scale-95"
                         >
-                            VERIFY ALIGNMENT
+                            Verify Alignment
                         </button>
                     </div>
                 </div>
@@ -259,46 +258,45 @@ function DraggableCard({
             dragSnapToOrigin
             dragElastic={0.1}
             dragMomentum={false}
-            whileDrag={{ scale: 1.05, zIndex: 100, cursor: 'grabbing' }}
+            whileDrag={{ scale: 1.04, zIndex: 100, cursor: 'grabbing', boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}
             onDragStart={onDragStart}
             onDrag={(e, info) => onDrag && onDrag(info)}
             onDragEnd={(e, info) => onDragEnd(card.id, info)}
-            // Reset position on drag end if not dropped
             layoutId={card.id}
             initial={false}
-            className={`cursor-grab active:cursor-grabbing bg-gray-800 hover:bg-gray-750 border border-white/10 p-4 rounded-lg shadow-lg group relative w-full
+            className={`cursor-grab active:cursor-grabbing bg-white border-2 border-purple-200 hover:border-purple-400 p-4 rounded-2xl shadow-sm group transition-colors relative w-full
                 ${isPlaced ? 'h-full flex flex-col justify-center' : ''}`}
         >
             <div className="flex items-start gap-3">
-                <div className={`w-2 h-full rounded-full absolute left-0 top-0 bottom-0 ${card.type === 'correct' ? 'bg-blue-500/0 group-hover:bg-blue-500/50' : 'bg-orange-500/0 group-hover:bg-orange-500/50'} transition-colors`} />
                 <div className="flex-1 py-1">
-                    <h4 className="font-bold text-blue-100 text-xl mb-2 group-hover:text-blue-400 transition-colors">{card.title}</h4>
-                    <p className="text-lg text-gray-400 leading-relaxed">{card.description}</p>
+                    <h4 className="font-bold text-gray-900 text-base mb-1 group-hover:text-purple-600 transition-colors">{card.title}</h4>
+                    <p className="text-sm text-gray-500 leading-relaxed">{card.description}</p>
                 </div>
             </div>
         </motion.div>
     )
 }
 
-// Sub-components 
+// Sub-components
 
 function ProblemSlotItem({ slot, filledCard, result, isHovered, handleDragStart, handleDrag, handleDragEnd }: any) {
     return (
         <div
             data-slot-id={slot.id}
-            className={`relative p-6 rounded-xl border-2 transition-all duration-200 min-h-[160px] flex flex-col justify-center
-                ${result === 'correct' ? 'border-green-500 bg-green-950/20' :
-                    result === 'wrong' ? 'border-red-500 bg-red-950/20' :
-                        isHovered ? 'border-yellow-400 bg-yellow-900/10 scale-[1.02] shadow-[0_0_15px_rgba(250,204,21,0.3)]' :
-                            'border-white/10 bg-white/5 hover:border-blue-400/50'}`}
+            className={`relative p-6 rounded-2xl border-2 transition-all duration-200 min-h-[160px] flex flex-col justify-center bg-white
+                ${result === 'correct' ? 'border-green-400 bg-green-50' :
+                    result === 'wrong' ? 'border-red-400 bg-red-50' :
+                        isHovered ? 'border-purple-400 bg-purple-50 scale-[1.02] shadow-md' :
+                            'border-gray-200 hover:border-purple-300'}`}
         >
-            <div className="absolute top-4 left-4 flex items-center gap-2 opacity-50">
-                <span className="text-3xl">{slot.icon}</span>
-                <span className="font-bold uppercase tracking-widest text-xl">{slot.title}</span>
+            <div className="absolute top-4 left-4 flex items-center gap-2 opacity-40">
+                <span className="text-2xl">{slot.icon}</span>
+                <span className="font-bold uppercase tracking-widest text-sm text-gray-500">{slot.title}</span>
             </div>
-            <p className="mt-8 text-gray-400 text-xl mb-4 leading-relaxed">{slot.description}</p>
+            <p className="mt-8 text-gray-600 text-sm mb-4 leading-relaxed">{slot.description}</p>
 
-            <div className="flex-1 flex items-center justify-center p-2 rounded-lg border border-dashed border-white/20 bg-black/20">
+            <div className={`flex-1 flex items-center justify-center p-2 rounded-xl border-2 border-dashed transition-colors
+                ${isHovered ? 'border-purple-400 bg-purple-50' : 'border-gray-200 bg-gray-50'}`}>
                 {filledCard ? (
                     <DraggableCard
                         card={filledCard}
@@ -308,22 +306,22 @@ function ProblemSlotItem({ slot, filledCard, result, isHovered, handleDragStart,
                         isPlaced={true}
                     />
                 ) : (
-                    <span className={`text-sm font-mono transition-colors ${isHovered ? 'text-yellow-400' : 'text-gray-600'}`}>
-                        {isHovered ? 'DROP TO ASSIGN' : 'DRAG SOLUTION HERE'}
+                    <span className={`text-xs font-mono font-semibold transition-colors ${isHovered ? 'text-purple-500' : 'text-gray-400'}`}>
+                        {isHovered ? 'Drop to assign' : 'Drag solution here'}
                     </span>
                 )}
             </div>
 
             {result && (
                 <div className={`absolute top-4 right-4 flex items-center gap-2 
-                    ${result === 'correct' ? 'text-green-400' : 'text-red-400'}`}>
-                    {result === 'correct' ? <CheckCircle className="w-6 h-6" /> : <XCircle className="w-6 h-6" />}
+                    ${result === 'correct' ? 'text-green-500' : 'text-red-400'}`}>
+                    {result === 'correct' ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
                 </div>
             )}
 
             {result === 'wrong' && filledCard && (
-                <div className="absolute -bottom-2 translate-y-full left-0 right-0 bg-red-900/90 text-white text-xs p-2 rounded mt-2 border border-red-500 z-10 shadow-xl">
-                    <div className="font-bold flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Error Analysis:</div>
+                <div className="absolute -bottom-2 translate-y-full left-0 right-0 bg-red-50 text-red-700 text-xs p-3 rounded-xl mt-2 border border-red-200 z-10 shadow-md">
+                    <div className="font-bold flex items-center gap-1 mb-1"><AlertTriangle className="w-3 h-3" /> Error Analysis:</div>
                     {filledCard.feedback}
                 </div>
             )}
