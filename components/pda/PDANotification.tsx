@@ -48,19 +48,18 @@ export function PDANotification({
 
   if (!isVisible && !show) return null
 
-  // Styles based on type
   const typeStyles = {
-    success: 'border-green-500 bg-black/80 text-green-100 shadow-[0_0_15px_rgba(34,197,94,0.3)]',
-    alert: 'border-red-500 bg-black/80 text-red-100 shadow-[0_0_15px_rgba(239,68,68,0.3)]',
-    info: 'border-purple-500 bg-black/80 text-blue-100 shadow-[0_0_15px_rgba(59,130,246,0.3)]',
-    clue: 'border-yellow-500 bg-black/80 text-yellow-100 shadow-[0_0_15px_rgba(234,179,8,0.3)]'
+    success: 'border-green-200 bg-white text-gray-800 shadow-lg',
+    alert: 'border-red-200 bg-white text-gray-800 shadow-lg',
+    info: 'border-blue-200 bg-white text-gray-800 shadow-lg',
+    clue: 'border-yellow-200 bg-white text-gray-800 shadow-lg'
   }
 
   const icons = {
-    success: <CheckCircle className="w-5 h-5 text-green-400" />,
-    alert: <Zap className="w-5 h-5 text-red-400" />,
-    info: <Book className="w-5 h-5 text-blue-400" />,
-    clue: <Map className="w-5 h-5 text-yellow-400" />
+    success: <CheckCircle className="w-5 h-5 text-green-500" />,
+    alert: <Zap className="w-5 h-5 text-red-500" />,
+    info: <Book className="w-5 h-5 text-blue-500" />,
+    clue: <Map className="w-5 h-5 text-yellow-500" />
   }
 
   return (

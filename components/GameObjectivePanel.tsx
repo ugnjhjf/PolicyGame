@@ -64,23 +64,24 @@ export default function GameObjectivePanel({ className = '', tasks, onTaskClick,
           <motion.div
             style={{
               position: 'relative',
-              backdropFilter: 'blur(4px) saturate(100%)',
-              background: 'rgba(39, 39, 42, 0.75)',
-              borderRadius: '8px',
+              backdropFilter: 'blur(8px)',
+              background: 'rgba(255, 255, 255, 0.95)',
+              borderRadius: '12px',
               padding: '16px',
               minWidth: '280px',
-              border: '1px solid rgba(255,255,255,0.05)'
+              border: '1px solid rgba(0,0,0,0.08)',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.05)'
             }}
             animate={{
               borderColor: [
-                'rgba(255,255,255,0.05)',
-                'rgba(234, 179, 8, 0.8)', // yellow-500
-                'rgba(255,255,255,0.05)'
+                'rgba(0,0,0,0.08)',
+                'rgba(59, 130, 246, 0.5)', // blue-500
+                'rgba(0,0,0,0.08)'
               ],
               boxShadow: [
-                '0 0 0 rgba(0,0,0,0)',
-                '0 0 15px rgba(234, 179, 8, 0.3)', // yellow glow
-                '0 0 0 rgba(0,0,0,0)'
+                '0 4px 20px rgba(0,0,0,0.05)',
+                '0 4px 20px rgba(59, 130, 246, 0.2)', // blue glow
+                '0 4px 20px rgba(0,0,0,0.05)'
               ]
             }}
             transition={{
@@ -90,13 +91,13 @@ export default function GameObjectivePanel({ className = '', tasks, onTaskClick,
               ease: "easeInOut"
             }}
           >
-            <h3 className="text-l font-semibold mb-1" style={{ color: '#66CCFF' }}>
+            <h3 className="text-l font-semibold mb-1" style={{ color: '#3B82F6' }}>
               Task 1
             </h3>
-            <h3 className="text-l font-semibold mb-3" style={{ color: '#E4E4E7' }}>
+            <h3 className="text-l font-semibold mb-3" style={{ color: '#1F2937' }}>
               Meet with the community
             </h3>
-            <hr className="border-white/10 mb-4" />
+            <hr className="border-black/5 mb-4" />
             <div className="space-y-3">
               <TaskItem 
                 completed={zhangCompleted} 
@@ -133,7 +134,7 @@ function TaskItem({
   return (
     <div
       onClick={onClick}
-      className="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-1 rounded transition-colors"
+      className="flex items-center gap-3 cursor-pointer hover:bg-black/5 p-1 rounded transition-colors"
     >
       <div className="relative flex items-center justify-center w-5 h-5 flex-shrink-0">
         <AnimatePresence mode="wait">
@@ -160,7 +161,7 @@ function TaskItem({
           )}
         </AnimatePresence>
       </div>
-      <span className="text-sm text-zinc-200">
+      <span className="text-sm font-medium text-gray-700">
         {label}
       </span>
     </div>
