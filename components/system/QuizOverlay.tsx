@@ -1,6 +1,8 @@
+'use client'
+
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, X, HelpCircle, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 // ─── Types ──────────────────────────────────────────────────────────────────────
 
@@ -18,178 +20,160 @@ export interface QuizOverlayProps {
   questions: Question[]
 }
 
-// ─── Sub-components ─────────────────────────────────────────────────────────────
-
-/** Horizontal progress dots showing question completion state. */
-function ProgressBar({ questions, currentIndex }: { questions: Question[]; currentIndex: number }) {
-  return (
-    <div className="mb-8 flex gap-2">
-      {questions.map((q, idx) => (
-        <div
-          key={q.id}
-          className={`h-2 flex-1 rounded-full transition-colors ${
-            idx < currentIndex ? 'bg-green-500' :
-            idx === currentIndex ? 'bg-blue-500' : 'bg-gray-700'
-          }`}
-        />
-      ))}
-    </div>
-  )
-}
-
-/** The True/False question card. */
-function QuestionCard({
-  question,
-  index,
-  total,
-  onAnswer,
-}: {
-  question: Question
-  index: number
-  total: number
-  onAnswer: (answer: boolean) => void
-}) {
-  return (
-    <motion.div
-      key="question"
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      className="bg-gray-800 border border-gray-700 rounded-2xl p-8 shadow-2xl"
-    >
-      <div className="flex items-center gap-3 mb-6">
-        <HelpCircle className="w-6 h-6 text-blue-400" />
-        <span className="text-blue-400 font-bold uppercase tracking-wider text-sm">
-          Question {index + 1} of {total}
-        </span>
-      </div>
-
-      <h3 className="text-2xl font-bold text-white mb-2">{question.title}</h3>
-      <p className="text-xl text-gray-300 leading-relaxed mb-8">{question.text}</p>
-
-      <div className="grid grid-cols-2 gap-4">
-        <button
-          onClick={() => onAnswer(true)}
-          className="p-6 rounded-xl bg-gray-700 hover:bg-gray-600 border-2 border-transparent hover:border-blue-500 transition-all text-white font-bold text-lg"
-        >
-          True
-        </button>
-        <button
-          onClick={() => onAnswer(false)}
-          className="p-6 rounded-xl bg-gray-700 hover:bg-gray-600 border-2 border-transparent hover:border-blue-500 transition-all text-white font-bold text-lg"
-        >
-          False
-        </button>
-      </div>
-    </motion.div>
-  )
-}
-
-/** Feedback card shown after answering (correct / incorrect + explanation). */
-function FeedbackCard({
-  isCorrect,
-  explanation,
-  isLast,
-  onNext,
-}: {
-  isCorrect: boolean
-  explanation: string
-  isLast: boolean
-  onNext: () => void
-}) {
-  return (
-    <motion.div
-      key="feedback"
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className={`rounded-2xl p-8 shadow-2xl border ${
-        isCorrect ? 'bg-green-900/20 border-green-500/50' : 'bg-red-900/20 border-red-500/50'
-      }`}
-    >
-      <div className="flex items-center gap-4 mb-6">
-        <div
-          className={`w-12 h-12 rounded-full flex items-center justify-center ${
-            isCorrect ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-          }`}
-        >
-          {isCorrect ? <Check className="w-7 h-7" /> : <X className="w-7 h-7" />}
-        </div>
-        <div>
-          <h3 className={`text-2xl font-bold ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
-            {isCorrect ? 'Correct!' : 'Incorrect...'}
-          </h3>
-          <p className="text-gray-400 text-sm">
-            {isCorrect ? 'Good job!' : 'Review the concept below.'}
-          </p>
-        </div>
-      </div>
-
-      <div className="bg-black/30 rounded-xl p-6 mb-8 border border-white/5">
-        <p className="text-lg text-gray-200 leading-relaxed">{explanation}</p>
-      </div>
-
-      <button
-        onClick={onNext}
-        className="w-full py-4 bg-white text-black hover:bg-gray-200 rounded-xl font-bold text-lg transition-colors flex items-center justify-center gap-2"
-      >
-        <span>{isLast ? 'Complete Quiz' : 'Next Question'}</span>
-        <ArrowRight className="w-5 h-5" />
-      </button>
-    </motion.div>
-  )
-}
-
 // ─── Main component ─────────────────────────────────────────────────────────────
 
 export function QuizOverlay({ isOpen, onComplete, questions }: QuizOverlayProps) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [showFeedback, setShowFeedback] = useState(false)
-  const [isCorrect, setIsCorrect] = useState(false)
-  const scoreRef = useRef(0) // Use ref to avoid stale-state issues in handleNext
+  const [selectedAnswer, setSelectedAnswer] = useState<boolean | null>(null)
+  const scoreRef = useRef(0)
 
   if (!isOpen) return null
 
-  const currentQuestion = questions[currentQuestionIndex]
-  const isLastQuestion = currentQuestionIndex === questions.length - 1
+  const question = questions[currentQuestionIndex]
+  const total = questions.length
+  const hasAnswered = selectedAnswer !== null
+  const isCorrect = hasAnswered && selectedAnswer === question.correctAnswer
+  const isLastQuestion = currentQuestionIndex === total - 1
 
   const handleAnswer = (answer: boolean) => {
-    const correct = answer === currentQuestion.correctAnswer
-    setIsCorrect(correct)
-    if (correct) scoreRef.current += 1
-    setShowFeedback(true)
+    if (hasAnswered) return
+    setSelectedAnswer(answer)
+    if (answer === question.correctAnswer) scoreRef.current += 1
   }
 
   const handleNext = () => {
-    setShowFeedback(false)
+    if (!hasAnswered) return
+    setSelectedAnswer(null)
     if (isLastQuestion) {
-      onComplete(scoreRef.current, questions.length)
+      onComplete(scoreRef.current, total)
+      setCurrentQuestionIndex(0)
+      scoreRef.current = 0
     } else {
       setCurrentQuestionIndex(i => i + 1)
     }
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
-      <div className="w-full max-w-2xl">
-        <ProgressBar questions={questions} currentIndex={currentQuestionIndex} />
+    // No dark full-screen backdrop — floats over the game, bottom-anchored
+    <div className="fixed inset-x-0 bottom-0 z-50 flex flex-col items-center pb-6 px-4 pointer-events-none">
 
-        <AnimatePresence mode="wait">
-          {!showFeedback ? (
-            <QuestionCard
-              question={currentQuestion}
-              index={currentQuestionIndex}
-              total={questions.length}
-              onAnswer={handleAnswer}
-            />
-          ) : (
-            <FeedbackCard
-              isCorrect={isCorrect}
-              explanation={currentQuestion.explanation}
-              isLast={isLastQuestion}
-              onNext={handleNext}
-            />
+      {/* Counter badge — floats above the card, left-aligned */}
+      <div className="w-full max-w-2xl flex items-end mb-0 pointer-events-none">
+        <div className="ml-6 mb-[-1px] z-10 pointer-events-auto">
+          <div className="inline-flex items-center bg-white border border-gray-200 rounded-xl px-4 py-1.5 shadow-md">
+            <span className="font-bold text-base text-gray-900 tracking-wide">
+              {currentQuestionIndex + 1} / {total}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main card */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentQuestionIndex}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.25 }}
+          className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl px-7 py-6 pointer-events-auto border border-gray-100 relative"
+        >
+          {/* Feedback badge top-right */}
+          {hasAnswered && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className={`absolute top-5 right-6 text-sm font-semibold px-3 py-1 rounded-full border ${
+                isCorrect
+                  ? 'text-green-600 border-green-300 bg-green-50'
+                  : 'text-red-500 border-red-300 bg-red-50'
+              }`}
+            >
+              {isCorrect ? 'Correct! ✓' : 'Not quite...'}
+            </motion.div>
           )}
-        </AnimatePresence>
+
+          {/* Character label */}
+          <p className="text-xs font-bold tracking-widest text-gray-400 uppercase mb-1">
+            {question.title}
+          </p>
+
+          {/* Question title */}
+          <h2 className="text-2xl font-bold text-gray-900 mb-3">
+            True or False
+          </h2>
+
+          {/* Question text */}
+          <p className="text-sm text-gray-700 leading-relaxed mb-5">
+            {question.text}
+          </p>
+
+          {/* Explanation (shown after answering) */}
+          <AnimatePresence>
+            {hasAnswered && (
+              <motion.p
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="text-sm text-gray-500 italic leading-relaxed mb-5 overflow-hidden"
+              >
+                {question.explanation}
+              </motion.p>
+            )}
+          </AnimatePresence>
+
+          {/* True / False buttons */}
+          <div className="flex gap-3">
+            {([true, false] as boolean[]).map((option) => {
+              const label = option ? 'True' : 'False'
+              const isSelected = hasAnswered && selectedAnswer === option
+              const isWrong = isSelected && !isCorrect
+              const isRight = isSelected && isCorrect
+              const isCorrectUnselected = hasAnswered && option === question.correctAnswer && !isSelected
+
+              let btnClass = 'flex-1 py-2.5 rounded-full border-2 text-sm font-semibold transition-all duration-200 '
+
+              if (!hasAnswered) {
+                btnClass += 'border-purple-300 text-gray-800 bg-white hover:bg-purple-50 hover:border-purple-500 cursor-pointer'
+              } else if (isRight) {
+                btnClass += 'border-green-500 bg-green-50 text-green-700'
+              } else if (isWrong) {
+                btnClass += 'border-red-400 bg-red-50 text-red-600 line-through'
+              } else if (isCorrectUnselected) {
+                btnClass += 'border-green-400 bg-green-50 text-green-700'
+              } else {
+                btnClass += 'border-gray-200 text-gray-400 bg-white'
+              }
+
+              return (
+                <button
+                  key={label}
+                  onClick={() => handleAnswer(option)}
+                  disabled={hasAnswered}
+                  className={btnClass}
+                >
+                  {label}
+                </button>
+              )
+            })}
+          </div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Continue button — bottom right */}
+      <div className="w-full max-w-2xl flex justify-end mt-3 pointer-events-auto">
+        <button
+          onClick={handleNext}
+          disabled={!hasAnswered}
+          className={`px-6 py-2.5 rounded-full font-bold text-sm transition-all duration-200 flex items-center gap-2 ${
+            hasAnswered
+              ? 'bg-gray-800 text-white hover:bg-gray-700 shadow-lg'
+              : 'bg-gray-300 text-gray-400 cursor-not-allowed'
+          }`}
+        >
+          <span>{isLastQuestion && hasAnswered ? 'Complete' : 'Continue'}</span>
+          <ArrowRight className="w-4 h-4" />
+        </button>
       </div>
     </div>
   )
