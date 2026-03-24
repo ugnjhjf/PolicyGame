@@ -107,7 +107,7 @@ export function GameOverlays({ state }: GameOverlaysProps) {
       <OfficerChanQuizOverlay
         isOpen={showOfficerChanQuiz}
         questions={officerChanQuizData.questions}
-        onComplete={() => setShowOfficerChanQuiz(false)}
+        onComplete={state.handleOfficerChanQuizComplete}
       />
 
       {notification && (

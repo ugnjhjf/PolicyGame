@@ -317,7 +317,6 @@ export function useGameState() {
                     )
                     
                     if (currentEventId === 'officer_chan') {
-                        nextEvents.push({ id: 'michael', x: 65, y: 35, label: 'Michael\'s Office', status: 'available' as const })
                         setShowOfficerChanQuiz(true)
                     }
                     
@@ -364,6 +363,20 @@ export function useGameState() {
         })
     }
 
+    const handleOfficerChanQuizComplete = () => {
+        setShowOfficerChanQuiz(false)
+        setRpgState(prev => ({
+            ...prev,
+            map: {
+                ...prev.map,
+                activeEvents: [
+                    ...prev.map.activeEvents,
+                    { id: 'michael', x: 65, y: 35, label: 'Michael\'s Office', status: 'available' as const }
+                ]
+            }
+        }))
+    }
+
     return {
         // State
         rpgState, showSolutionGame, solutionPlacements, showLoanGame,
@@ -380,6 +393,7 @@ export function useGameState() {
         
         // Handlers
         handleMapEvent, handleDialogueNext, handleLoanGameComplete, handleSolutionComplete,
-        handleReportClose, handleReportNavigate, handleMarkAsRead, handleNotificationClose
+        handleReportClose, handleReportNavigate, handleMarkAsRead, handleNotificationClose,
+        handleOfficerChanQuizComplete
     }
 }
