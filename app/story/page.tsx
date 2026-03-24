@@ -4,42 +4,42 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, BookOpen, User, MapPin, ChevronRight, Target, Briefcase, Activity, Search } from 'lucide-react'
+import { ArrowLeft, User, MapPin, ChevronRight } from 'lucide-react'
 
 export default function StoryPage() {
   const [isHovered, setIsHovered] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
 
   return (
-    <div className="absolute inset-0 z-0">
+    <div className="absolute inset-0 z-0 bg-gray-50 text-gray-900 font-sans selection:bg-purple-100">
+      {/* Light Background */}
       <Image
         src="/background/Introduction.png"
-        alt="Cyberpunk City Background"
+        alt="City Background"
         fill
-        className="object-cover opacity-60"
+        className="object-cover opacity-10 grayscale"
         priority
         sizes="100vw"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/50 to-black/50 pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_10%,_black_100%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-white/80 pointer-events-none" />
 
       <div className="relative z-10 container mx-auto px-4 min-h-screen flex flex-col justify-center items-center lg:px-20 overflow-hidden">
 
         {/* Navigation & Header */}
-        <div className="absolute top-8 left-4 lg:left-20 right-4 lg:right-20 flex justify-between items-center z-50">
+        <div className="absolute top-8 left-4 lg:left-12 right-4 lg:right-12 flex justify-between items-center z-50">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
           >
             {currentPage === 1 ? (
-              <Link href="/" className="group flex items-center gap-2 text-blue-400 hover:text-white transition-colors">
-                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                <span className="font-mono text-sm tracking-wider uppercase">Return to Main</span>
+              <Link href="/" className="group flex items-center gap-2 text-gray-500 hover:text-gray-900 font-semibold transition-colors bg-white px-4 py-2 rounded-full shadow-sm border border-gray-200">
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                <span className="font-mono text-xs tracking-wider uppercase">Return to Main</span>
               </Link>
             ) : (
-              <button onClick={() => setCurrentPage(1)} className="group flex items-center gap-2 text-blue-400 hover:text-white transition-colors">
-                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                <span className="font-mono text-sm tracking-wider uppercase">Previous</span>
+              <button onClick={() => setCurrentPage(1)} className="group flex items-center gap-2 text-gray-500 hover:text-gray-900 font-semibold transition-colors bg-white px-4 py-2 rounded-full shadow-sm border border-gray-200">
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                <span className="font-mono text-xs tracking-wider uppercase">Previous</span>
               </button>
             )}
           </motion.div>
@@ -50,14 +50,14 @@ export default function StoryPage() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16 mt-8 mx-auto"
+          className="text-center mb-12 mt-4 mx-auto"
         >
-          <p className="font-serif text-3xl text-white max-w-3xl leading-relaxed font-light flex flex-col items-center">
-            <span>{currentPage === 1 ? 'Background' : 'Objectives'}</span>
+          <p className="font-serif text-3xl font-medium text-gray-900 max-w-3xl leading-relaxed flex flex-col items-center">
+            <span>{currentPage === 1 ? 'Background Briefing' : 'Mission Objectives'}</span>
           </p>
 
           {/* Divider */}
-          <div className="h-1 w-32 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-full mx-auto mt-4" />
+          <div className="h-1.5 w-24 bg-gradient-to-r from-purple-500 to-indigo-400 rounded-full mx-auto mt-4" />
         </motion.div>
 
         <div className="w-full max-w-4xl mx-auto min-h-[400px] flex items-center justify-center">
@@ -69,18 +69,18 @@ export default function StoryPage() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 30 }}
                 transition={{ duration: 0.4 }}
-                className="space-y-6 w-full"
+                className="space-y-6 w-full max-w-2xl mx-auto"
               >
                 <div className="flex justify-center items-center gap-3 mb-6">
-                  <div className="p-2 bg-blue-500/20 border border-blue-500/50 rounded-lg">
-                    <MapPin className="w-6 h-6 text-blue-400" />
+                  <div className="p-3 bg-indigo-50 border border-indigo-100 rounded-xl">
+                    <MapPin className="w-6 h-6 text-indigo-500" />
                   </div>
-                  <h2 className="text-2xl font-serif font-bold text-white">Your role</h2>
+                  <h2 className="text-2xl font-serif font-bold text-gray-900 tracking-tight">Your role</h2>
                 </div>
 
-                <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 md:p-10 space-y-6 text-white leading-relaxed font-light shadow-2xl relative overflow-hidden group max-w-2xl mx-auto text-center">
-                  <p className="text-2xl font-roboto">
-                    You are <strong className="text-white">head of department of AI Security</strong>. The city mayor requires you to balance the use of AI Safety & AI accuracy.
+                <div className="bg-white border border-gray-200 rounded-2xl p-10 space-y-6 text-gray-700 leading-relaxed font-light shadow-md relative overflow-hidden group text-center">
+                  <p className="text-2xl font-medium">
+                    You are <strong className="text-indigo-600 font-bold">head of department of AI Security</strong>. The city mayor requires you to balance the use of AI Safety & AI accuracy.
                   </p>
                 </div>
               </motion.div>
@@ -93,40 +93,28 @@ export default function StoryPage() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 30 }}
                 transition={{ duration: 0.4 }}
-                className="space-y-8 w-full"
+                className="space-y-6 w-full max-w-2xl mx-auto"
               >
-                <div className="flex justify-center items-center gap-3 mb-6">
-                  <div className="p-2 bg-cyan-500/20 border border-cyan-500/50 rounded-lg">
-                    <User className="w-6 h-6 text-cyan-400" />
+                <div className="flex justify-center items-center gap-3 mb-4">
+                  <div className="p-3 bg-purple-50 border border-purple-100 rounded-xl">
+                    <User className="w-6 h-6 text-purple-600" />
                   </div>
-                  <h2 className="text-2xl font-serif font-bold text-white">Your Tasks</h2>
+                  <h2 className="text-2xl font-serif font-bold text-gray-900">Your Tasks</h2>
                 </div>
-                <div className="font-roboto flex flex-col gap-4 max-w-2xl mx-auto">
+                
+                <div className="flex flex-col gap-4">
                   {[
-                    {
-                      label: "Step 1",
-                      value: "Collect data",
-                      number: "1",
-                      color: "blue"
-                    }, {
-                      label: "Step 2",
-                      value: "Analyze data",
-                      number: "2",
-                      color: "blue"
-                    }, {
-                      label: "Step 3",
-                      value: "Optimize the AI model",
-                      number: "3",
-                      color: "blue"
-                    }
+                    { label: "Step 1", value: "Collect data", number: "1", color: "purple" },
+                    { label: "Step 2", value: "Analyze data", number: "2", color: "indigo" },
+                    { label: "Step 3", value: "Optimize the AI model", number: "3", color: "blue" }
                   ].map((item, idx) => (
-                    <div key={idx} className="bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-xl flex items-center gap-5 hover:bg-white/10 transition-colors">
-                      <div className={`w-12 h-12 flex items-center justify-center rounded-lg bg-${item.color}-500/20`}>
-                        <span className={`text-2xl font-bold font-mono text-${item.color}-400`}>{item.number}</span>
+                    <div key={idx} className="bg-white border border-gray-200 p-6 rounded-2xl flex items-center gap-6 shadow-sm hover:shadow-md transition-shadow">
+                      <div className={`w-14 h-14 flex items-center justify-center rounded-xl bg-${item.color}-50 border border-${item.color}-100 shrink-0`}>
+                        <span className={`text-2xl font-bold font-mono text-${item.color}-600`}>{item.number}</span>
                       </div>
                       <div>
-                        <div className="text-l font-mono text-gray-400 uppercase tracking-wider mb-1 text-left">{item.label}</div>
-                        <div className="text-2xl text-white font-medium text-left">{item.value}</div>
+                        <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">{item.label}</div>
+                        <div className="text-xl text-gray-900 font-semibold">{item.value}</div>
                       </div>
                     </div>
                   ))}
@@ -141,31 +129,27 @@ export default function StoryPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="flex justify-center mt-16"
+          className="flex justify-center mt-12"
         >
           {currentPage === 1 ? (
             <button
               onClick={() => setCurrentPage(2)}
-              className="group relative inline-flex items-center gap-3 px-10 py-5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xl rounded-none clip-path-hero transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_30px_rgba(37,99,235,0.6)]"
+              className="group relative inline-flex items-center gap-3 px-10 py-4 bg-gray-900 hover:bg-purple-600 text-white font-bold text-lg rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-500/20"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              style={{ clipPath: "polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)" }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer" />
-              <span>NEXT</span>
-              <ChevronRight className={`w-6 h-6 transition-transform duration-300 ${isHovered ? 'translate-x-2' : ''}`} />
+              <span>NEXT STAGE</span>
+              <ChevronRight className={`w-5 h-5 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
             </button>
           ) : (
             <Link href="/chapter" legacyBehavior>
               <a
-                className="group relative inline-flex items-center gap-3 px-10 py-5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xl rounded-none clip-path-hero transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_30px_rgba(37,99,235,0.6)]"
+                className="group relative inline-flex items-center gap-3 px-10 py-4 bg-gray-900 hover:bg-purple-600 text-white font-bold text-lg rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-500/20"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                style={{ clipPath: "polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)" }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer" />
                 <span>CONTINUE</span>
-                <ChevronRight className={`w-6 h-6 transition-transform duration-300 ${isHovered ? 'translate-x-2' : ''}`} />
+                <ChevronRight className={`w-5 h-5 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
               </a>
             </Link>
           )}
