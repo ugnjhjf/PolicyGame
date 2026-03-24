@@ -30,6 +30,7 @@ export function useGameState() {
     const [showMasteryOverlay, setShowMasteryOverlay] = useState(false)
     const [showReport, setShowReport] = useState(false)
     const [reportData, setReportData] = useState<InvestigationReportData | null>(null)
+    const [showOfficerChanQuiz, setShowOfficerChanQuiz] = useState(false)
     
     // Dialogue States
     const [showDialogue, setShowDialogue] = useState(false)
@@ -317,6 +318,7 @@ export function useGameState() {
                     
                     if (currentEventId === 'officer_chan') {
                         nextEvents.push({ id: 'michael', x: 65, y: 35, label: 'Michael\'s Office', status: 'available' as const })
+                        setShowOfficerChanQuiz(true)
                     }
                     
                     return {
@@ -368,11 +370,13 @@ export function useGameState() {
         challengeStatus, showPDA, pdaTab, pdaSelectedId, currentEventId,
         showChapterCompletion, showQuiz, showMasteryOverlay, showReport, reportData,
         showDialogue, dialogueContent, notification, showNotification,
+        showOfficerChanQuiz,
         
         // State setters (only the necessary ones)
         setSolutionPlacements, setPdaTab, setShowPDA, setShowQuiz,
         setChallengeStatus, setShowChapterCompletion, setShowMasteryOverlay,
         setReportData, setShowReport, setPdaSelectedId, setShowSolutionGame, setShowLoanGame,
+        setShowOfficerChanQuiz,
         
         // Handlers
         handleMapEvent, handleDialogueNext, handleLoanGameComplete, handleSolutionComplete,

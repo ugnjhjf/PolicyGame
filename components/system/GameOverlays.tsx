@@ -5,7 +5,9 @@ import { InvestigationReportOverlay } from '../pda/InvestigationReportOverlay'
 import { SolutionMatchingOverlay } from '../minigame/SolutionMatchingOverlay'
 import { LoanApprovalGameOverlay } from '../minigame/LoanApprovalGameOverlay'
 import { ChapterCompletionOverlay, ChapterMasteryOverlay, QuizOverlay } from './'
+import { OfficerChanQuizOverlay } from './OfficerChanQuizOverlay'
 import quizData from '../../config/data/quiz/quiz.json'
+import officerChanQuizData from '../../config/data/quiz/officer_chan_quiz.json'
 import { useGameState } from '../../hooks/useGameState'
 import type { InvestigationReportData } from '@/types/rpg'
 
@@ -24,7 +26,8 @@ export function GameOverlays({ state }: GameOverlaysProps) {
     showQuiz, setChallengeStatus, setShowMasteryOverlay,
     showMasteryOverlay, challengeStatus,
     notification, showNotification, handleNotificationClose,
-    setReportData, setShowReport, setShowPDA, setPdaSelectedId
+    setReportData, setShowReport, setShowPDA, setPdaSelectedId,
+    showOfficerChanQuiz, setShowOfficerChanQuiz
   } = state
 
   return (
@@ -99,6 +102,12 @@ export function GameOverlays({ state }: GameOverlaysProps) {
         isOpen={showMasteryOverlay}
         onClose={() => setShowMasteryOverlay(false)}
         challenges={challengeStatus}
+      />
+
+      <OfficerChanQuizOverlay
+        isOpen={showOfficerChanQuiz}
+        questions={officerChanQuizData.questions}
+        onComplete={() => setShowOfficerChanQuiz(false)}
       />
 
       {notification && (

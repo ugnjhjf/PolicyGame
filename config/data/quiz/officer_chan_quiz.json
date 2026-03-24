@@ -1,0 +1,20 @@
+{
+    "questions": [
+        {
+            "id": 1,
+            "character": "OFFICER CHAN",
+            "title": "True or False",
+            "text": "Officer Chan trusting his AI glasses' 80% prediction without further evidence is an example of confirmation bias.",
+            "correctAnswer": true,
+            "explanation": "Correct! Confirmation bias means favouring information that confirms existing beliefs. Accepting an 80% AI score without checking other evidence is exactly that."
+        },
+        {
+            "id": 2,
+            "character": "OFFICER CHAN",
+            "title": "True or False",
+            "text": "An officer with 20 years of experience is less likely to exhibit confirmation bias than a new recruit.",
+            "correctAnswer": false,
+            "explanation": "Experience can actually reinforce confirmation bias — the more convinced someone is of their own judgement, the harder it is to accept contradictory information."
+        }
+    ]
+}
