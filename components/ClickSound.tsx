@@ -43,7 +43,7 @@ export default function ClickFeedback() {
 
       // --- crosshair image ---
       const img = document.createElement('img')
-      img.src = '/effect/crosshair.png'
+      img.src = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/effect/crosshair.png`
       img.className = 'click-effect-img'
       img.style.left = `${e.clientX}px`
       img.style.top  = `${e.clientY}px`
