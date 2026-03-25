@@ -15,8 +15,9 @@ if (isGithubActions) {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: basePath,
-  assetPrefix: basePath,
+  output: 'export',
+  basePath: basePath || '/PolicyGame',
+  assetPrefix: basePath || '/PolicyGame/',
   eslint: {
     ignoreDuringBuilds: true,
   },
