@@ -30,7 +30,7 @@ export default function ClickFeedback() {
     style.textContent = CSS
     document.head.appendChild(style)
 
-    audioRef.current = new Audio('/sound/click.wav')
+    audioRef.current = new Audio(`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/sound/click.wav`)
     audioRef.current.volume = 0.4
 
     const handleClick = (e: MouseEvent) => {

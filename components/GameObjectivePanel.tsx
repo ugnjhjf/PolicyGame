@@ -20,7 +20,7 @@ export default function GameObjectivePanel({ className = '', tasks, onTaskClick,
   const hasPlayedRef = useRef(false)
 
   useEffect(() => {
-    popSoundRef.current = new Audio('/sound/new_notes.wav')
+    popSoundRef.current = new Audio(`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/sound/new_notes.wav`)
     popSoundRef.current.volume = 0.7
   }, [])
 

@@ -5,8 +5,18 @@ try {
   // ignore error
 }
 
+const isGithubActions = process.env.GITHUB_ACTIONS || false
+let basePath = ''
+
+if (isGithubActions) {
+  const repo = process.env.GITHUB_REPOSITORY.replace(/.*?\//, '')
+  basePath = `/${repo}`
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: basePath,
+  assetPrefix: basePath,
   eslint: {
     ignoreDuringBuilds: true,
   },

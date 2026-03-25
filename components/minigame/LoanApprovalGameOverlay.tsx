@@ -109,7 +109,7 @@ export function LoanApprovalGameOverlay({ isOpen, onClose, onComplete }: LoanApp
 
                     {/* TOP HALF: Slots */}
                     <div className="flex-1 flex items-center justify-center relative overflow-visible">
-                        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10 pointer-events-none" />
+                        <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: `url('${process.env.NEXT_PUBLIC_BASE_PATH || ''}/grid-pattern.svg')` }} />
 
                         {/* Fixed Info Panel on the right */}
                         <div className="absolute right-12 top-1/2 -translate-y-1/2 w-[400px] min-h-[300px] bg-white rounded-2xl shadow-xl p-8 flex flex-col z-20 border border-gray-200">

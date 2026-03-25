@@ -24,7 +24,7 @@ export function PDANotification({
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
-    audioRef.current = new Audio('/sound/new_notes.wav')
+    audioRef.current = new Audio(`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/sound/new_notes.wav`)
     audioRef.current.volume = 0.7
   }, [])
 
