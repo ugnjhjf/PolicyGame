@@ -1,28 +1,49 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Shield, Brain, Scale, ChevronRight, Terminal, Lock, Ticket, Search } from 'lucide-react'
+import { LoadingScreen } from '../components/LoadingScreen'
 
 export default function Page() {
   const [isHovered, setIsHovered] = useState(false)
+  const [isImageLoaded, setIsImageLoaded] = useState(false)
+  const [showLoading, setShowLoading] = useState(true)
+
+  // Safety fallback: if image onLoad doesn't fire (e.g. cached), remove loading screen after a maximum of 2.5s
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isImageLoaded) {
+      // Add a tiny delay to ensure paint is smooth
+      timer = setTimeout(() => setShowLoading(false), 500)
+    } else {
+      timer = setTimeout(() => setShowLoading(false), 2500)
+    }
+    return () => clearTimeout(timer)
+  }, [isImageLoaded])
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 relative overflow-hidden font-sans selection:bg-purple-100 selection:text-purple-900">
-      {/* Background with white soft overlay */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/background/Introduction.png`}
-          alt="Cyberpunk City Background"
-          fill
-          className="object-cover opacity-20 grayscale"
-          priority
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/80 to-white/90 pointer-events-none" />
-      </div>
+    <>
+      <AnimatePresence>
+        {showLoading && <LoadingScreen key="loading" />}
+      </AnimatePresence>
+
+      <div className={`min-h-screen bg-white text-gray-900 relative overflow-hidden font-sans selection:bg-purple-100 selection:text-purple-900 transition-opacity duration-1000 ${showLoading ? 'opacity-0' : 'opacity-100'}`}>
+        {/* Background with white soft overlay */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/background/Introduction.png`}
+            alt="Cyberpunk City Background"
+            fill
+            className="object-cover opacity-20 grayscale"
+            priority
+            sizes="100vw"
+            onLoad={() => setIsImageLoaded(true)}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/80 to-white/90 pointer-events-none" />
+        </div>
 
       <div className="relative z-10 container mx-auto px-4 min-h-screen flex flex-col justify-center items-center lg:items-start lg:px-20">
 
@@ -119,5 +140,6 @@ export default function Page() {
       </div>
 
     </div>
+    </>
   )
 }
