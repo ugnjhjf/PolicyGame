@@ -5,19 +5,13 @@ try {
   // ignore error
 }
 
-const isGithubActions = process.env.GITHUB_ACTIONS || false
-let basePath = ''
-
-if (isGithubActions) {
-  const repo = process.env.GITHUB_REPOSITORY.replace(/.*?\//, '')
-  basePath = `/${repo}`
-}
+const isProd = process.env.NODE_ENV === 'production';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  basePath: basePath || '/PolicyGame',
-  assetPrefix: basePath || '/PolicyGame/',
+  basePath: isProd ? '/PolicyGame' : '',
+  assetPrefix: isProd ? '/PolicyGame/' : '',
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -25,6 +19,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
+    unoptimized: true,
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
