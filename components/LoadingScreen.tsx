@@ -35,7 +35,7 @@ const ASSETS_TO_PRELOAD = [
 export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
   const [loadedCount, setLoadedCount] = useState(0)
   const totalAssets = ASSETS_TO_PRELOAD.length
-  
+
   useEffect(() => {
     let isCancelled = false;
     let loaded = 0;
@@ -51,7 +51,7 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
       if (isCancelled) return;
       loaded++;
       setLoadedCount(loaded);
-      
+
       // Complete when all assets are loaded
       if (loaded >= totalAssets) {
         setTimeout(() => {
@@ -64,7 +64,7 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
     ASSETS_TO_PRELOAD.forEach((path) => {
       const isAudio = path.endsWith('.wav') || path.endsWith('.mp3');
       const fullPath = `${basePath}${path}`;
-      
+
       if (isAudio) {
         const audio = new Audio();
         audio.oncanplaythrough = handleAssetChange;
@@ -102,24 +102,24 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
         {/* Cyberpunk Outer Ring */}
         <div className="absolute inset-0 -m-8 rounded-full border border-purple-500/20 animate-[spin_4s_linear_infinite]" />
         <div className="absolute inset-0 -m-4 rounded-full border border-indigo-500/30 animate-[spin_3s_linear_infinite_reverse]" />
-        
+
         {/* Core Spinner */}
         <div className="w-16 h-16 border-4 border-gray-800 border-t-purple-500 rounded-full animate-spin mb-10 shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
-        
+
         <h2 className="text-xl font-bold tracking-[0.3em] text-purple-400 mb-3 drop-shadow-md">
-          {loadedCount >= totalAssets ? "READY" : "INITIALIZING"}
+          {loadedCount >= totalAssets ? "DONE" : "LOADING"}
         </h2>
-        
+
         <div className="flex flex-col items-center gap-2">
-            <p className="text-xs text-gray-500 tracking-[0.2em] animate-pulse">
-               ESTABLISHING SECURE CONNECTION ({progressPercentage}%)
-            </p>
-            <div className="w-48 h-1 bg-gray-800 rounded-full overflow-hidden mt-2 relative">
-              <div 
-                className="absolute left-0 top-0 h-full bg-gradient-to-r from-purple-500 to-indigo-400 transition-all duration-300 ease-out"
-                style={{ width: `${progressPercentage}%` }}
-              />
-            </div>
+          <p className="text-xs text-gray-500 tracking-[0.2em] animate-pulse">
+            Loading Resources ({progressPercentage}%)
+          </p>
+          <div className="w-48 h-1 bg-gray-800 rounded-full overflow-hidden mt-2 relative">
+            <div
+              className="absolute left-0 top-0 h-full bg-gradient-to-r from-purple-500 to-indigo-400 transition-all duration-300 ease-out"
+              style={{ width: `${progressPercentage}%` }}
+            />
+          </div>
         </div>
       </div>
     </motion.div>
