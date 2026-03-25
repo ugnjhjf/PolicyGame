@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useMemo } from 'react'
 import Image from 'next/image'
+import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronRight } from 'lucide-react'
 
 export interface DialogueOption {
@@ -12,98 +13,158 @@ export interface DialogueProps {
   isOpen: boolean
   characterName: string
   characterImage?: string // URL to image
-  characterTitle?: string
-  characterTraits?: string[]
   text: string
   choices?: DialogueOption[]
   onNext?: () => void
-  isTyping?: boolean
 }
 
 export function DialogueOverlay({
   isOpen,
   characterName,
-  characterTitle,
-  characterTraits,
   characterImage,
   text,
   choices,
-  onNext,
-  isTyping = false
+  onNext
 }: DialogueProps) {
+  // Parsed segments structure: { type: 'normal' | 'red' | 'yellow' | 'bold', content: string }
+  const parsedSegments = useMemo(() => {
+    if (!text) return []
+    const parts = text.split(/(<red>.*?<\/red>|<yellow>.*?<\/yellow>|<b>.*?<\/b>)/g)
+    return parts.map(part => {
+      if (part.startsWith('<red>') && part.endsWith('</red>')) {
+        return { type: 'red', content: part.replace(/<\/?red>/g, '') }
+      }
+      if (part.startsWith('<yellow>') && part.endsWith('</yellow>')) {
+        return { type: 'yellow', content: part.replace(/<\/?yellow>/g, '') }
+      }
+      if (part.startsWith('<b>') && part.endsWith('</b>')) {
+        return { type: 'bold', content: part.replace(/<\/?b>/g, '') }
+      }
+      return { type: 'normal', content: part }
+    }).filter(s => s.content.length > 0)
+  }, [text])
+
   if (!isOpen) return null
 
+  // Render text fully
+  const renderText = () => {
+    return parsedSegments.map((segment, i) => {
+      switch (segment.type) {
+        case 'red': return <span key={i} className="text-red-500">{segment.content}</span>
+        case 'yellow': return <span key={i} className="text-yellow-400">{segment.content}</span>
+        case 'bold': return <span key={i} className="font-bold text-white">{segment.content}</span>
+        default: return <span key={i}>{segment.content}</span>
+      }
+    })
+  }
+
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none flex flex-col justify-end pb-8">
-      {/* ... (Character Portrait Layer remains same) ... */}
+    <div className="fixed inset-0 z-50 pointer-events-none flex flex-col justify-end pb-12 overflow-hidden">
       <div className="absolute inset-0 z-0 flex items-end justify-center pointer-events-none">
-        {/* ... */}
+        <AnimatePresence mode="popLayout">
+          {characterImage && <CharacterImage image={characterImage} name={characterName} />}
+        </AnimatePresence>
       </div>
 
-      {/* Dialogue Box */}
-      <div className="relative z-10 w-full max-w-4xl mx-auto px-4 pointer-events-auto">
-        <div className="bg-black/80 backdrop-blur-md border border-white/10 rounded-xl p-6 shadow-2xl">
-          {/* Name Tag */}
-          <div className="absolute -top-4 left-8 flex items-center gap-2">
-            <div className="bg-blue-600 px-4 py-1 rounded-md shadow-lg border border-blue-400/50">
-              <span className="text-white font-bold tracking-wide uppercase">{characterName}</span>
-            </div>
-            {characterTitle && (
-              <div className="bg-gray-900 px-3 py-1 rounded-md border border-white/20">
-                <span className="text-blue-200 text-sm font-medium">{characterTitle}</span>
-              </div>
-            )}
-            {characterTraits && characterTraits.map((trait, index) => (
-              <div key={index} className="bg-purple-900/80 px-2 py-1 rounded-md border border-purple-500/30 flex items-center justify-center min-w-[24px]">
-                 <span className="text-purple-200 text-xs font-semibold">{trait}</span>
-              </div>
-            ))}
-          </div>
+      {/* Subtitle Area */}
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 pointer-events-auto flex flex-col items-center">
+        <div
+          className="w-full text-center cursor-pointer select-none"
+          onClick={(e) => {
+            if ((e.target as HTMLElement).tagName === 'BUTTON') return
+            onNext?.()
+          }}
+        >
+          <SubtitleText text={text} characterName={characterName} renderText={renderText} />
 
-          {/* Text Content */}
-          {/* Text Content */}
-          <div className="min-h-[80px] text-lg text-gray-100 font-medium leading-relaxed mt-2 whitespace-pre-wrap">
-            {text.split(/(<red>.*?<\/red>|<yellow>.*?<\/yellow>|<b>.*?<\/b>)/g).map((part, index) => {
-              if (part.startsWith('<red>') && part.endsWith('</red>')) {
-                return <span key={index} className="text-red-500">{part.replace(/<\/?red>/g, '')}</span>
-              }
-              if (part.startsWith('<yellow>') && part.endsWith('</yellow>')) {
-                return <span key={index} className="text-yellow-400">{part.replace(/<\/?yellow>/g, '')}</span>
-              }
-              if (part.startsWith('<b>') && part.endsWith('</b>')) {
-                return <span key={index} className="font-bold text-white">{part.replace(/<\/?b>/g, '')}</span>
-              }
-              return part
-            })}
-            {isTyping && <span className="animate-pulse ml-1">|</span>}
-          </div>
-
-          {/* Action Area */}
-          <div className="mt-4 flex justify-end items-center gap-4">
-            {choices && choices.length > 0 ? (
-              <div className="flex gap-2">
-                {choices.map((choice) => (
-                  <button
-                    key={choice.id}
-                    onClick={choice.action}
-                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors border border-white/20 hover:border-white/50"
-                  >
-                    {choice.text}
-                  </button>
-                ))}
-              </div>
-            ) : (
-              <button
-                onClick={onNext}
-                className="group flex items-center gap-2 px-4 py-2 hover:bg-white/5 rounded-lg transition-colors text-blue-400 hover:text-blue-300"
-              >
-                <span className="text-sm font-semibold uppercase tracking-wider">Next</span>
-                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-            )}
+          <div className="mt-6 flex justify-center items-center gap-4">
+            <DialogueChoices choices={choices} />
           </div>
         </div>
       </div>
     </div>
+  )
+}
+
+function CharacterImage({ image, name }: { image: string, name: string }) {
+  return (
+    <motion.div
+      key={image}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className="relative w-[110vh] h-[110vh] mb-[-15vh]"
+    >
+      <Image
+        src={image.startsWith('/') ? image : `/${image}`}
+        alt={name}
+        fill
+        className="object-contain object-bottom"
+        priority
+      />
+    </motion.div>
+  )
+}
+
+function SubtitleText({ text, characterName, renderText }: { text: string, characterName: string, renderText: () => React.ReactNode }) {
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={text}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.4 }}
+        className="text-2xl md:text-3xl font-bold leading-relaxed drop-shadow-md"
+        style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}
+      >
+        <span className="text-blue-400 mr-2 uppercase tracking-wide">{characterName}:</span>
+        <span className="text-white">
+          {renderText()}
+        </span>
+      </motion.div>
+    </AnimatePresence>
+  )
+}
+
+function DialogueChoices({ choices }: { choices?: DialogueOption[] }) {
+  if (choices && choices.length > 0) {
+    return (
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="flex flex-col gap-2 w-full max-w-md"
+        >
+          {choices.map((choice) => (
+            <button
+              key={choice.id}
+              onClick={(e) => {
+                e.stopPropagation()
+                choice.action()
+              }}
+              className="w-full px-6 py-3 bg-black/60 hover:bg-yellow-500/80 hover:text-black text-white text-lg font-medium rounded border-l-4 border-yellow-500 transition-all text-left"
+            >
+              {choice.text}
+            </button>
+          ))}
+        </motion.div>
+      </AnimatePresence>
+    )
+  }
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="animate-bounce text-yellow-500/80 mt-2"
+      >
+        <ChevronRight className="w-8 h-8" />
+      </motion.div>
+    </AnimatePresence>
   )
 }

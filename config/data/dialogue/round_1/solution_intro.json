@@ -3,30 +3,34 @@
         {
             "name": "Anna",
             "title": "Office Secretary",
+            "image": "character/anna/anna_holding.png",
             "traits": [
-                "determined"
+                ""
             ],
-            "text": "Detective, we have gathered investigations from all three districts. The pattern is becoming clear."
+            "text": "We have gathered investigations from all three districts. The pattern is becoming clear."
         },
         {
             "name": "You",
-            "title": "Detective",
+            "title": "",
+            "image": "character/anna/anna_holding.png",
             "traits": [],
             "text": "The issues aren't just technical glitches. They are systemic biases embedded in the deployment process."
         },
         {
             "name": "Anna",
             "title": "Office Secretary",
+            "image": "character/anna/anna_holding.png",
             "traits": [
-                "determined"
+                ""
             ],
             "text": "Precisely. It is time to synthesize our findings. I have prepared a policy framework board."
         },
         {
             "name": "Anna",
             "title": "Office Secretary",
+            "image": "character/anna/anna_holding.png",
             "traits": [
-                "neutral"
+                ""
             ],
             "text": "Please match the correct policy interventions to the biases we identified. Be careful, some standard 'solutions' might actually be traps."
         }

@@ -27,10 +27,7 @@ pnpm build
 pnpm start
 ```
 
-### Linting
-```bash
-pnpm lint
-```
+
 
 The app will run at http://localhost:3000
 

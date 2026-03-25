@@ -27,11 +27,6 @@ pnpm build
 pnpm start
 ```
 
-### 代码检查
-```bash
-pnpm lint
-```
-
 应用将在 http://localhost:3000 运行
 
 ## 🛠️ 技术栈

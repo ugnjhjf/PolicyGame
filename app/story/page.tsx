@@ -3,168 +3,159 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, ArrowLeft, BookOpen, User, MapPin, Clock } from 'lucide-react'
-import AnimatedButton from '../../components/AnimatedButton'
-import styles from '../../styles/animations.module.css'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ArrowLeft, User, MapPin, ChevronRight } from 'lucide-react'
 
 export default function StoryPage() {
-  const [isAnimating, setIsAnimating] = useState(false)
-
-  const handleContinue = () => {
-    setIsAnimating(true)
-      setTimeout(() => {
-        // Navigate to the next page
-        window.location.href = '/game'
-      }, 300)
-  }
+  const [isHovered, setIsHovered] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 ${isAnimating ? styles.slideOutToLeft : styles.slideInFromRight}`}>
-      <div className="container mx-auto px-4 py-8 lg:py-12">
-        {/* Back Button */}
-        <div className="mb-6">
-          <Link 
-            href="/" 
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
-            onClick={(e) => {
-              e.preventDefault()
-              setIsAnimating(true)
-              setTimeout(() => {
-                window.location.href = '/'
-              }, 300)
-            }}
+    <div className="absolute inset-0 z-0 bg-gray-50 text-gray-900 font-sans selection:bg-purple-100">
+      {/* Light Background */}
+      <Image
+        src="/background/Introduction.png"
+        alt="City Background"
+        fill
+        className="object-cover opacity-10 grayscale"
+        priority
+        sizes="100vw"
+      />
+      <div className="absolute inset-0 bg-white/80 pointer-events-none" />
+
+      <div className="relative z-10 container mx-auto px-4 min-h-screen flex flex-col justify-center items-center lg:px-20 overflow-hidden">
+
+        {/* Navigation & Header */}
+        <div className="absolute top-8 left-4 lg:left-12 right-4 lg:right-12 flex justify-between items-center z-50">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
           >
-            <ArrowLeft className="w-5 h-5" />
-            <span>Back to Home</span>
-          </Link>
+            {currentPage === 1 ? (
+              <Link href="/" className="group flex items-center gap-2 text-gray-500 hover:text-gray-900 font-semibold transition-colors bg-white px-4 py-2 rounded-full shadow-sm border border-gray-200">
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                <span className="font-mono text-xs tracking-wider uppercase">Return to Main</span>
+              </Link>
+            ) : (
+              <button onClick={() => setCurrentPage(1)} className="group flex items-center gap-2 text-gray-500 hover:text-gray-900 font-semibold transition-colors bg-white px-4 py-2 rounded-full shadow-sm border border-gray-200">
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                <span className="font-mono text-xs tracking-wider uppercase">Previous</span>
+              </button>
+            )}
+          </motion.div>
         </div>
 
-        <div className="max-w-5xl mx-auto">
-          {/* Title Section */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4">
-              <BookOpen className="w-4 h-4" />
-              <span>Story Background</span>
-            </div>
-            <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              Intelligent Policing Strategist
-            </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              At the intersection of technology and policy, make critical decisions, train intelligent systems, and balance effective law enforcement with community trust
-            </p>
-          </div>
+        {/* Main Title */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12 mt-4 mx-auto"
+        >
+          <p className="font-serif text-3xl font-medium text-gray-900 max-w-3xl leading-relaxed flex flex-col items-center">
+            <span>{currentPage === 1 ? 'Background Briefing' : 'Mission Objectives'}</span>
+          </p>
 
-          {/* Main Content Section */}
-          <div className="space-y-8 mb-12">
-            {/* Story Background - Rectangle Card */}
-            <div className="bg-white rounded-lg shadow-lg p-6 lg:p-8">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <MapPin className="w-6 h-6 text-blue-600" />
-                </div>
-                <h2 className="text-2xl font-bold text-gray-900">Story Background</h2>
-              </div>
-              
-              <div className="space-y-4 text-gray-700 leading-relaxed">
-                <p>
-                  In the futuristic city of 2025, artificial intelligence technology has been deeply integrated into the policing system. As a strategic decision-maker for the city's police department, you face unprecedented challenges and opportunities.
-                </p>
-                <p>
-                  Urban crime rates continue to fluctuate, and community trust in AI-assisted law enforcement has become a critical factor. You need to continuously train and optimize AI models to accurately predict crime while maintaining community trust and support.
-                </p>
-                <p>
-                  Every data selection, every training method choice, and every deployment decision will impact the city's public safety and community relations. Your goal is to find the optimal balance between effective law enforcement and community trust.
-                </p>
-              </div>
-            </div>
+          {/* Divider */}
+          <div className="h-1.5 w-24 bg-gradient-to-r from-purple-500 to-indigo-400 rounded-full mx-auto mt-4" />
+        </motion.div>
 
-            {/* Player Role - Below Story Background */}
-            <div className="bg-white rounded-lg shadow-lg p-6 lg:p-8">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-indigo-100 rounded-lg">
-                  <User className="w-6 h-6 text-indigo-600" />
-                </div>
-                <h2 className="text-2xl font-bold text-gray-900">Your Role</h2>
-              </div>
-              
-              <div className="space-y-4">
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-3 h-3 bg-indigo-500 rounded-full"></div>
-                    <span className="font-semibold text-gray-900">Position</span>
+        <div className="w-full max-w-4xl mx-auto min-h-[400px] flex items-center justify-center">
+          <AnimatePresence mode="wait">
+            {currentPage === 1 && (
+              <motion.div
+                key="page1"
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 30 }}
+                transition={{ duration: 0.4 }}
+                className="space-y-6 w-full max-w-2xl mx-auto"
+              >
+                <div className="flex justify-center items-center gap-3 mb-6">
+                  <div className="p-3 bg-indigo-50 border border-indigo-100 rounded-xl">
+                    <MapPin className="w-6 h-6 text-indigo-500" />
                   </div>
-                  <p className="text-gray-700 ml-5">AI Strategy Director of City Police Department</p>
+                  <h2 className="text-2xl font-serif font-bold text-gray-900 tracking-tight">Your role</h2>
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-3 h-3 bg-indigo-500 rounded-full"></div>
-                    <span className="font-semibold text-gray-900">Responsibilities</span>
+                <div className="bg-white border border-gray-200 rounded-2xl p-10 space-y-6 text-gray-700 leading-relaxed font-light shadow-md relative overflow-hidden group text-center">
+                  <p className="text-2xl font-medium">
+                    You are <strong className="text-indigo-600 font-bold">head of department of AI Security</strong>. The city mayor requires you to balance the use of AI Safety & AI accuracy.
+                  </p>
+                </div>
+              </motion.div>
+            )}
+
+            {currentPage === 2 && (
+              <motion.div
+                key="page2"
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 30 }}
+                transition={{ duration: 0.4 }}
+                className="space-y-6 w-full max-w-2xl mx-auto"
+              >
+                <div className="flex justify-center items-center gap-3 mb-4">
+                  <div className="p-3 bg-purple-50 border border-purple-100 rounded-xl">
+                    <User className="w-6 h-6 text-purple-600" />
                   </div>
-                  <p className="text-gray-700 ml-5">Responsible for training, deploying, and optimizing AI models, formulating policing strategies, and maintaining community relations</p>
+                  <h2 className="text-2xl font-serif font-bold text-gray-900">Your Tasks</h2>
                 </div>
-
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-3 h-3 bg-indigo-500 rounded-full"></div>
-                    <span className="font-semibold text-gray-900">Resources</span>
-                  </div>
-                  <p className="text-gray-700 ml-5">Have limited resources and action points that need to be allocated carefully</p>
+                
+                <div className="flex flex-col gap-4">
+                  {[
+                    { label: "Step 1", value: "Collect data", number: "1", color: "purple" },
+                    { label: "Step 2", value: "Analyze data", number: "2", color: "indigo" },
+                    { label: "Step 3", value: "Optimize the AI model", number: "3", color: "blue" }
+                  ].map((item, idx) => (
+                    <div key={idx} className="bg-white border border-gray-200 p-6 rounded-2xl flex items-center gap-6 shadow-sm hover:shadow-md transition-shadow">
+                      <div className={`w-14 h-14 flex items-center justify-center rounded-xl bg-${item.color}-50 border border-${item.color}-100 shrink-0`}>
+                        <span className={`text-2xl font-bold font-mono text-${item.color}-600`}>{item.number}</span>
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">{item.label}</div>
+                        <div className="text-xl text-gray-900 font-semibold">{item.value}</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-3 h-3 bg-indigo-500 rounded-full"></div>
-                    <span className="font-semibold text-gray-900">Objectives</span>
-                  </div>
-                  <p className="text-gray-700 ml-5">Reduce crime rates, improve arrest accuracy, and maintain community trust</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Core Challenges - Four rectangular boxes, one per row */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Core Challenges</h3>
-              
-              <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg shadow-lg p-4 lg:p-6 border border-purple-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 bg-purple-500 rounded-full flex-shrink-0"></div>
-                  <span className="text-gray-700 text-lg">Balance AI model accuracy with fairness</span>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg shadow-lg p-4 lg:p-6 border border-purple-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 bg-purple-500 rounded-full flex-shrink-0"></div>
-                  <span className="text-gray-700 text-lg">Maintain community trust in AI-assisted law enforcement</span>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg shadow-lg p-4 lg:p-6 border border-purple-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 bg-purple-500 rounded-full flex-shrink-0"></div>
-                  <span className="text-gray-700 text-lg">Make optimal decisions with limited resources</span>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg shadow-lg p-4 lg:p-6 border border-purple-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 bg-purple-500 rounded-full flex-shrink-0"></div>
-                  <span className="text-gray-700 text-lg">Respond to constantly changing crime patterns and community needs</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Continue Button */}
-          <div className="flex justify-center">
-            <AnimatedButton href="/game">
-              <span className="text-lg font-semibold">Start Game</span>
-            </AnimatedButton>
-          </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
+
+        {/* Start Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="flex justify-center mt-12"
+        >
+          {currentPage === 1 ? (
+            <button
+              onClick={() => setCurrentPage(2)}
+              className="group relative inline-flex items-center gap-3 px-10 py-4 bg-gray-900 hover:bg-purple-600 text-white font-bold text-lg rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-500/20"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <span>NEXT STAGE</span>
+              <ChevronRight className={`w-5 h-5 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
+            </button>
+          ) : (
+            <Link href="/chapter" legacyBehavior>
+              <a
+                className="group relative inline-flex items-center gap-3 px-10 py-4 bg-gray-900 hover:bg-purple-600 text-white font-bold text-lg rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-500/20"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                <span>CONTINUE</span>
+                <ChevronRight className={`w-5 h-5 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
+              </a>
+            </Link>
+          )}
+        </motion.div>
+
       </div>
     </div>
   )
 }
-
