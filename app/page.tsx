@@ -9,25 +9,12 @@ import { LoadingScreen } from '../components/LoadingScreen'
 
 export default function Page() {
   const [isHovered, setIsHovered] = useState(false)
-  const [isImageLoaded, setIsImageLoaded] = useState(false)
   const [showLoading, setShowLoading] = useState(true)
-
-  // Safety fallback: if image onLoad doesn't fire (e.g. cached), remove loading screen after a maximum of 2.5s
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (isImageLoaded) {
-      // Add a tiny delay to ensure paint is smooth
-      timer = setTimeout(() => setShowLoading(false), 500)
-    } else {
-      timer = setTimeout(() => setShowLoading(false), 2500)
-    }
-    return () => clearTimeout(timer)
-  }, [isImageLoaded])
 
   return (
     <>
       <AnimatePresence>
-        {showLoading && <LoadingScreen key="loading" />}
+        {showLoading && <LoadingScreen key="loading" onComplete={() => setShowLoading(false)} />}
       </AnimatePresence>
 
       <div className={`min-h-screen bg-white text-gray-900 relative overflow-hidden font-sans selection:bg-purple-100 selection:text-purple-900 transition-opacity duration-1000 ${showLoading ? 'opacity-0' : 'opacity-100'}`}>
@@ -40,7 +27,6 @@ export default function Page() {
             className="object-cover opacity-20 grayscale"
             priority
             sizes="100vw"
-            onLoad={() => setIsImageLoaded(true)}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/80 to-white/90 pointer-events-none" />
         </div>
