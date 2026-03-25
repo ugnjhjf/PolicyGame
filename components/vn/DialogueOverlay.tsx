@@ -97,7 +97,7 @@ function CharacterImage({ image, name }: { image: string, name: string }) {
       className="relative w-[110vh] h-[110vh] mb-[-15vh]"
     >
       <Image
-        src={image.startsWith('/') ? image : `/${image}`}
+        src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}${image.startsWith('/') ? image : `/${image}`}`}
         alt={name}
         fill
         className="object-contain object-bottom"

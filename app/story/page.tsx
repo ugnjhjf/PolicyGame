@@ -14,7 +14,7 @@ export default function StoryPage() {
     <div className="absolute inset-0 z-0 bg-gray-50 text-gray-900 font-sans selection:bg-purple-100">
       {/* Light Background */}
       <Image
-        src="/background/Introduction.png"
+        src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/background/Introduction.png`}
         alt="City Background"
         fill
         className="object-cover opacity-10 grayscale"

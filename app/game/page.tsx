@@ -16,7 +16,7 @@ export default function GamePage() {
             {/* Background Image */}
             <div className="fixed inset-0 z-0">
                 <Image
-                    src="/background/city_overview.png"
+                    src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/background/city_overview.png`}
                     alt="City Overview"
                     fill
                     className="object-cover"

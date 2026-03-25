@@ -41,9 +41,9 @@ function EventMarker({ event, onEventSelect }: { event: MapEvent, onEventSelect:
           <div className="relative w-full h-full">
             <Image
               src={
-                event.id === 'aunt_zhang' ? '/character/aunt_zhang/aunt_zhang_happy.png' :
-                  event.id === 'michael' ? '/character/michael/michael_normal.png' :
-                    '/character/officer_chan/officer_chan_normal.png'
+                event.id === 'aunt_zhang' ? `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/character/aunt_zhang/aunt_zhang_happy.png` :
+                  event.id === 'michael' ? `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/character/michael/michael_normal.png` :
+                    `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/character/officer_chan/officer_chan_normal.png`
               }
               alt={event.label}
               fill

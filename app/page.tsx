@@ -14,7 +14,7 @@ export default function Page() {
       {/* Background with white soft overlay */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/background/Introduction.png"
+          src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/background/Introduction.png`}
           alt="Cyberpunk City Background"
           fill
           className="object-cover opacity-20 grayscale"
