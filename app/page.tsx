@@ -5,19 +5,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Shield, Brain, Scale, ChevronRight, Terminal, Lock, Ticket, Search } from 'lucide-react'
-import { LoadingScreen } from '../components/LoadingScreen'
-
 export default function Page() {
   const [isHovered, setIsHovered] = useState(false)
-  const [showLoading, setShowLoading] = useState(true)
 
   return (
-    <>
-      <AnimatePresence>
-        {showLoading && <LoadingScreen key="loading" onComplete={() => setShowLoading(false)} />}
-      </AnimatePresence>
-
-      <div className={`min-h-screen bg-white text-gray-900 relative overflow-hidden font-sans selection:bg-purple-100 selection:text-purple-900 transition-opacity duration-1000 ${showLoading ? 'opacity-0' : 'opacity-100'}`}>
+    <div className="min-h-screen bg-white text-gray-900 relative overflow-hidden font-sans selection:bg-purple-100 selection:text-purple-900">
         {/* Background with white soft overlay */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -126,6 +118,5 @@ export default function Page() {
         </div>
 
       </div>
-    </>
   )
 }
