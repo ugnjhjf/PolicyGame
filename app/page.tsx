@@ -27,7 +27,7 @@ export default function Page() {
 
           {/* Main Content */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="max-w-6xl space-y-8 w-full"
@@ -57,7 +57,7 @@ export default function Page() {
               ].map((feature, idx) => (
                 <motion.div
                   key={idx}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={false}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 + (idx * 0.1), duration: 0.5 }}
                   className="bg-white/80 backdrop-blur-md border border-gray-200 p-8 rounded-2xl flex items-start gap-5 hover:bg-white hover:border-purple-200 transition-all cursor-default group shadow-sm hover:shadow-md"
@@ -75,7 +75,7 @@ export default function Page() {
 
             {/* START Button */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.6 }}
               className="pt-6"
@@ -98,7 +98,7 @@ export default function Page() {
 
         {/* Footer Metadata */}
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={false}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.6 }}
           className="absolute bottom-8 right-8 flex items-center gap-6 text-xs text-gray-400 font-mono z-20 font-semibold uppercase tracking-wider"

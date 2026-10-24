@@ -6,15 +6,16 @@ try {
 }
 
 const isProd = process.env.NODE_ENV === 'production';
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? (isProd ? '/PolicyGame' : '');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
+  trailingSlash: true,
   env: {
-    NEXT_PUBLIC_BASE_PATH: isProd ? '/PolicyGame' : ''
+    NEXT_PUBLIC_BASE_PATH: basePath,
   },
-  basePath: isProd ? '/PolicyGame' : '',
-  assetPrefix: isProd ? '/PolicyGame/' : '',
+  basePath,
   eslint: {
     ignoreDuringBuilds: true,
   },

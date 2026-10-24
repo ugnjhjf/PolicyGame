@@ -24,8 +24,17 @@ pnpm dev
 ### Production Build
 ```bash
 pnpm build
-pnpm start
 ```
+
+The static site is generated in `out/`; `next start` does not serve static exports.
+
+### GitHub Pages deployment
+
+1. In the repository's **Settings → Pages → Build and deployment**, set **Source** to **GitHub Actions**. Deploying from the source branch runs Jekyll and publishes this README instead of the game.
+2. Push to `main`, or run **Deploy Next.js site to Pages** from the Actions tab. The workflow builds and uploads `out/`.
+3. Wait for both the build and deploy jobs to succeed, then open `https://ugnjhjf.github.io/PolicyGame/`.
+
+The workflow uses the Pages base path for scripts, navigation, and public assets. Local production builds default to `/PolicyGame`; set `NEXT_PUBLIC_BASE_PATH` before building to target a different path (or an empty string for root hosting). Routes export as directories so direct visits to `/story/`, `/chapter/`, and `/game/` work on static hosting. The exported `.nojekyll` file preserves `_next` assets when using branch publishing.
 
 
 
