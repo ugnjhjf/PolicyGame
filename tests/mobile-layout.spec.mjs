@@ -57,6 +57,49 @@ for (const [width, height] of [[320, 568], [375, 667], [667, 375]]) {
       await expect(chatbox.getByText('Our AI model has been used to solve the manpower shortage problem.')).toBeVisible()
     })
 
+    test('portrait stays rendered when dialogue changes pose', async ({ page }) => {
+      await page.goto(base + '/game/')
+      const portrait = page.getByRole('img', { name: 'Anna' })
+      await expect(page.getByTestId('dialogue-box')).toBeVisible({ timeout: 20000 })
+      await expect.poll(async () => portrait.evaluate(img => img.complete && img.naturalWidth > 0), { timeout: 10000 }).toBe(true)
+      await portrait.evaluate(img => { window.__previousPortrait = img })
+      await page.getByTestId('dialogue-box').click()
+      await expect(page.getByTestId('dialogue-box').getByText('Our AI model has been used to solve the manpower shortage problem.')).toBeVisible()
+      await expect(portrait).toHaveAttribute('src', /anna_confuse\.png/)
+      expect(await portrait.evaluate(img => img === window.__previousPortrait)).toBe(true)
+      expect(await portrait.evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true)
+      expect(await portrait.evaluate(img => getComputedStyle(img.parentElement).opacity)).toBe('1')
+    })
+
+    if (width === 375) {
+      test('portrait remains visible while the next pose is still downloading', async ({ page }) => {
+        let releasePose = () => {}
+        const holdPose = new Promise(resolve => { releasePose = resolve })
+        let requested = false
+        await page.route('**/anna_confuse.png', async route => {
+          requested = true
+          await holdPose
+          await route.continue()
+        })
+        try {
+          await page.goto(base + '/game/')
+          const portrait = page.getByRole('img', { name: 'Anna' })
+          await expect(page.getByTestId('dialogue-box')).toBeVisible({ timeout: 20000 })
+          await expect.poll(async () => portrait.evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true)
+          await portrait.evaluate(img => { window.__previousPortrait = img })
+          await page.getByTestId('dialogue-box').click()
+          await expect.poll(() => requested).toBe(true)
+          await expect(portrait).toHaveAttribute('src', /anna_waving\.png/)
+          expect(await portrait.evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true)
+          expect(await portrait.evaluate(img => img === window.__previousPortrait)).toBe(true)
+          releasePose()
+          await expect(portrait).toHaveAttribute('src', /anna_confuse\.png/)
+        } finally {
+          releasePose()
+        }
+      })
+    }
+
     test('game tasks and PDA tabs stay within the viewport', async ({ page }) => {
       await page.goto(base + '/game/')
       for (let i = 0; i < 12 && await page.getByText('Meet with the community').count() === 0; i++) {

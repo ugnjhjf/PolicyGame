@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronRight } from 'lucide-react'
@@ -62,9 +62,7 @@ export function DialogueOverlay({
     <div className="fixed inset-0 h-dvh md:h-auto z-50 pointer-events-none flex flex-col md:justify-end md:pb-12 overflow-hidden">
       {/* On phones the portrait has its own centered stage above the dialogue box. */}
       <div className="relative z-0 flex-1 min-h-0 flex items-center justify-center overflow-hidden pointer-events-none md:absolute md:inset-0 md:flex-none md:items-end md:overflow-visible">
-        <AnimatePresence mode="popLayout">
-          {characterImage && <CharacterImage image={characterImage} name={characterName} />}
-        </AnimatePresence>
+        {characterImage && <CharacterImage image={characterImage} name={characterName} />}
       </div>
 
       {/* The mobile conversation lives in a visual-novel chat box below the portrait. */}
@@ -89,23 +87,35 @@ export function DialogueOverlay({
 }
 
 function CharacterImage({ image, name }: { image: string, name: string }) {
+  const [visibleImage, setVisibleImage] = useState(image)
+
+  useEffect(() => {
+    if (image === visibleImage) return
+
+    // Keep the current portrait painted until the next pose has decoded.
+    // Changing the src before that can briefly leave an empty image on phones.
+    const nextSrc = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}${image.startsWith('/') ? image : `/${image}`}`
+    const preload = new window.Image()
+    let cancelled = false
+    preload.src = nextSrc
+    preload.decode().then(() => {
+      if (!cancelled) setVisibleImage(image)
+    }).catch(() => {
+      // A missing portrait should not blank the one already on screen.
+    })
+    return () => { cancelled = true }
+  }, [image, visibleImage])
+
   return (
-    <motion.div
-      key={image}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="relative shrink-0 md:shrink w-[120vw] max-w-none h-full md:w-[110vh] md:h-[110vh] md:mb-[-15vh]"
-    >
+    <div className="relative shrink-0 md:shrink w-[120vw] max-w-none h-full md:w-[110vh] md:h-[110vh] md:mb-[-15vh]">
       <Image
-        src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}${image.startsWith('/') ? image : `/${image}`}`}
+        src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}${visibleImage.startsWith('/') ? visibleImage : `/${visibleImage}`}`}
         alt={name}
         fill
         className="object-contain object-bottom"
         priority
       />
-    </motion.div>
+    </div>
   )
 }
 
