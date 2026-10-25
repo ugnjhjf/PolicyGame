@@ -49,6 +49,20 @@ export function SolutionMatchingOverlay({
     // --- Logic ---
     const [draggingSource, setDraggingSource] = useState<'left' | 'right' | null>(null)
     const [hoveredSlotId, setHoveredSlotId] = useState<string | null>(null)
+    const [selectedCardId, setSelectedCardId] = useState<string | null>(null)
+
+    // Dragging works on desktop; tapping a card then a bias works on touch screens.
+    const placeCard = (cardId: string, slotId: string) => {
+        const previousSlot = Object.keys(placements).find(key => placements[key] === cardId)
+        setPlacements(prev => {
+            const next = { ...prev }
+            if (previousSlot) delete next[previousSlot]
+            next[slotId] = cardId
+            return next
+        })
+        setResults(prev => ({ ...prev, [slotId]: null, ...(previousSlot ? { [previousSlot]: null } : {}) }))
+        setSelectedCardId(null)
+    }
 
     // --- Logic ---
     const handleDragStart = (source: 'left' | 'right') => {
@@ -76,23 +90,7 @@ export function SolutionMatchingOverlay({
         const slotElement = elements.find(el => el.getAttribute('data-slot-id'))
 
         if (slotElement) {
-            const slotId = slotElement.getAttribute('data-slot-id')!
-
-            setPlacements(prev => {
-                const next = { ...prev }
-                const oldSlotId = Object.keys(next).find(key => next[key] === cardId)
-                if (oldSlotId) delete next[oldSlotId]
-                next[slotId] = cardId
-                return next
-            })
-
-            setResults(prev => {
-                const next = { ...prev }
-                const oldSlotId = Object.keys(placements).find(key => placements[key] === cardId)
-                if (oldSlotId) next[oldSlotId] = null
-                next[slotId] = null
-                return next
-            })
+            placeCard(cardId, slotElement.getAttribute('data-slot-id')!)
         } else {
             const currentSlot = Object.keys(placements).find(key => placements[key] === cardId)
             if (currentSlot) {
@@ -147,25 +145,25 @@ export function SolutionMatchingOverlay({
         <div className="fixed inset-0 z-[70] bg-white/95 backdrop-blur-sm text-gray-900 flex flex-col animate-in fade-in duration-300">
 
             {/* Header — white with subtle bottom border */}
-            <div className="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200 shrink-0 shadow-sm">
-                <div className="flex items-center gap-4">
+            <div className="flex items-center justify-between gap-3 px-4 md:px-8 py-3 md:py-4 bg-white border-b border-gray-200 shrink-0 shadow-sm">
+                <div className="flex items-center gap-2 md:gap-4 min-w-0">
                     <div className="p-2 bg-purple-100 rounded-xl">
                         <LayoutDashboard className="w-6 h-6 text-purple-500" />
                     </div>
                     <div>
                         <p className="text-xs font-bold tracking-widest text-gray-400 uppercase mb-0.5">Policy Game</p>
-                        <h2 className="text-xl font-bold text-gray-900">Policy Synthesis Board</h2>
+                        <h2 className="text-base md:text-xl font-bold text-gray-900">Policy Synthesis Board</h2>
                     </div>
                 </div>
-                <p className="text-sm text-gray-400">Match the correct intervention to each identified bias.</p>
+                <button onClick={handleExit} className="shrink-0 text-xs md:text-sm text-gray-500 underline">Save & Exit</button>
             </div>
 
             {/* Main Game Area */}
-            <div className="flex-1 flex p-8 gap-8 relative overflow-y-auto bg-gray-50">
+            <div className="flex-1 flex flex-col md:flex-row p-3 md:p-8 gap-4 md:gap-8 relative overflow-y-auto bg-gray-50">
 
                 {/* Left: Problem Slots */}
                 <div
-                    className="flex-[1.2] flex flex-col gap-6 max-w-2xl relative transition-all duration-200"
+                    className="w-full md:flex-[1.2] flex flex-col gap-4 md:gap-6 md:max-w-2xl relative transition-all duration-200"
                     style={{ zIndex: draggingSource === 'left' ? 50 : 10 }}
                 >
                     {SLOTS.map(slot => {
@@ -184,24 +182,28 @@ export function SolutionMatchingOverlay({
                                 handleDragStart={handleDragStart}
                                 handleDrag={handleDrag}
                                 handleDragEnd={handleDragEnd}
+                                selectedCardId={selectedCardId}
+                                onSelectCard={setSelectedCardId}
+                                onSelectSlot={() => selectedCardId && placeCard(selectedCardId, slot.id)}
                             />
                         )
                     })}
                 </div>
 
                 {/* Center: Arrow */}
-                <div className="w-24 flex flex-col items-center justify-center gap-4">
+                <div className="hidden md:flex w-24 flex-col items-center justify-center gap-4">
                     <ArrowRight className="w-8 h-8 text-gray-300 animate-pulse" />
                 </div>
 
                 {/* Right: Solution Cards Pool */}
                 <div
-                    className="flex-1 bg-white rounded-2xl border border-gray-200 p-6 flex flex-col relative transition-all duration-200 shadow-sm"
+                    className="w-full md:flex-1 min-w-0 bg-white rounded-2xl border border-gray-200 p-4 md:p-6 flex flex-col relative transition-all duration-200 shadow-sm"
                     style={{ zIndex: draggingSource === 'right' ? 50 : 10 }}
                 >
                     <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6 flex items-center gap-2">
                         <LayoutDashboard className="w-4 h-4" /> Available Interventions
                     </h3>
+                    <p className="md:hidden text-xs text-purple-700 mb-4">Tap an intervention, then tap a bias above to assign it.</p>
 
                     <div className="grid grid-cols-1 gap-4 content-start pr-2">
                         {getUnplacedCards().map(card => (
@@ -211,12 +213,14 @@ export function SolutionMatchingOverlay({
                                 onDragStart={() => handleDragStart('right')}
                                 onDrag={handleDrag}
                                 onDragEnd={handleDragEnd}
+                                onSelect={() => setSelectedCardId(card.id)}
+                                isSelected={selectedCardId === card.id}
                             />
                         ))}
                     </div>
 
                     {/* Submit Bar */}
-                    <div className="mt-auto pt-6 border-t border-gray-100 flex items-center justify-end gap-4">
+                    <div className="mt-6 pt-6 border-t border-gray-100 flex flex-wrap items-center justify-end gap-2 md:gap-4">
                         <button
                             onClick={handleExit}
                             className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 bg-white hover:bg-gray-50 transition-colors text-sm font-medium text-gray-600"
@@ -244,16 +248,26 @@ function DraggableCard({
     onDragStart,
     onDrag,
     onDragEnd,
+    onSelect,
+    isSelected = false,
     isPlaced = false
 }: {
     card: SolutionCard,
     onDragStart?: () => void,
     onDrag?: (info: any) => void,
     onDragEnd: (id: string, info: any) => void,
+    onSelect: () => void,
+    isSelected?: boolean,
     isPlaced?: boolean
 }) {
     return (
         <motion.div
+            role="button"
+            tabIndex={0}
+            aria-label={`Select ${card.title}`}
+            aria-pressed={isSelected}
+            onClick={(event) => { event.stopPropagation(); onSelect() }}
+            onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onSelect() } }}
             drag
             dragSnapToOrigin
             dragElastic={0.1}
@@ -264,7 +278,7 @@ function DraggableCard({
             onDragEnd={(e, info) => onDragEnd(card.id, info)}
             layoutId={card.id}
             initial={false}
-            className={`cursor-grab active:cursor-grabbing bg-white border-2 border-purple-200 hover:border-purple-400 p-4 rounded-2xl shadow-sm group transition-colors relative w-full
+            className={`cursor-grab active:cursor-grabbing bg-white border-2 ${isSelected ? 'border-purple-600 ring-2 ring-purple-200' : 'border-purple-200 hover:border-purple-400'} p-4 rounded-2xl shadow-sm group transition-colors relative w-full
                 ${isPlaced ? 'h-full flex flex-col justify-center' : ''}`}
         >
             <div className="flex items-start gap-3">
@@ -279,11 +293,16 @@ function DraggableCard({
 
 // Sub-components
 
-function ProblemSlotItem({ slot, filledCard, result, isHovered, handleDragStart, handleDrag, handleDragEnd }: any) {
+function ProblemSlotItem({ slot, filledCard, result, isHovered, handleDragStart, handleDrag, handleDragEnd, selectedCardId, onSelectCard, onSelectSlot }: any) {
     return (
         <div
             data-slot-id={slot.id}
-            className={`relative p-6 rounded-2xl border-2 transition-all duration-200 min-h-[160px] flex flex-col justify-center bg-white
+            role="button"
+            tabIndex={0}
+            aria-label={`Assign intervention to ${slot.title}`}
+            onClick={onSelectSlot}
+            onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onSelectSlot() } }}
+            className={`relative p-4 md:p-6 rounded-2xl border-2 transition-all duration-200 min-h-[160px] flex flex-col justify-center bg-white
                 ${result === 'correct' ? 'border-green-400 bg-green-50' :
                     result === 'wrong' ? 'border-red-400 bg-red-50' :
                         isHovered ? 'border-purple-400 bg-purple-50 scale-[1.02] shadow-md' :
@@ -303,6 +322,8 @@ function ProblemSlotItem({ slot, filledCard, result, isHovered, handleDragStart,
                         onDragStart={() => handleDragStart('left')}
                         onDrag={handleDrag}
                         onDragEnd={handleDragEnd}
+                        onSelect={() => onSelectCard(filledCard.id)}
+                        isSelected={selectedCardId === filledCard.id}
                         isPlaced={true}
                     />
                 ) : (
@@ -320,7 +341,7 @@ function ProblemSlotItem({ slot, filledCard, result, isHovered, handleDragStart,
             )}
 
             {result === 'wrong' && filledCard && (
-                <div className="absolute -bottom-2 translate-y-full left-0 right-0 bg-red-50 text-red-700 text-xs p-3 rounded-xl mt-2 border border-red-200 z-10 shadow-md">
+                <div className="relative md:absolute md:-bottom-2 md:translate-y-full left-0 right-0 bg-red-50 text-red-700 text-xs p-3 rounded-xl mt-2 border border-red-200 z-10 shadow-md">
                     <div className="font-bold flex items-center gap-1 mb-1"><AlertTriangle className="w-3 h-3" /> Error Analysis:</div>
                     {filledCard.feedback}
                 </div>

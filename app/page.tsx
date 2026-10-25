@@ -9,7 +9,7 @@ export default function Page() {
   const [isHovered, setIsHovered] = useState(false)
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 relative overflow-hidden font-sans selection:bg-purple-100 selection:text-purple-900">
+    <div className="min-h-dvh bg-white text-gray-900 relative overflow-hidden flex flex-col font-sans selection:bg-purple-100 selection:text-purple-900">
         {/* Background with white soft overlay */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -23,7 +23,7 @@ export default function Page() {
           <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/80 to-white/90 pointer-events-none" />
         </div>
 
-        <div className="relative z-10 container mx-auto px-4 min-h-screen flex flex-col justify-center items-center lg:items-start lg:px-20">
+        <div className="relative z-10 container mx-auto px-4 py-10 sm:py-16 flex-1 flex flex-col justify-center items-center lg:items-start lg:px-20">
 
           {/* Main Content */}
           <motion.div
@@ -101,7 +101,7 @@ export default function Page() {
           initial={false}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.6 }}
-          className="absolute bottom-8 right-8 flex items-center gap-6 text-xs text-gray-400 font-mono z-20 font-semibold uppercase tracking-wider"
+          className="relative z-20 mt-auto px-4 pb-5 sm:pb-8 sm:px-8 flex flex-wrap justify-center sm:justify-end items-center gap-2 sm:gap-6 text-[10px] sm:text-xs text-gray-400 font-mono font-semibold uppercase tracking-wider"
         >
           <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 rounded-full border border-green-100">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>

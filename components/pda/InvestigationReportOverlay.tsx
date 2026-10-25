@@ -28,10 +28,10 @@ export function InvestigationReportOverlay({
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/30 backdrop-blur-sm animate-in fade-in duration-300 p-4 lg:p-12">
 
             {/* Wrapper for layout: Prev - Content - Next */}
-            <div className="flex items-center justify-center w-full max-w-[90rem] gap-4">
+            <div className="grid grid-cols-2 md:flex items-center justify-center w-full max-w-[90rem] gap-2 md:gap-4">
 
                 {/* Prev Button */}
-                <div className="shrink-0 w-16 flex justify-end">
+                <div className="row-start-2 col-start-1 md:row-auto md:col-auto shrink-0 md:w-16 flex justify-start md:justify-end">
                     {hasPrev && (
                         <button
                             onClick={onPrev}
@@ -43,13 +43,13 @@ export function InvestigationReportOverlay({
                     )}
                 </div>
 
-                <div className="relative w-full max-w-6xl bg-white border border-gray-200 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+                <div className="col-span-2 row-start-1 md:col-auto md:row-auto relative w-full min-w-0 max-w-6xl bg-white border border-gray-200 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[calc(100dvh-6.5rem)] md:max-h-[90vh]">
 
                     {/* Header */}
                     <ReportHeader onClose={onClose} />
 
                     {/* Main Content Area - Scrollable */}
-                    <div className="flex-1 overflow-auto p-8 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-purple-200 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-purple-400 transition-colors bg-white">
+                    <div className="flex-1 min-h-0 overflow-auto p-4 md:p-8 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-purple-200 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-purple-400 transition-colors bg-white">
                         <div className={`grid gap-8 ${data.chart ? 'lg:grid-cols-2' : 'grid-cols-1'}`}>
 
                             {/* Left Column: Text Data */}
@@ -62,7 +62,7 @@ export function InvestigationReportOverlay({
                     </div>
 
                     {/* Footer */}
-                    <div className="px-8 py-5 bg-gray-50 border-t border-gray-200 flex justify-end shrink-0">
+                    <div className="px-4 md:px-8 py-3 md:py-5 bg-gray-50 border-t border-gray-200 flex justify-end shrink-0">
                         <button
                             onClick={onClose}
                             className="px-8 py-2.5 bg-gray-900 hover:bg-gray-700 text-white rounded-full font-bold text-sm tracking-wide transition-all shadow-md active:scale-95"
@@ -74,7 +74,7 @@ export function InvestigationReportOverlay({
                 </div>
 
                 {/* Next Button */}
-                <div className="shrink-0 w-16 flex justify-start">
+                <div className="row-start-2 col-start-2 md:row-auto md:col-auto shrink-0 md:w-16 flex justify-end md:justify-start">
                     {hasNext && (
                         <button
                             onClick={onNext}
@@ -92,10 +92,10 @@ export function InvestigationReportOverlay({
 
 function ReportHeader({ onClose }: { onClose: () => void }) {
     return (
-        <div className="bg-purple-50 px-8 py-5 border-b border-purple-100 flex items-center justify-between shrink-0">
+        <div className="bg-purple-50 px-4 md:px-8 py-3 md:py-5 border-b border-purple-100 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-4">
                 <FileText className="w-6 h-6 text-purple-600" />
-                <h2 className="text-xl font-bold text-purple-950 tracking-wide uppercase">Investigation Report</h2>
+                <h2 className="text-base md:text-xl font-bold text-purple-950 tracking-wide uppercase">Investigation Report</h2>
             </div>
             <button onClick={onClose} className="text-purple-400 hover:text-purple-700 transition-colors">
                 <X className="w-8 h-8" />

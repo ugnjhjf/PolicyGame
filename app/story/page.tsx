@@ -11,7 +11,7 @@ export default function StoryPage() {
   const [currentPage, setCurrentPage] = useState(1)
 
   return (
-    <div className="absolute inset-0 z-0 bg-gray-50 text-gray-900 font-sans selection:bg-purple-100">
+    <div className="relative min-h-dvh bg-gray-50 text-gray-900 font-sans selection:bg-purple-100">
       {/* Light Background */}
       <Image
         src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/background/Introduction.png`}
@@ -23,7 +23,7 @@ export default function StoryPage() {
       />
       <div className="absolute inset-0 bg-white/80 pointer-events-none" />
 
-      <div className="relative z-10 container mx-auto px-4 min-h-screen flex flex-col justify-center items-center lg:px-20 overflow-hidden">
+      <div className="relative z-10 container mx-auto px-4 pt-24 pb-8 min-h-dvh flex flex-col justify-center items-center lg:px-20">
 
         {/* Navigation & Header */}
         <div className="absolute top-8 left-4 lg:left-12 right-4 lg:right-12 flex justify-between items-center z-50">
@@ -50,7 +50,7 @@ export default function StoryPage() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-12 mt-4 mx-auto"
+          className="text-center mb-6 sm:mb-12 mt-4 mx-auto"
         >
           <p className="font-serif text-3xl font-medium text-gray-900 max-w-3xl leading-relaxed flex flex-col items-center">
             <span>{currentPage === 1 ? 'Background Briefing' : 'Mission Objectives'}</span>

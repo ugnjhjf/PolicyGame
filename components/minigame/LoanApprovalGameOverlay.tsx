@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FileText, Database, RotateCcw, Zap } from 'lucide-react'
+import { FileText, Database, RotateCcw, Zap, X } from 'lucide-react'
 import parameterData from '../../config/data/quiz/LoanApprovalGameParameter.json'
 
 interface Criteria {
@@ -100,24 +100,24 @@ export function LoanApprovalGameOverlay({ isOpen, onClose, onComplete }: LoanApp
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="w-full h-full flex flex-col relative overflow-hidden bg-gray-50"
+                className="w-full h-full flex flex-col relative overflow-y-auto md:overflow-hidden bg-gray-50"
             >
-                <GameHeader />
+                <GameHeader onClose={onClose} />
 
                 {/* Main Content Area - Split Layout */}
-                <div className="flex-1 flex flex-col relative">
+                <div className="flex-1 flex flex-col relative min-h-0">
 
                     {/* TOP HALF: Slots */}
-                    <div className="flex-1 flex items-center justify-center relative overflow-visible">
+                    <div className="flex-1 flex flex-col md:flex-row items-center justify-center relative overflow-visible">
                         <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: `url('${process.env.NEXT_PUBLIC_BASE_PATH || ''}/grid-pattern.svg')` }} />
 
                         {/* Fixed Info Panel on the right */}
-                        <div className="absolute right-12 top-1/2 -translate-y-1/2 w-[400px] min-h-[300px] bg-white rounded-2xl shadow-xl p-8 flex flex-col z-20 border border-gray-200">
+                        <div className="relative order-2 md:order-none md:absolute md:right-12 md:top-1/2 md:-translate-y-1/2 w-[calc(100%-1.5rem)] md:w-[400px] min-h-0 md:min-h-[300px] mx-3 md:mx-0 my-4 md:my-0 bg-white rounded-2xl shadow-xl p-4 md:p-8 flex flex-col z-20 border border-gray-200">
                             <DatasetInfoPanel hoveredId={hoveredId} criteria={criteria} />
                         </div>
 
                         {/* Slots */}
-                        <div className="flex items-center gap-12 relative z-10 px-12 mt-20 pr-[200px]">
+                        <div className="order-1 md:order-none flex flex-wrap items-center justify-center gap-2 md:gap-12 relative z-10 px-3 md:px-12 mt-4 md:mt-20 md:pr-[200px]">
                             {slots.map((slotId, index) => (
                                 <DatasetSlotItem
                                     key={index}
@@ -138,7 +138,7 @@ export function LoanApprovalGameOverlay({ isOpen, onClose, onComplete }: LoanApp
                     </div>
 
                     {/* BOTTOM HALF: Inventory Dock */}
-                    <div className="h-64 bg-white border-t border-gray-200 flex flex-col items-center justify-center relative z-20 pb-4 w-full shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
+                    <div className="h-auto md:h-64 bg-white border-t border-gray-200 flex flex-col items-center justify-center relative z-20 pb-4 w-full shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
                         {!showResultOverlay && (
                             <InventoryDock
                                 availableItems={availableItems}
@@ -156,7 +156,7 @@ export function LoanApprovalGameOverlay({ isOpen, onClose, onComplete }: LoanApp
                             initial={{ backdropFilter: "blur(0px)", opacity: 0 }}
                             animate={{ backdropFilter: "blur(10px)", opacity: 1 }}
                             exit={{ backdropFilter: "blur(0px)", opacity: 0 }}
-                            className="absolute inset-0 z-50 flex flex-col items-center justify-center p-12 bg-gray-900/60"
+                            className="fixed md:absolute inset-0 z-50 flex flex-col items-center justify-center overflow-y-auto p-4 md:p-12 bg-gray-900/60"
                         >
                             <ResultSummaryBoard
                                 score={score}
@@ -223,7 +223,7 @@ function DatasetSlotItem({ index, slotId, hasSubmitted, criteria, setHoveredId, 
                 onMouseEnter={() => { if (isFilled && slotId) setHoveredId(slotId) }}
                 onMouseLeave={() => setHoveredId(null)}
                 onClick={() => isFilled && handleRemoveFromSlot(index)}
-                className={`w-40 h-56 rounded-2xl border-2 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 relative overflow-visible ${borderColor} ${!isFilled && 'border-dashed'}`}
+                className={`w-[88px] h-32 md:w-40 md:h-56 rounded-2xl border-2 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 relative overflow-visible ${borderColor} ${!isFilled && 'border-dashed'}`}
             >
                 {isFilled ? (
                     <>
@@ -264,7 +264,7 @@ function ResultSummaryBoard({ score, handleImprove, handleGenerateForecast }: an
         <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="w-full h-full max-w-4xl grid grid-cols-2 gap-6"
+            className="w-full h-auto md:h-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 my-auto"
         >
             <AccuracyCard score={score} />
             <ApplicationResultCard score={score} handleImprove={handleImprove} handleGenerateForecast={handleGenerateForecast} />
@@ -274,7 +274,7 @@ function ResultSummaryBoard({ score, handleImprove, handleGenerateForecast }: an
 
 function AccuracyCard({ score }: any) {
     return (
-        <div className="bg-white border border-gray-200 rounded-3xl p-8 flex flex-col justify-between shadow-2xl relative overflow-hidden group">
+        <div className="bg-white border border-gray-200 rounded-3xl p-5 md:p-8 flex flex-col justify-between shadow-2xl relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
             <div>
                 <div className="flex items-start justify-between mb-8">
@@ -312,7 +312,7 @@ function AccuracyCard({ score }: any) {
 
 function ApplicationResultCard({ score, handleImprove, handleGenerateForecast }: any) {
     return (
-        <div className="bg-white border border-gray-200 rounded-3xl p-8 flex flex-col relative overflow-hidden shadow-2xl">
+        <div className="bg-white border border-gray-200 rounded-3xl p-5 md:p-8 flex flex-col relative overflow-hidden shadow-2xl">
             <div className="flex justify-between items-center mb-8">
                 <span className="text-gray-900 font-black text-lg uppercase tracking-wider">Application Result</span>
                 <div className="flex gap-2">
@@ -363,10 +363,11 @@ function ApplicationResultCard({ score, handleImprove, handleGenerateForecast }:
     )
 }
 
-function GameHeader() {
+function GameHeader({ onClose }: { onClose: () => void }) {
     return (
-        <div className="absolute top-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center bg-white/80 backdrop-blur-md px-10 py-4 rounded-3xl border border-gray-200 shadow-sm">
-            <h2 className="text-2xl font-black text-gray-900 tracking-tight uppercase">
+        <div className="relative md:absolute md:top-8 md:left-1/2 md:-translate-x-1/2 z-20 flex flex-col items-center text-center bg-white/80 backdrop-blur-md mx-3 mt-3 md:mx-0 md:mt-0 px-4 md:px-10 py-3 md:py-4 rounded-3xl border border-gray-200 shadow-sm">
+            <button onClick={onClose} aria-label="Close dataset game" className="absolute right-2 top-2 p-1 rounded-full text-gray-600 hover:bg-gray-100"><X className="w-5 h-5" /></button>
+            <h2 className="text-lg md:text-2xl font-black text-gray-900 tracking-tight uppercase">
                 Model Training Dataset
             </h2>
             <p className="text-sm font-semibold mt-1 text-gray-500">
@@ -415,7 +416,7 @@ function DatasetInfoPanel({ hoveredId, criteria }: { hoveredId: string | null, c
                     className="h-full flex flex-col items-center justify-center text-gray-400 flex-1 py-12"
                 >
                     <Database className="w-16 h-16 mb-4 text-gray-200" />
-                    <p className="font-bold text-sm tracking-widest uppercase text-center text-gray-400">Hover over a dataset<br />to view details</p>
+                    <p className="font-bold text-sm tracking-widest uppercase text-center text-gray-400">Select a dataset<br />to view details</p>
                 </motion.div>
             )}
         </AnimatePresence>
@@ -430,7 +431,7 @@ function StartTrainingButton({ slots, handleSubmit }: any) {
             animate={{ opacity: 1, scale: 1 }}
             onClick={isReady ? handleSubmit : undefined}
             disabled={!isReady}
-            className={`absolute -bottom-24 left-1/3 -translate-x-1/2 px-10 py-4 rounded-full text-sm uppercase tracking-wider font-bold transition-all flex items-center gap-3 z-50 ${isReady
+            className={`relative md:absolute md:-bottom-24 md:left-1/3 md:-translate-x-1/2 px-6 md:px-10 py-3 md:py-4 rounded-full text-sm uppercase tracking-wider font-bold transition-all flex items-center gap-3 z-50 ${isReady
                 ? 'bg-gray-900 text-white hover:bg-purple-600 shadow-xl shadow-purple-500/20 hover:-translate-y-1 active:scale-95 cursor-pointer'
                 : 'bg-gray-200 border border-gray-300 text-gray-400 shadow-sm cursor-not-allowed'
                 }`}
@@ -443,17 +444,17 @@ function StartTrainingButton({ slots, handleSubmit }: any) {
 
 function InventoryDock({ availableItems, setHoveredId, handleSelectFromInventory }: any) {
     return (
-        <div className="flex items-center justify-center gap-6 px-12 py-6 w-full flex-wrap">
+        <div className="flex items-center justify-center gap-2 md:gap-6 px-3 md:px-12 py-4 md:py-6 w-full flex-wrap">
             {availableItems.map((item: any) => (
                 <div key={item.id} className="relative">
                     <motion.button
                         layoutId={item.id}
                         onMouseEnter={() => setHoveredId(item.id)}
                         onMouseLeave={() => setHoveredId(null)}
-                        onClick={() => handleSelectFromInventory(item.id)}
+                        onClick={() => { setHoveredId(item.id); handleSelectFromInventory(item.id) }}
                         whileHover={{ scale: 1.05, y: -5 }}
                         whileTap={{ scale: 0.95 }}
-                        className="w-36 h-40 bg-white border border-gray-200 shadow-sm rounded-2xl flex flex-col items-center justify-center gap-3 group hover:border-purple-300 hover:shadow-lg hover:shadow-purple-500/10 transition-all duration-200 flex-shrink-0"
+                        className="w-[135px] h-28 md:w-36 md:h-40 bg-white border border-gray-200 shadow-sm rounded-2xl flex flex-col items-center justify-center gap-3 group hover:border-purple-300 hover:shadow-lg hover:shadow-purple-500/10 transition-all duration-200 flex-shrink-0"
                     >
                         <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center group-hover:bg-purple-50 transition-colors border border-gray-100 group-hover:border-purple-100">
                             <FileText className="w-5 h-5 text-gray-400 group-hover:text-purple-500" />

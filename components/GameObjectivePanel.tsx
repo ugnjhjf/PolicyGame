@@ -47,17 +47,14 @@ export default function GameObjectivePanel({ className = '', tasks, onTaskClick,
           initial={{ opacity: 0, x: -50 }}
           animate={{
             opacity: 1,
-            x: 0,
-            scale: 1.15,
-            originX: 0,
-            originY: 0
+            x: 0
           }}
           exit={{ opacity: 0, x: -50 }}
           transition={{
             opacity: { duration: 0.5 },
             x: { duration: 0.5 }
           }}
-          className={`fixed left-6 top-20 z-20 flex flex-col gap-4 ${className}`}
+          className={`fixed left-3 right-3 top-3 sm:left-6 sm:right-auto sm:top-20 z-20 flex flex-col gap-4 ${className}`}
         >
 
           {/* Progress Panel with Blinking Highlight */}
@@ -68,7 +65,8 @@ export default function GameObjectivePanel({ className = '', tasks, onTaskClick,
               background: 'rgba(255, 255, 255, 0.95)',
               borderRadius: '12px',
               padding: '16px',
-              minWidth: '280px',
+              width: '100%',
+              maxWidth: 'calc(100vw - 24px)',
               border: '1px solid rgba(0,0,0,0.08)',
               boxShadow: '0 4px 20px rgba(0,0,0,0.05)'
             }}

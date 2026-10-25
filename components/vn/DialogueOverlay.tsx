@@ -59,7 +59,7 @@ export function DialogueOverlay({
   }
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none flex flex-col justify-end pb-12 overflow-hidden">
+    <div className="fixed inset-0 z-50 pointer-events-none flex flex-col justify-end pb-5 sm:pb-12 overflow-hidden">
       <div className="absolute inset-0 z-0 flex items-end justify-center pointer-events-none">
         <AnimatePresence mode="popLayout">
           {characterImage && <CharacterImage image={characterImage} name={characterName} />}
@@ -67,7 +67,7 @@ export function DialogueOverlay({
       </div>
 
       {/* Subtitle Area */}
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 pointer-events-auto flex flex-col items-center">
+      <div className="relative z-10 w-full max-w-5xl max-h-[55dvh] overflow-y-auto mx-auto px-4 pointer-events-auto flex flex-col items-center">
         <div
           className="w-full text-center cursor-pointer select-none"
           onClick={(e) => {
@@ -94,7 +94,7 @@ function CharacterImage({ image, name }: { image: string, name: string }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="relative w-[110vh] h-[110vh] mb-[-15vh]"
+      className="relative w-full h-[75dvh] mb-[-8dvh] md:w-[110vh] md:h-[110vh] md:mb-[-15vh]"
     >
       <Image
         src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}${image.startsWith('/') ? image : `/${image}`}`}
@@ -116,7 +116,7 @@ function SubtitleText({ text, characterName, renderText }: { text: string, chara
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.4 }}
-        className="text-2xl md:text-3xl font-bold leading-relaxed drop-shadow-md"
+        className="text-lg sm:text-2xl md:text-3xl font-bold leading-relaxed drop-shadow-md"
         style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}
       >
         <span className="text-blue-400 mr-2 uppercase tracking-wide">{characterName}:</span>
@@ -145,7 +145,7 @@ function DialogueChoices({ choices }: { choices?: DialogueOption[] }) {
                 e.stopPropagation()
                 choice.action()
               }}
-              className="w-full px-6 py-3 bg-black/60 hover:bg-yellow-500/80 hover:text-black text-white text-lg font-medium rounded border-l-4 border-yellow-500 transition-all text-left"
+              className="w-full px-4 sm:px-6 py-3 bg-black/60 hover:bg-yellow-500/80 hover:text-black text-white text-sm sm:text-lg font-medium rounded border-l-4 border-yellow-500 transition-all text-left"
             >
               {choice.text}
             </button>

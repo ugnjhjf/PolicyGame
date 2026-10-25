@@ -41,9 +41,9 @@ export function PDAOverlay({
 
   return (
     <div className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 md:p-8 animate-in fade-in duration-200">
-      <div className="w-full max-w-5xl h-[80vh] bg-white border border-gray-200 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+      <div className="w-full max-w-5xl h-[calc(100dvh-2rem)] md:h-[80vh] bg-white border border-gray-200 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-5 bg-gray-50 border-b border-gray-200">
+        <div className="flex items-center justify-between px-4 py-3 sm:px-8 sm:py-5 bg-gray-50 border-b border-gray-200">
           <div className="flex items-center gap-2">
             <div className="text-xl font-black text-gray-900 tracking-widest uppercase">PDA <span className="text-purple-600">Archive</span></div>
           </div>
@@ -56,41 +56,41 @@ export function PDAOverlay({
         </div>
 
         {/* Tabs */}
-        <div className="flex bg-gray-100 border-b border-gray-200 p-2 gap-2">
+        <div className="grid grid-cols-3 bg-gray-100 border-b border-gray-200 p-2 gap-1 sm:gap-2">
           <button
             onClick={() => { setCurrentTab('journal'); setSelectedItem(null) }}
-            className={`flex-1 py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-xs font-bold tracking-widest uppercase transition-all ${currentTab === 'journal'
+            className={`min-w-0 py-3 px-1 sm:px-4 rounded-xl flex items-center justify-center gap-1 sm:gap-2 text-[9px] sm:text-xs font-bold tracking-normal sm:tracking-widest uppercase transition-all ${currentTab === 'journal'
               ? 'bg-white text-blue-600 shadow-sm border border-gray-200'
               : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50 border border-transparent'
               }`}
           >
-            <FileText className="w-4 h-4" />
+            <FileText className="hidden sm:block w-4 h-4" />
             JOURNAL
           </button>
           <button
             onClick={() => { setCurrentTab('encyclopedia'); setSelectedItem(null) }}
-            className={`flex-1 py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-xs font-bold tracking-widest uppercase transition-all ${currentTab === 'encyclopedia'
+            className={`min-w-0 py-3 px-1 sm:px-4 rounded-xl flex items-center justify-center gap-1 sm:gap-2 text-[9px] sm:text-xs font-bold tracking-normal sm:tracking-widest uppercase transition-all ${currentTab === 'encyclopedia'
               ? 'bg-white text-purple-600 shadow-sm border border-gray-200'
               : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50 border border-transparent'
               }`}
           >
-            <Book className="w-4 h-4" />
+            <Book className="hidden sm:block w-4 h-4" />
             ENCYCLOPEDIA
           </button>
           <button
             onClick={() => { setCurrentTab('reports'); setSelectedItem(null) }}
-            className={`flex-1 py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-xs font-bold tracking-widest uppercase transition-all ${currentTab === 'reports'
+            className={`min-w-0 py-3 px-1 sm:px-4 rounded-xl flex items-center justify-center gap-1 sm:gap-2 text-[9px] sm:text-xs font-bold tracking-normal sm:tracking-widest uppercase transition-all ${currentTab === 'reports'
               ? 'bg-white text-green-600 shadow-sm border border-gray-200'
               : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50 border border-transparent'
               }`}
           >
-            <FileText className="w-4 h-4" />
+            <FileText className="hidden sm:block w-4 h-4" />
             REPORTS
           </button>
         </div>
 
         {/* Content */}
-        <div className="flex-1 p-6 overflow-hidden bg-white">
+        <div className="flex-1 min-h-0 p-3 sm:p-6 overflow-hidden bg-white">
           {currentTab === 'journal' && <JournalTab clues={clues} selectedItem={selectedItem} setSelectedItem={setSelectedItem} onMarkAsRead={onMarkAsRead} />}
           {currentTab === 'encyclopedia' && <EncyclopediaTab concepts={concepts} selectedItem={selectedItem} setSelectedItem={setSelectedItem} onMarkAsRead={onMarkAsRead} />}
           {currentTab === 'reports' && <ReportsTab reports={reports} onReportSelect={onReportSelect} onMarkAsRead={onMarkAsRead} />}
@@ -123,8 +123,8 @@ function JournalItemButton({ clue, selectedItem, setSelectedItem, onMarkAsRead }
 
 function JournalTab({ clues, selectedItem, setSelectedItem, onMarkAsRead }: any) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-6 h-full">
-      <div className="border-r border-gray-100 pr-6 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-gray-300">
+    <div className="grid grid-cols-1 grid-rows-[minmax(0,1fr)_minmax(0,1fr)] md:grid-rows-1 md:grid-cols-[1fr_1.5fr] gap-3 md:gap-6 h-full min-h-0">
+      <div className="min-w-0 min-h-0 border-b md:border-b-0 md:border-r border-gray-100 pb-2 md:pb-0 md:pr-6 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-gray-300">
         <h3 className="text-xs font-bold uppercase tracking-widest text-blue-600 mb-4 sticky top-0 bg-white py-3 pl-1 z-10 border-b border-gray-100">Collected Clues</h3>
         <div className="space-y-3 pb-4">
           {clues.length === 0 ? (
@@ -136,7 +136,7 @@ function JournalTab({ clues, selectedItem, setSelectedItem, onMarkAsRead }: any)
           )}
         </div>
       </div>
-      <div className="pl-2 h-full overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-thumb]:rounded-full">
+      <div className="min-w-0 min-h-0 px-2 h-full overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-thumb]:rounded-full">
         {selectedItem && clues.find((c: any) => c.id === selectedItem) ? (
           <div className="pr-4 py-2">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">{clues.find((c: any) => c.id === selectedItem)?.title}</h2>
@@ -186,8 +186,8 @@ function EncyclopediaTab({ concepts, selectedItem, setSelectedItem, onMarkAsRead
   )
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-6 h-full">
-      <div className="border-r border-gray-100 pr-6 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-thumb]:rounded-full">
+    <div className="grid grid-cols-1 grid-rows-[minmax(0,1fr)_minmax(0,1fr)] md:grid-rows-1 md:grid-cols-[1fr_1.5fr] gap-3 md:gap-6 h-full min-h-0">
+      <div className="min-w-0 min-h-0 border-b md:border-b-0 md:border-r border-gray-100 pb-2 md:pb-0 md:pr-6 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-thumb]:rounded-full">
         {gameConcepts.length > 0 && (
           <>
             <h3 className="text-xs font-bold uppercase tracking-widest text-purple-600 mb-4 sticky top-0 bg-white py-3 pl-1 z-10 border-b border-gray-100">Game Concepts</h3>
@@ -210,7 +210,7 @@ function EncyclopediaTab({ concepts, selectedItem, setSelectedItem, onMarkAsRead
           )}
         </div>
       </div>
-      <div className="pl-2 h-full overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-thumb]:rounded-full">
+      <div className="min-w-0 min-h-0 px-2 h-full overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-thumb]:rounded-full">
         {selectedItem && concepts.find((c: any) => c.id === selectedItem) ? (
           <div className="pr-4 py-2">
             <h2 className="text-3xl font-bold text-gray-900 mb-3">{concepts.find((c: any) => c.id === selectedItem)?.title}</h2>
@@ -261,8 +261,8 @@ function ReportItemButton({ report, onReportSelect, onMarkAsRead }: any) {
 
 function ReportsTab({ reports, onReportSelect, onMarkAsRead }: any) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-6 h-full">
-      <div className="border-r border-gray-100 pr-6 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-thumb]:rounded-full">
+    <div className="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-3 md:gap-6 h-full min-h-0">
+      <div className="min-w-0 min-h-0 border-b md:border-b-0 md:border-r border-gray-100 pb-2 md:pb-0 md:pr-6 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-thumb]:rounded-full">
         <h3 className="text-xs font-bold uppercase tracking-widest text-green-600 mb-4 sticky top-0 bg-white py-3 pl-1 z-10 border-b border-gray-100">Investigation Reports</h3>
         <div className="space-y-3 pb-4">
           {reports.length === 0 ? (
@@ -274,7 +274,7 @@ function ReportsTab({ reports, onReportSelect, onMarkAsRead }: any) {
           )}
         </div>
       </div>
-      <div className="pl-2 h-full flex flex-col items-center justify-center text-gray-400">
+      <div className="hidden md:flex pl-2 h-full flex-col items-center justify-center text-gray-400">
         <FileText className="w-12 h-12 mb-4 text-gray-200" />
         <span className="font-bold text-sm tracking-widest uppercase">Select a report to open full view</span>
       </div>

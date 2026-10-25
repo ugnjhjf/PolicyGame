@@ -65,10 +65,10 @@ export function PDANotification({
   return (
     <div
       onClick={onClick}
-      className={`fixed top-24 left-1/2 -translate-x-1/2 z-[100] transition-all duration-300 transform ${show ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'
+      className={`fixed top-20 left-4 right-4 sm:top-24 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 z-[100] transition-all duration-300 transform ${show ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'
         } ${onClick ? 'cursor-pointer hover:scale-105 active:scale-95' : ''}`}>
       <div className={`
-        flex items-start gap-3 min-w-[320px] max-w-md p-4 rounded-lg border backdrop-blur-md shadow-2xl
+        flex items-start gap-3 w-full max-w-md p-4 rounded-lg border backdrop-blur-md shadow-2xl
         ${typeStyles[type]}
       `}>
         <div className="flex-shrink-0 mt-0.5">

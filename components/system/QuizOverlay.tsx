@@ -55,7 +55,7 @@ export function QuizOverlay({ isOpen, onComplete, questions }: QuizOverlayProps)
 
   return (
     // No dark full-screen backdrop — floats over the game, bottom-anchored
-    <div className="fixed inset-x-0 bottom-0 z-50 flex flex-col items-center pb-6 px-4 pointer-events-none">
+    <div className="fixed inset-x-0 bottom-0 z-50 flex flex-col items-center pb-3 px-3 sm:pb-6 sm:px-4 pointer-events-none">
 
       {/* Counter badge — floats above the card, left-aligned */}
       <div className="w-full max-w-2xl flex items-end mb-0 pointer-events-none">
@@ -76,7 +76,7 @@ export function QuizOverlay({ isOpen, onComplete, questions }: QuizOverlayProps)
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.25 }}
-          className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl px-7 py-6 pointer-events-auto border border-gray-100 relative"
+          className="w-full max-w-2xl max-h-[calc(100dvh-5rem)] overflow-y-auto bg-white rounded-2xl shadow-2xl px-4 py-4 sm:px-7 sm:py-6 pointer-events-auto border border-gray-100 relative"
         >
           {/* Feedback badge top-right */}
           {hasAnswered && (

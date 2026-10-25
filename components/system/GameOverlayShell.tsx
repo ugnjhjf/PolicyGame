@@ -18,13 +18,13 @@ export function GameOverlayShell({ isOpen, accentColor, children }: GameOverlayS
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm p-3 sm:p-6">
         <motion.div
           initial={{ scale: 0.92, opacity: 0, y: 16 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.92, opacity: 0, y: 16 }}
           transition={{ duration: 0.25 }}
-          className="bg-white border border-gray-100 w-full max-w-2xl rounded-2xl p-8 shadow-2xl relative overflow-hidden"
+          className="bg-white border border-gray-100 w-full max-w-2xl max-h-[calc(100dvh-1.5rem)] overflow-y-auto rounded-2xl p-5 sm:p-8 shadow-2xl relative"
         >
           {/* Subtle top accent line */}
           <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-400 via-purple-300 to-purple-400 rounded-t-2xl`} />
