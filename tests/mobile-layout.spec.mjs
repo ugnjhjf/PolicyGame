@@ -39,6 +39,24 @@ for (const [width, height] of [[320, 568], [375, 667], [667, 375]]) {
       await expect(page).toHaveURL(/\/chapter\//)
     })
 
+    test('dialogue shows centered character above a tappable chatbox', async ({ page }) => {
+      await page.goto(base + '/game/')
+      const chatbox = page.getByTestId('dialogue-box')
+      await expect(chatbox).toHaveCount(1, { timeout: 3000 })
+      const character = await page.getByRole('img', { name: 'Anna' }).boundingBox()
+      const box = await chatbox.boundingBox()
+      expect(Math.abs(character.x + character.width / 2 - width / 2)).toBeLessThanOrEqual(2)
+      expect(character.width).toBeGreaterThanOrEqual(width * 1.15)
+      expect(character.height).toBeGreaterThanOrEqual(height * 0.48)
+      expect(character.y + character.height).toBeLessThanOrEqual(box.y + 4)
+      expect(box.x).toBeGreaterThanOrEqual(0)
+      expect(box.x + box.width).toBeLessThanOrEqual(width)
+      expect(await chatbox.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)')
+      await expect(chatbox.getByText('Hi, I am Anna. Your personal secretary.')).toBeVisible()
+      await chatbox.click()
+      await expect(chatbox.getByText('Our AI model has been used to solve the manpower shortage problem.')).toBeVisible()
+    })
+
     test('game tasks and PDA tabs stay within the viewport', async ({ page }) => {
       await page.goto(base + '/game/')
       for (let i = 0; i < 12 && await page.getByText('Meet with the community').count() === 0; i++) {
@@ -59,3 +77,13 @@ for (const [width, height] of [[320, 568], [375, 667], [667, 375]]) {
     })
   })
 }
+
+test('desktop dialogue keeps the original unboxed presentation', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 })
+  await page.goto(base + '/game/')
+  const chatbox = page.getByTestId('dialogue-box')
+  await expect(chatbox).toBeVisible()
+  expect(await chatbox.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgba(0, 0, 0, 0)')
+  expect(await chatbox.evaluate(el => getComputedStyle(el).borderTopWidth)).toBe('0px')
+  await expect(chatbox.getByText('Tap to continue')).toBeHidden()
+})

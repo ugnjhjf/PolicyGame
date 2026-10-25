@@ -59,17 +59,19 @@ export function DialogueOverlay({
   }
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none flex flex-col justify-end pb-5 sm:pb-12 overflow-hidden">
-      <div className="absolute inset-0 z-0 flex items-end justify-center pointer-events-none">
+    <div className="fixed inset-0 h-dvh md:h-auto z-50 pointer-events-none flex flex-col md:justify-end md:pb-12 overflow-hidden">
+      {/* On phones the portrait has its own centered stage above the dialogue box. */}
+      <div className="relative z-0 flex-1 min-h-0 flex items-center justify-center overflow-hidden pointer-events-none md:absolute md:inset-0 md:flex-none md:items-end md:overflow-visible">
         <AnimatePresence mode="popLayout">
           {characterImage && <CharacterImage image={characterImage} name={characterName} />}
         </AnimatePresence>
       </div>
 
-      {/* Subtitle Area */}
-      <div className="relative z-10 w-full max-w-5xl max-h-[55dvh] overflow-y-auto mx-auto px-4 pointer-events-auto flex flex-col items-center">
+      {/* The mobile conversation lives in a visual-novel chat box below the portrait. */}
+      <div className="relative z-10 w-[calc(100%-1.5rem)] md:w-full max-w-5xl max-h-[42dvh] md:max-h-[55dvh] overflow-y-auto mx-auto mb-[max(0.75rem,env(safe-area-inset-bottom))] md:mb-0 pointer-events-auto flex flex-col items-center">
         <div
-          className="w-full text-center cursor-pointer select-none"
+          data-testid="dialogue-box"
+          className="w-full min-h-[160px] md:min-h-0 p-4 md:p-0 bg-slate-950/90 md:bg-transparent border border-white/25 md:border-0 rounded-2xl md:rounded-none shadow-2xl md:shadow-none backdrop-blur-md md:backdrop-blur-none text-left md:text-center cursor-pointer select-none flex flex-col"
           onClick={(e) => {
             if ((e.target as HTMLElement).tagName === 'BUTTON') return
             onNext?.()
@@ -77,7 +79,7 @@ export function DialogueOverlay({
         >
           <SubtitleText text={text} characterName={characterName} renderText={renderText} />
 
-          <div className="mt-6 flex justify-center items-center gap-4">
+          <div className="mt-auto pt-3 md:mt-6 md:pt-0 flex justify-end md:justify-center items-center gap-4">
             <DialogueChoices choices={choices} />
           </div>
         </div>
@@ -94,7 +96,7 @@ function CharacterImage({ image, name }: { image: string, name: string }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="relative w-full h-[75dvh] mb-[-8dvh] md:w-[110vh] md:h-[110vh] md:mb-[-15vh]"
+      className="relative shrink-0 md:shrink w-[120vw] max-w-none h-full md:w-[110vh] md:h-[110vh] md:mb-[-15vh]"
     >
       <Image
         src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}${image.startsWith('/') ? image : `/${image}`}`}
@@ -116,11 +118,12 @@ function SubtitleText({ text, characterName, renderText }: { text: string, chara
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.4 }}
-        className="text-lg sm:text-2xl md:text-3xl font-bold leading-relaxed drop-shadow-md"
+        className="text-base sm:text-lg md:text-3xl font-medium md:font-bold leading-relaxed md:drop-shadow-md"
         style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}
       >
-        <span className="text-blue-400 mr-2 uppercase tracking-wide">{characterName}:</span>
-        <span className="text-white">
+        <span className="inline-block md:hidden mb-3 px-3 py-1 rounded-full border border-blue-300/30 bg-blue-500/20 text-blue-200 text-xs font-bold uppercase tracking-widest">{characterName}</span>
+        <span className="hidden md:inline text-blue-400 mr-2 uppercase tracking-wide">{characterName}:</span>
+        <span className="block md:inline text-white">
           {renderText()}
         </span>
       </motion.div>
@@ -161,9 +164,10 @@ function DialogueChoices({ choices }: { choices?: DialogueOption[] }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
-        className="animate-bounce text-yellow-500/80 mt-2"
+        className="flex items-center gap-2 animate-bounce text-yellow-400 md:text-yellow-500/80 mt-1 md:mt-2"
       >
-        <ChevronRight className="w-8 h-8" />
+        <span className="md:hidden text-[10px] font-bold uppercase tracking-wider">Tap to continue</span>
+        <ChevronRight className="w-5 h-5 md:w-8 md:h-8" />
       </motion.div>
     </AnimatePresence>
   )
